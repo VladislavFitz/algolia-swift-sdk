@@ -1,0 +1,56 @@
+//
+//  Hit.swift
+//
+//
+//  Created by Vladislav Fitc on 14.08.2022.
+//
+
+import Foundation
+
+/// Wraps a generic hit object with its meta information
+public struct Hit<T: Codable> {
+  public let objectID: ObjectID
+  public let object: T
+
+  /// Snippeted attributes. Only returned when `attributesToSnippet` is non-empty.
+  public let snippetResult: TreeModel<SnippetResult>?
+
+  /// Highlighted attributes. Only returned when `attributesToHighlight` is non-empty.
+  public let highlightResult: TreeModel<HighlightResult>?
+
+  /// Ranking information. Only returned when `getRankingInfo` is true.
+  public let rankingInfo: RankingInfo?
+  public let geolocation: SingleOrList<Point>?
+}
+
+extension Hit: Equatable where T: Equatable {}
+
+extension Hit: Codable {
+  enum CodingKeys: String, CodingKey {
+    case objectID
+    case snippetResult = "_snippetResult"
+    case highlightResult = "_highlightResult"
+    case rankingInfo = "_rankingInfo"
+    case geolocation = "_geoloc"
+  }
+
+  public init(from decoder: Decoder) throws {
+    object = try T(from: decoder)
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    objectID = try container.decode(ObjectID.self, forKey: .objectID)
+    snippetResult = try container.decodeIfPresent(TreeModel<SnippetResult>.self, forKey: .snippetResult)
+    highlightResult = try container.decodeIfPresent(TreeModel<HighlightResult>.self, forKey: .highlightResult)
+    rankingInfo = try container.decodeIfPresent(RankingInfo.self, forKey: .rankingInfo)
+    geolocation = try? container.decodeIfPresent(SingleOrList<Point>.self, forKey: .geolocation)
+  }
+
+  public func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: CodingKeys.self)
+    try container.encodeIfPresent(objectID, forKey: .objectID)
+    try container.encodeIfPresent(snippetResult, forKey: .snippetResult)
+    try container.encodeIfPresent(highlightResult, forKey: .highlightResult)
+    try container.encodeIfPresent(rankingInfo, forKey: .rankingInfo)
+    try container.encodeIfPresent(geolocation, forKey: .geolocation)
+    try object.encode(to: encoder)
+  }
+}
