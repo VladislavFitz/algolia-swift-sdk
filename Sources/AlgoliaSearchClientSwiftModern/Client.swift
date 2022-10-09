@@ -1,13 +1,20 @@
 import Combine
 import Foundation
 
+/// Algolia search client
 public class Client {
+  /// Transport which performs HTTP requests
   public let transport: Transport
+  /// Encoder for JSON requests
   public let jsonEncoder: JSONEncoder
+  /// Decoder for JSON responses
   public let jsonDecoder: JSONDecoder
 
-  internal var storage = Set<AnyCancellable>()
-
+  /**
+   - Parameter transport: Transport which performs HTTP requests.
+   - Parameter jsonEncoder: Encoder for JSON requests.
+   - Parameter jsonDecoder: Decoder for JSON responses.
+   */
   public init(transport: Transport,
               jsonEncoder: JSONEncoder,
               jsonDecoder: JSONDecoder) {
@@ -16,6 +23,10 @@ public class Client {
     self.jsonDecoder = jsonDecoder
   }
 
+  /**
+   - Parameter appID: Algolia application ID.
+   - Parameter apiKey: Algolia API key of the application.
+   */
   public convenience init(appID: ApplicationID,
                           apiKey: APIKey) {
     func buildHost(_ components: (suffix: String, requestType: RequestTypeSupport)) -> Host {
