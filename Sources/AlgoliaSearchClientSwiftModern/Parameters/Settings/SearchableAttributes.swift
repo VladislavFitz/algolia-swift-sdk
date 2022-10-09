@@ -6,4 +6,28 @@
 //
 
 import Foundation
-// TODO:
+
+struct SearchableAttributes: SettingsParameter {
+  static let key = "searchableAttributes"
+  let value: [SearchableAttribute]
+
+  init(_ value: [SearchableAttribute]) {
+    self.value = value
+  }
+
+  func encode(to encoder: Encoder) throws {
+    var container = encoder.singleValueContainer()
+    try container.encode(value)
+  }
+}
+
+extension SettingsParameters {
+  var searchableAttributes: [SearchableAttribute]? {
+    get {
+      (parameters[SearchableAttributes.key] as? SearchableAttributes)?.value
+    }
+    set {
+      parameters[SearchableAttributes.key] = newValue.flatMap(SearchableAttributes.init)
+    }
+  }
+}
