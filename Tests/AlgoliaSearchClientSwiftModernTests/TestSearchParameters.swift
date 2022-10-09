@@ -2,7 +2,6 @@
 import XCTest
 
 final class TestSearchParameters: XCTestCase {
-  
   func testURLEncoding() {
     let query = SearchParameters {
       Query("search it")
@@ -12,5 +11,4 @@ final class TestSearchParameters: XCTestCase {
     }
     print(query.urlEncodedString)
   }
-  
 }

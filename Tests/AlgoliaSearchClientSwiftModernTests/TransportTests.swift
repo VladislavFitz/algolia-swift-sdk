@@ -232,10 +232,10 @@ final class TransportTests: XCTestCase {
 
 enum TransportTestError: Error, LocalizedError {
   case unexpectedHost(String)
-  
+
   var errorDescription: String? {
     switch self {
-    case .unexpectedHost(let host):
+    case let .unexpectedHost(host):
       return "unexpected host: \(host)"
     }
   }
