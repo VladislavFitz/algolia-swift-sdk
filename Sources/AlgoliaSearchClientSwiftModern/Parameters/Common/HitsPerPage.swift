@@ -37,3 +37,16 @@ extension SearchParameters {
     }
   }
 }
+
+extension HitsPerPage: SettingsParameter {}
+
+extension SettingsParameters {
+  var hitsPerPage: Int? {
+    get {
+      (parameters[HitsPerPage.key] as? HitsPerPage)?.value
+    }
+    set {
+      parameters[HitsPerPage.key] = newValue.flatMap(HitsPerPage.init)
+    }
+  }
+}
