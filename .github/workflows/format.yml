@@ -1,3 +1,4 @@
+name: format
 on:
   push:
     branches: [main]
