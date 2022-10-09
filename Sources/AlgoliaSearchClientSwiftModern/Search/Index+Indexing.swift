@@ -45,8 +45,8 @@ public extension Index {
     }
     let body = try client.jsonEncoder.encode(object)
     let responseData = try await client.transport.perform(method: .post,
-                                                          path: "/1/indexes/\(indexName.rawValue)/query",
-                                                          headers: ["Content-Type": "application/json"],
+                                                          path: "/1/indexes/\(indexName.rawValue)",
+                                                          headers: [:], // "Content-Type": "application/json"
                                                           body: body,
                                                           requestType: .write)
     var objectCreation = try client.jsonDecoder.decode(ObjectCreation.self, from: responseData)
@@ -86,13 +86,16 @@ public extension Index {
   @discardableResult func batch(_ batchOperations: [BatchOperation],
                                 batchSize: Int? = .none) async throws -> BatchesResponse {
     let batchSize = batchSize ?? self.batchSize
-    func singleBatch(operations _: [BatchOperation]) async throws -> BatchResponse {
+    func singleBatch(operations: [BatchOperation]) async throws -> BatchResponse {
+      let body = try client.jsonEncoder.encode(RequestsWrapper(operations))
       let responseData = try await client.transport.perform(method: .post,
                                                             path: "/1/indexes/\(indexName.rawValue)/batch",
                                                             headers: [:],
-                                                            body: nil,
+                                                            body: body,
                                                             requestType: .write)
-      return try client.jsonDecoder.decode(BatchResponse.self, from: responseData)
+      var batchResponse = try client.jsonDecoder.decode(BatchResponse.self, from: responseData)
+      batchResponse.index = self
+      return batchResponse
     }
     var responses: [BatchResponse] = []
     for operationsChunk in batchOperations.chunked(into: batchSize) {
