@@ -48,7 +48,8 @@ class IndexingIntegrationTests: XCTestCase {
 
     // Add 2 records with saveObjects without an objectID and collect taskID/objectID
     var objectsWithGeneratedID = [TestRecord(), TestRecord()]
-    let objectsWithGeneratedIDCreation = try await index.saveObjects(objectsWithGeneratedID, autoGeneratingObjectID: true)
+    let objectsWithGeneratedIDCreation = try await index.saveObjects(objectsWithGeneratedID,
+                                                                     autoGeneratingObjectID: true)
     try await objectWithGeneratedIDCreation.wait()
 
     let generatedObjectIDs = objectsWithGeneratedIDCreation.objectIDs.compactMap { $0 }
@@ -70,72 +71,10 @@ class IndexingIntegrationTests: XCTestCase {
     }
 
     // Retrieve the 6 first records with getObject and check their content against original records
-    // Retrieve the 1000 remaining records with getObjects with objectIDs from 1 to 1000 and check their content against original records
+    // Retrieve the 1000 remaining records with getObjects with objectIDs from 1 to 1000 and
+    // check their content against original records
     let firstObjectsIDs = [objectID, generatedObjectID] + objectsIDs + generatedObjectIDs
 
-    /*
-     let expectedObjects = [object, objectWithGeneratedID] + objects + objectsWithGeneratedID
-     let fetchedObjects: [TestRecord] = try index.getObjects(withIDs: firstObjectsIDs).results.compactMap { $0 }
-     for (expected, fetched) in zip(expectedObjects, fetchedObjects) {
-       XCTAssertEqual(expected, fetched)
-     }
-
-     // Browse all records with browseObjects and make sure we have browsed 1006 records, and check that all objectIDs are found
-     var response = try index.browse()
-
-     var fetchedRecords: [TestRecord] = try response.extractHits()
-
-     while let cursor = response.cursor {
-       response = try index.browse(cursor: cursor)
-       fetchedRecords.append(contentsOf: try response.extractHits())
-     }
-
-     XCTAssertEqual(response.nbHits, 1006)
-
-     let expectedRecords = [object, objectWithGeneratedID] + objects + objectsWithGeneratedID + batchRecords
-
-     let edict = Dictionary(grouping: expectedRecords, by: \.objectID!)
-     let fdict = Dictionary(grouping: fetchedRecords, by: \.objectID!)
-
-     for (key, value) in edict {
-       XCTAssertEqual(value, fdict[key])
-     }
-
-     // Alter 1 record with partialUpdateObject and collect taskID/objectID
-     try index.partialUpdateObject(withID: objectID, with: .update(attribute: "string", value: "partiallyUpdated"), createIfNotExists: false).wait()
-
-     // Alter 2 records with partialUpdateObjects and collect taskID/objectID
-     try index.partialUpdateObjects(updates: [(objectsIDs[0], .update(attribute: "string", value: "partiallyUpdated")), (objectsIDs[1], .increment(attribute: "numeric", value: 10))], createIfNotExists: false).wait()
-
-     // Wait for all collected tasks to terminate with waitTask
-     // Retrieve all the previously altered records with getObject and check their content against the modified records
-     let updated: [TestRecord] = try index.getObjects(withIDs: [objectID] + objectsIDs).results.compactMap { $0 }
-
-     XCTAssertEqual(updated.first { $0.objectID == objectID }, object.set(\.string, to: "partiallyUpdated"))
-     XCTAssertEqual(updated.first { $0.objectID == objectsIDs.first! }, objects.first!.set(\.string, to: "partiallyUpdated"))
-     XCTAssertEqual(updated.first { $0.objectID == objectsIDs.last! }, objects.last!.set(\.numeric, to: objects.last!.numeric + 10))
-
-     // Add 1 record with saveObject with an objectID and a tag algolia and wait for the task to finish
-     let taggedRecord = TestRecord(objectID: "taggedObject").set(\._tags, to: ["algolia"])
-     try index.saveObject(taggedRecord).wait()
-
-     // Delete the first record with deleteObject and collect taskID
-     try index.deleteObject(withID: objectID).wait()
-
-     // Delete the record containing the tag algolia with deleteBy and the tagFilters option and collect taskID
-     try index.deleteObjects(byQuery: DeleteByQuery().set(\.filters, to: "algolia")).wait()
-
-     // Delete the 5 remaining first records with deleteObjects and collect taskID
-     try index.deleteObjects(withIDs: [generatedObjectID] + objectsIDs + generatedObjectIDs).wait()
-
-     // Delete the 1000 remaining records with clearObjects and collect taskID
-     // Wait for all collected tasks to terminate
-     try index.clearObjects().wait()
-
-     // Browse all objects with browseObjects and make sure that no records are returned
-     response = try index.browse()
-     XCTAssertEqual(response.nbHits, 0)
-     */
     try await index.delete().wait()
   }
 }
