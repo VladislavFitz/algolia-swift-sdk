@@ -1,8 +1,5 @@
-
-name: Tests
-
+name: test
 on: [push]
-
 jobs:
   test:
     runs-on: macos-12
