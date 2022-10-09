@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Strategy to apply to a multi-index search
 public struct MultipleQueriesStrategy: RawRepresentable, Codable {
   public var rawValue: String
 

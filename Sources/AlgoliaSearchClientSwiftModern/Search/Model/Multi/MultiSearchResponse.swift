@@ -8,12 +8,12 @@
 import Foundation
 
 /// Wraps the list of multi search results (either FacetSearchResponse or SearchResponse)
-public struct MultiSearchResponse: Decodable {
+struct MultiSearchResponse: Decodable {
   /// List of result in the order they were submitted, one element for each IndexedQuery.
-  public var results: [Either<SearchResponse, FacetSearchResponse>]
+  var results: [Either<SearchResponse, FacetSearchResponse>]
 
   /// - parameter results: List of result in the order they were submitted, one element for each IndexedQuery.
-  public init(results: [Either<SearchResponse, FacetSearchResponse>]) {
+  init(results: [Either<SearchResponse, FacetSearchResponse>]) {
     self.results = results
   }
 }

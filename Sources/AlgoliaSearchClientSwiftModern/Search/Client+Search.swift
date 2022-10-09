@@ -13,11 +13,16 @@ public extension Client {
   }
 }
 
-public typealias MultiSearchQuery = Either<IndexedQuery, IndexedFacetQuery>
-
 public extension Client {
-  func search(queries: [MultiSearchQuery],
-              strategy: MultipleQueriesStrategy = .none) async throws -> MultiSearchResponse {
+  /**
+   Perform a search for hits or facet values on several indices at the same time, with one method call.
+
+   - Parameter queries: The list of either IndexedQuery or IndexedFacetQuery.
+   - Parameter strategy: The MultipleQueriesStrategy to apply (default .none).
+   - Returns: The list of either SearchResponse or FacetSearchResponse
+   */
+  func search(queries: [Either<IndexedQuery, IndexedFacetQuery>],
+              strategy: MultipleQueriesStrategy = .none) async throws -> [Either<SearchResponse, FacetSearchResponse>] {
     let request = MultipleQueriesRequest(requests: queries, strategy: strategy)
     let body = try jsonEncoder.encode(request)
     let responseData = try await transport.perform(method: .post,
@@ -25,6 +30,6 @@ public extension Client {
                                                    headers: ["Content-Type": "application/json"],
                                                    body: body,
                                                    requestType: .read)
-    return try jsonDecoder.decode(MultiSearchResponse.self, from: responseData)
+    return try jsonDecoder.decode(MultiSearchResponse.self, from: responseData).results
   }
 }

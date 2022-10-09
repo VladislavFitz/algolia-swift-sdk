@@ -8,7 +8,7 @@
 import Foundation
 
 struct MultipleQueriesRequest {
-  let requests: [MultiSearchQuery]
+  let requests: [Either<IndexedQuery, IndexedFacetQuery>]
   let strategy: MultipleQueriesStrategy
 }
 

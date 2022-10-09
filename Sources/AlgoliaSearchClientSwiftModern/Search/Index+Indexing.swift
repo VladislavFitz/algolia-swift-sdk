@@ -8,6 +8,10 @@
 import Foundation
 
 public extension Index {
+  /**
+   Delete the index and all its settings, including links to its replicas.
+   - Returns: Index deletion task
+   */
   func delete() async throws -> IndexDeletion {
     let responseData = try await client.transport.perform(method: .delete,
                                                           path: "/1/indexes/\(indexName.rawValue)",
@@ -33,7 +37,7 @@ public extension Index {
    This can only be resolved if you wait before sending any further indexing operations.
    - Parameter object: The record of type T to save.
    - Parameter autoGeneratingObjectID: Add objectID if record type doesn't provide it in serialized form.
-   - Returns: ObjectCreation structure
+   - Returns: Object creation task
    */
   func saveObject<T: Encodable>(_ object: T, autoGeneratingObjectID: Bool = false) async throws -> ObjectCreation {
     if !autoGeneratingObjectID {
@@ -56,7 +60,7 @@ public extension Index {
    - Parameter objectID: The ObjectID to identify the record.
    - Parameter attributesToRetrieve: Specify a list of Attribute to retrieve. This list will apply to all records.
      If you don’t specify any attributes, every attribute will be returned.
-   - Returns: Casted Decodable object
+   - Returns: Decodable object of type T
    */
 
   func getObject<T: Decodable>(withID objectID: ObjectID, attributesToRetrieve: [Attribute] = []) async throws -> T {
@@ -77,7 +81,7 @@ public extension Index {
    Perform several indexing operations in one API call.
    - Parameter batchOperations: List of BatchOperation
    - Parameter batchSize: Size of chunk
-   - Returns: BatchesResponse
+   - Returns: Batches response task
    */
   @discardableResult func batch(_ batchOperations: [BatchOperation],
                                 batchSize: Int? = .none) async throws -> BatchesResponse {
@@ -104,7 +108,7 @@ public extension Index {
    - See: saveObject
    - Parameter objects The list of records to save.
    - Parameter autoGeneratingObjectID: Add objectID if record type doesn't provide it in serialized form.
-   - Returns: BatchesResponse structure
+   - Returns: Batches response task
    */
   @discardableResult func saveObjects<T: Encodable>(_ objects: [T],
                                                     autoGeneratingObjectID: Bool = false)
@@ -117,7 +121,7 @@ public extension Index {
 
    - See: replaceObject
    - Parameter replacements: The list of paris of ObjectID and the replacement object .
-   - Returns: BatchesResponse structure
+   - Returns: Batches response task
    */
   @discardableResult func replaceObjects<T: Encodable>(replacements: [(objectID: ObjectID, object: T)])
     async throws -> BatchesResponse {
@@ -127,7 +131,7 @@ public extension Index {
   /**
    Remove multiple objects from an index using their ObjectID.
    - Parameter objectIDs: The list ObjectID to identify the records.
-   - Returns: BatchesResponse structure
+   - Returns: Batches response task
    */
   @discardableResult func deleteObjects(withIDs objectIDs: [ObjectID]) async throws -> BatchesResponse {
     try await batch(objectIDs.map { .delete(objectID: $0) })
@@ -140,7 +144,7 @@ public extension Index {
    - Parameter createIfNotExists: When true, a partial update on a nonexistent record will create the record
    (generating the objectID and using the attributes as defined in the record). When false, a partial
    update on a nonexistent record will be ignored (but no error will be sent back).
-   - Returns: BatchesResponse structure
+   - Returns: Batches response task
    */
   @discardableResult func partialUpdateObjects(updates: [(objectID: ObjectID, update: PartialUpdate)],
                                                createIfNotExists: Bool = true)
