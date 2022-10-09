@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// The complete list of attributes that will be used for searching.
 struct SearchableAttributes: SettingsParameter {
   static let key = "searchableAttributes"
   let value: [SearchableAttribute]
@@ -22,6 +23,7 @@ struct SearchableAttributes: SettingsParameter {
 }
 
 extension SettingsParameters {
+  /// The complete list of attributes that will be used for searching.
   var searchableAttributes: [SearchableAttribute]? {
     get {
       (parameters[SearchableAttributes.key] as? SearchableAttributes)?.value

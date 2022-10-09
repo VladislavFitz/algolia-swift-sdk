@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+/// The complete list of attributes that will be used for faceting.
 struct AttributesForFaceting: SettingsParameter {
   static let key = "attributesForFaceting"
   let value: [AttributeForFaceting]
@@ -22,6 +22,7 @@ struct AttributesForFaceting: SettingsParameter {
 }
 
 extension SettingsParameters {
+  /// The complete list of attributes that will be used for faceting.
   var attributesForFaceting: [AttributeForFaceting]? {
     get {
       (parameters[AttributesForFaceting.key] as? AttributesForFaceting)?.value
