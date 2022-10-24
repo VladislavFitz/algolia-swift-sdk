@@ -58,7 +58,7 @@ extension Polygon: RawRepresentable {
     } else {
       tailPoints = stride(from: rawValue.startIndex.advanced(by: 6),
                           to: rawValue.endIndex, by: 2)
-      .map { Point(latitude: rawValue[$0], longitude: rawValue[$0 + 1]) }
+        .map { Point(latitude: rawValue[$0], longitude: rawValue[$0 + 1]) }
     }
 
     self.init(.init(latitude: rawValue[0], longitude: rawValue[1]),
