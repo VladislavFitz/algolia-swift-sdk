@@ -1,14 +1,8 @@
-//
-//  Page.swift
-//
-//
-//  Created by Vladislav Fitc on 08.08.2022.
-//
-
 import Foundation
 
 struct Page {
   static let key = "page"
+  public var key: String { Self.key }
   let value: Int
 
   init(_ value: Int) {

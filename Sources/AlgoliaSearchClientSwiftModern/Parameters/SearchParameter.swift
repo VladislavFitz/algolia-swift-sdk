@@ -8,7 +8,7 @@
 import Foundation
 
 public protocol SearchParameter: Encodable, URLEncodable {
-  static var key: String { get }
+  var key: String { get }
 }
 
 @resultBuilder

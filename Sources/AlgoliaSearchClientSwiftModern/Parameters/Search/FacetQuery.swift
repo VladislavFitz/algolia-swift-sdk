@@ -1,14 +1,7 @@
-//
-//  FacetQuery.swift
-//
-//
-//  Created by Vladislav Fitc on 08.08.2022.
-//
-
 import Foundation
 
 struct FacetQuery {
-  static let key = "facetQuery"
+  let key = "facetQuery"
   let value: String
 
   init(_ value: String) {

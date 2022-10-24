@@ -8,7 +8,7 @@
 import Foundation
 
 public protocol SettingsParameter: Encodable {
-  static var key: String { get }
+  var key: String { get }
 }
 
 @resultBuilder

@@ -19,8 +19,10 @@ public struct Point: Equatable {
     self.latitude = latitude
     self.longitude = longitude
   }
+}
 
-  var stringForm: String {
+extension Point: CustomStringConvertible {
+  public var description: String {
     return "\(latitude),\(longitude)"
   }
 }

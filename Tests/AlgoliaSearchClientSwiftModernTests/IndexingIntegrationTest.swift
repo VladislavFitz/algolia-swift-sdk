@@ -75,6 +75,7 @@ class IndexingIntegrationTests: XCTestCase {
     // check their content against original records
     let firstObjectsIDs = [objectID, generatedObjectID] + objectsIDs + generatedObjectIDs
 
+    _ = firstObjectsIDs
     try await index.delete().wait()
   }
 }

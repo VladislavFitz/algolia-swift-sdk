@@ -1,22 +1,15 @@
-//
-//  SearchableAttributes.swift
-//
-//
-//  Created by Vladislav Fitc on 09.10.2022.
-//
-
 import Foundation
-
 /// The complete list of attributes that will be used for searching.
-struct SearchableAttributes: SettingsParameter {
-  static let key = "searchableAttributes"
-  let value: [SearchableAttribute]
+public struct SearchableAttributes: SettingsParameter {
+  public static let key = "searchableAttributes"
+  public var key: String { Self.key }
+  public let value: [SearchableAttribute]
 
   init(_ value: [SearchableAttribute]) {
     self.value = value
   }
 
-  func encode(to encoder: Encoder) throws {
+  public func encode(to encoder: Encoder) throws {
     var container = encoder.singleValueContainer()
     try container.encode(value)
   }

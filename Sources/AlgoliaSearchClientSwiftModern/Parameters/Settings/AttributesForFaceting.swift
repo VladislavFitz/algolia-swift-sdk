@@ -9,6 +9,7 @@ import Foundation
 /// The complete list of attributes that will be used for faceting.
 struct AttributesForFaceting: SettingsParameter {
   static let key = "attributesForFaceting"
+  var key: String { Self.key }
   let value: [AttributeForFaceting]
 
   init(_ value: [AttributeForFaceting]) {

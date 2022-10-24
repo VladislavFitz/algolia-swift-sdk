@@ -1,33 +1,36 @@
-//
-//  Query.swift
-//
-//
-//  Created by Vladislav Fitc on 08.08.2022.
-//
-
 import Foundation
-
-struct Query {
+/**
+ The text to search in the index.
+ - Engine default: ""
+ - [Documentation](https://www.algolia.com/doc/api-reference/api-parameters/query/?language=swift)
+ */
+public struct Query {
   static let key = "query"
-  let value: String
+  public var key: String { Self.key }
+  public let value: String
 
   init(_ value: String) {
     self.value = value
   }
 
-  func encode(to encoder: Encoder) throws {
+  public func encode(to encoder: Encoder) throws {
     var container = encoder.singleValueContainer()
     try container.encode(value)
   }
 }
 
 extension Query: SearchParameter {
-  var urlEncodedString: String {
+  public var urlEncodedString: String {
     return value
   }
 }
 
 extension SearchParameters {
+  /**
+    The text to search in the index.
+    - Engine default: ""
+    - [Documentation](https://www.algolia.com/doc/api-reference/api-parameters/query/?language=swift)
+   */
   var query: String? {
     get {
       (parameters[Query.key] as? Query)?.value

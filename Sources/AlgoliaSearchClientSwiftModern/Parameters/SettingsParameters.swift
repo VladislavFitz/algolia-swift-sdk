@@ -11,7 +11,7 @@ public struct SettingsParameters {
   internal var parameters: [String: SettingsParameter]
 
   public init(_ parameters: [SettingsParameter]) {
-    self.parameters = .init(uniqueKeysWithValues: parameters.map { (type(of: $0).key, $0) })
+    self.parameters = .init(uniqueKeysWithValues: parameters.map { ($0.key, $0) })
   }
 
   public init(_ parameters: SettingsParameter...) {

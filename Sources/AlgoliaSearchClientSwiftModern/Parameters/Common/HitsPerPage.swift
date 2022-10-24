@@ -1,28 +1,26 @@
-//
-//  HitsPerPage.swift
-//
-//
-//  Created by Vladislav Fitc on 08.08.2022.
-//
-
 import Foundation
-
-struct HitsPerPage {
+/**
+ Set the number of hits per page.
+ - Engine default: 20
+ - [Documentation](https://www.algolia.com/doc/api-reference/api-parameters/hitsPerPage/?language=swift)
+ */
+public struct HitsPerPage {
   static let key = "hitsPerPage"
-  let value: Int
+  public var key: String { HitsPerPage.key }
+  public let value: Int
 
-  init(_ value: Int) {
+  public init(_ value: Int) {
     self.value = value
   }
 
-  func encode(to encoder: Encoder) throws {
+  public func encode(to encoder: Encoder) throws {
     var container = encoder.singleValueContainer()
     try container.encode(value)
   }
 }
 
 extension HitsPerPage: SearchParameter {
-  var urlEncodedString: String {
+  public var urlEncodedString: String {
     return "\(value)"
   }
 }
@@ -41,6 +39,11 @@ extension SearchParameters {
 extension HitsPerPage: SettingsParameter {}
 
 extension SettingsParameters {
+  /**
+   Set the number of hits per page.
+   - Engine default: 20
+   - [Documentation](https://www.algolia.com/doc/api-reference/api-parameters/hitsPerPage/?language=swift)
+   */
   var hitsPerPage: Int? {
     get {
       (parameters[HitsPerPage.key] as? HitsPerPage)?.value

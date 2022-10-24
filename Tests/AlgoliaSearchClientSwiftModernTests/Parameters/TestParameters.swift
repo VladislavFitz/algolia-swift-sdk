@@ -1,0 +1,147 @@
+@testable import AlgoliaSearchClientSwiftModern
+import XCTest
+
+final class TestParameters: XCTestCase {
+  func testCustomParameter() throws {
+    let searchParameters = SearchParameters {
+      CustomParameter(key: "someStringParameter", "someStringValue")
+      CustomParameter(key: "someIntParameter", 1500)
+    }
+    try AssertEncode(searchParameters, expected: [
+      "someStringParameter": "someStringValue",
+      "someIntParameter": 1500
+    ])
+    let settingsParameters = SettingsParameters {
+      CustomParameter(key: "someStringParameter", "someStringValue")
+      CustomParameter(key: "someIntParameter", 1500)
+    }
+    try AssertEncode(settingsParameters, expected: [
+      "someStringParameter": "someStringValue",
+      "someIntParameter": 1500
+    ])
+  }
+
+  func testAroundLatLng() throws {
+    let parameters = SearchParameters {
+      AroundLatLng(latitude: 10, longitude: 20)
+    }
+    try AssertEncode(parameters, expected: ["aroundLatLng": "10.0,20.0"])
+    XCTAssertEqual(parameters.urlEncodedString, "aroundLatLng=10.0,20.0")
+  }
+
+  func testAroundLatLngViaIP() throws {
+    let parameters = SearchParameters {
+      AroundLatLngViaIP(true)
+    }
+    try AssertEncode(parameters, expected: ["aroundLatLngViaIP": true])
+    XCTAssertEqual(parameters.urlEncodedString, "aroundLatLngViaIP=true")
+  }
+
+  func testAroundPrecision() throws {
+    var parameters = SearchParameters {
+      AroundPrecision(100)
+    }
+    try AssertEncode(parameters, expected: ["aroundPrecision": 100])
+    XCTAssertEqual(parameters.urlEncodedString, "aroundPrecision=100")
+
+    parameters = SearchParameters {
+      AroundPrecision(.from(10, value: 100), .from(500, value: 300))
+    }
+    try AssertEncode(parameters, expected: ["aroundPrecision": [["from": 10, "value": 100], ["from": 500, "value": 300]]])
+    XCTAssertEqual(parameters.urlEncodedString, "aroundPrecision=%5B%22%7B%5C%22from%5C%22:10,%5C%22value%5C%22:100%7D%22,%20%22%7B%5C%22from%5C%22:500,%5C%22value%5C%22:300%7D%22%5D")
+
+    parameters.aroundPrecision = .first(400)
+    try AssertEncode(parameters, expected: ["aroundPrecision": 400])
+  }
+
+  func testAroundRadius() throws {
+    var parameters = SearchParameters {
+      AroundRadius(.all)
+    }
+    try AssertEncode(parameters, expected: ["aroundRadius": "all"])
+    XCTAssertEqual(parameters.urlEncodedString, "aroundRadius=all")
+
+    parameters = SearchParameters {
+      AroundRadius(.meters(300))
+    }
+    try AssertEncode(parameters, expected: ["aroundRadius": 300])
+    XCTAssertEqual(parameters.urlEncodedString, "aroundRadius=300")
+
+    parameters = SearchParameters {
+      AroundRadius(.custom("someValue"))
+    }
+    try AssertEncode(parameters, expected: ["aroundRadius": "someValue"])
+    XCTAssertEqual(parameters.urlEncodedString, "aroundRadius=someValue")
+
+    parameters.aroundRadius = .all
+    try AssertEncode(parameters, expected: ["aroundRadius": "all"])
+  }
+
+  func testInsideBoundingBox() throws {
+    var parameters = SearchParameters {
+      InsideBoundingBox([
+        BoundingBox(point1: Point(latitude: 10,
+                                  longitude: 20),
+                    point2: Point(latitude: 30,
+                                  longitude: 40)),
+        BoundingBox(point1: Point(latitude: 50,
+                                  longitude: 60),
+                    point2: Point(latitude: 70,
+                                  longitude: 80))
+      ])
+    }
+    try AssertEncode(parameters, expected: ["insideBoundingBox": [
+      [10, 20, 30, 40],
+      [50, 60, 70, 80]
+    ]])
+    parameters.insideBoundingBox = [
+      BoundingBox(point1: Point(latitude: 20,
+                                longitude: 30),
+                  point2: Point(latitude: 40,
+                                longitude: 50)),
+      BoundingBox(point1: Point(latitude: 60,
+                                longitude: 70),
+                  point2: Point(latitude: 80,
+                                longitude: 90))
+    ]
+    try AssertEncode(parameters, expected: ["insideBoundingBox": [
+      [20, 30, 40, 50],
+      [60, 70, 80, 90]
+    ]])
+  }
+
+  func testInsidePolygon() throws {
+    var parameters = SearchParameters {
+      InsidePolygon(
+        Polygon(
+          Point(latitude: 1,
+                longitude: 2),
+          Point(latitude: 3,
+                longitude: 4),
+          Point(latitude: 5,
+                longitude: 6)
+        )
+      )
+    }
+    try AssertEncode(parameters, expected: ["insidePolygon": [
+      1, 2, 3, 4, 5, 6
+    ]])
+    parameters.insidePolygon = Polygon(
+      Point(latitude: 2, longitude: 3),
+      Point(latitude: 4, longitude: 5),
+      Point(latitude: 6, longitude: 7)
+    )
+    try AssertEncode(parameters, expected: ["insidePolygon": [
+      2, 3, 4, 5, 6, 7
+    ]])
+  }
+
+  func testMinimumAroundRadius() throws {
+    var parameters = SearchParameters {
+      MinimumAroundRadius(100)
+    }
+    try AssertEncode(parameters, expected: ["minimumAroundRadius": 100])
+    parameters.minimumAroundRadius = 200
+    try AssertEncode(parameters, expected: ["minimumAroundRadius": 200])
+  }
+}
