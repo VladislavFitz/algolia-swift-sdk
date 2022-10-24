@@ -1,32 +1,40 @@
 import Foundation
+/**
+ The search query used to search the facet attribute.
+ - Facet queries only match prefixes, typos, and exact.
+ */
+public struct FacetQuery {
+  public static let key = "facetQuery"
+  public var key: String { Self.key }
+  public let value: String
 
-struct FacetQuery {
-  let key = "facetQuery"
-  let value: String
-
-  init(_ value: String) {
+  public init(_ value: String) {
     self.value = value
   }
 
-  func encode(to encoder: Encoder) throws {
+  public func encode(to encoder: Encoder) throws {
     var container = encoder.singleValueContainer()
     try container.encode(value)
   }
 }
 
 extension FacetQuery: SearchParameter {
-  var urlEncodedString: String {
+  public var urlEncodedString: String {
     return value
   }
 }
 
-extension SearchParameters {
+public extension SearchParameters {
+  /**
+   The search query used to search the facet attribute.
+   - Facet queries only match prefixes, typos, and exact.
+   */
   var facetQuery: String? {
     get {
-      (parameters[Query.key] as? Query)?.value
+      (parameters[FacetQuery.key] as? FacetQuery)?.value
     }
     set {
-      parameters[Query.key] = newValue.flatMap(Query.init)
+      parameters[FacetQuery.key] = newValue.flatMap(FacetQuery.init)
     }
   }
 }
