@@ -47,7 +47,9 @@ extension BoundingBox: Codable {
     let container = try decoder.singleValueContainer()
     let rawValue = try container.decode([Double].self)
     guard let value = BoundingBox(rawValue: rawValue) else {
-      throw DecodingError.dataCorruptedError(in: container, debugDescription: "BoundingBox may be constructed with at least 4 double values. \(rawValue.count) found")
+      let debugIntro = "BoundingBox may be constructed with at least 4 double values."
+      throw DecodingError.dataCorruptedError(in: container,
+                                             debugDescription: "\(debugIntro) \(rawValue.count) found")
     }
     self = value
   }

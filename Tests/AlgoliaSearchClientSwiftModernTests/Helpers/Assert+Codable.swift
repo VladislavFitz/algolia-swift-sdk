@@ -2,7 +2,10 @@
 import Foundation
 import XCTest
 
-func AssertEncode<T: Encodable>(_ value: T, expected: JSON, file: StaticString = #file, line: UInt = #line) throws {
+func assertEncode<T: Encodable>(_ value: T,
+                                expected: JSON,
+                                file: StaticString = #file,
+                                line: UInt = #line) throws {
   let encoder = JSONEncoder()
   encoder.dateEncodingStrategy = .algoliaClientDateEncodingStrategy
   let valueData = try encoder.encode(value)
@@ -14,7 +17,10 @@ func AssertEncode<T: Encodable>(_ value: T, expected: JSON, file: StaticString =
   XCTAssertEqual(jsonFromValue, expected, file: file, line: line)
 }
 
-func AssertDecode<T: Codable>(_ input: JSON, expected: T, file: StaticString = #file, line: UInt = #line) throws {
+func assertDecode<T: Codable>(_ input: JSON,
+                              expected: T,
+                              file: StaticString = #file,
+                              line: UInt = #line) throws {
   let encoder = JSONEncoder()
   encoder.dateEncodingStrategy = .algoliaClientDateEncodingStrategy
   let data = try encoder.encode(input)
@@ -29,7 +35,10 @@ func AssertDecode<T: Codable>(_ input: JSON, expected: T, file: StaticString = #
   XCTAssertEqual(expectedJSON, decodedJSON, file: file, line: line)
 }
 
-func AssertEncodeDecode<T: Codable>(_ value: T, _ rawValue: JSON, file: StaticString = #file, line: UInt = #line) throws {
-  try AssertEncode(value, expected: rawValue, file: file, line: line)
-  try AssertDecode(rawValue, expected: value, file: file, line: line)
+func assertEncodeDecode<T: Codable>(_ value: T,
+                                    _ rawValue: JSON,
+                                    file: StaticString = #file,
+                                    line: UInt = #line) throws {
+  try assertEncode(value, expected: rawValue, file: file, line: line)
+  try assertDecode(rawValue, expected: value, file: file, line: line)
 }

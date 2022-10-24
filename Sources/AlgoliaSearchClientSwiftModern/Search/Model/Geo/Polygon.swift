@@ -56,7 +56,9 @@ extension Polygon: RawRepresentable {
     if rawValue.count == 6 {
       tailPoints = []
     } else {
-      tailPoints = stride(from: rawValue.startIndex.advanced(by: 6), to: rawValue.endIndex, by: 2).map { Point(latitude: rawValue[$0], longitude: rawValue[$0 + 1]) }
+      tailPoints = stride(from: rawValue.startIndex.advanced(by: 6),
+                          to: rawValue.endIndex, by: 2)
+      .map { Point(latitude: rawValue[$0], longitude: rawValue[$0 + 1]) }
     }
 
     self.init(.init(latitude: rawValue[0], longitude: rawValue[1]),
@@ -71,7 +73,9 @@ extension Polygon: Codable {
     let container = try decoder.singleValueContainer()
     let rawValue = try container.decode([Double].self)
     guard let value = Polygon(rawValue: rawValue) else {
-      throw DecodingError.dataCorruptedError(in: container, debugDescription: "Polygon may be constructed with at least 6 double values. \(rawValue.count) found")
+      let debugIntro = "Polygon may be constructed with at least 6 double values."
+      throw DecodingError.dataCorruptedError(in: container,
+                                             debugDescription: "\(debugIntro) \(rawValue.count) found")
     }
     self = value
   }
