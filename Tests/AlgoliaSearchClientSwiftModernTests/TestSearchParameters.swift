@@ -10,8 +10,6 @@ final class TestSearchParameters: XCTestCase {
       FacetQuery("facet query")
       AroundPrecision(100)
       AroundRadius(.all)
-      AroundRadius(.meters(1000))
-      AroundRadius(.custom("yo"))
     }
     print(query.urlEncodedString)
   }
