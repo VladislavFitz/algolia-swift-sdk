@@ -1,6 +1,6 @@
 import Foundation
 
-public struct TaskID: StringWrapper {
+public struct Cursor: StringWrapper {
   public let rawValue: String
 
   public init(rawValue: String) {

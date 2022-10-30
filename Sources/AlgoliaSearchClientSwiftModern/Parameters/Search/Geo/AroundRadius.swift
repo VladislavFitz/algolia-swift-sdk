@@ -111,3 +111,22 @@ extension SearchParameters {
     }
   }
 }
+
+extension AroundRadius: DeleteQueryParameter {}
+
+extension DeleteQueryParameters {
+  /**
+   Define the maximum radius for a geo search (in meters).
+   - This setting only works within the context of a radial (circular) geo search,
+     enabled by aroundLatLngViaIP or aroundLatLng.
+   - [Documentation](https://www.algolia.com/doc/api-reference/api-parameters/aroundRadius/?language=swift)
+   */
+  var aroundRadius: AroundRadius.Value? {
+    get {
+      (parameters[AroundRadius.key] as? AroundRadius)?.value
+    }
+    set {
+      parameters[AroundRadius.key] = newValue.flatMap(AroundRadius.init)
+    }
+  }
+}

@@ -1,10 +1,3 @@
-//
-//  IndexTask.swift
-//
-//
-//  Created by Vladislav Fitc on 27.08.2022.
-//
-
 import Foundation
 
 public protocol IndexTask {
@@ -13,6 +6,9 @@ public protocol IndexTask {
 
 extension IndexTask where Self: IndexContainer {
   func wait(timeout: TimeInterval = 600) async throws {
-    try await index!.waitTask(withID: taskID, timeout: timeout)
+    guard let index = index else {
+      throw WaitError.missingIndex
+    }
+    try await index.waitTask(withID: taskID, timeout: timeout)
   }
 }

@@ -1,10 +1,3 @@
-//
-//  ObjectCreation.swift
-//
-//
-//  Created by Vladislav Fitc on 27.08.2022.
-//
-
 import Foundation
 
 public struct ObjectCreation: IndexTask, Decodable {
@@ -21,13 +14,6 @@ public struct ObjectCreation: IndexTask, Decodable {
 
   enum CodingKeys: CodingKey {
     case createdAt, taskID, objectID
-  }
-
-  public init(from decoder: Decoder) throws {
-    let container = try decoder.container(keyedBy: CodingKeys.self)
-    createdAt = try container.decode(Date.self, forKey: .createdAt)
-    taskID = try container.decode(TaskID.self, forKey: .taskID)
-    objectID = try container.decode(ObjectID.self, forKey: .objectID)
   }
 }
 

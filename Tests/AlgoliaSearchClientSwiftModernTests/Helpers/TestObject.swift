@@ -8,26 +8,27 @@
 @testable import AlgoliaSearchClientSwiftModern
 import Foundation
 
-struct TestRecord: Codable, Equatable, CustomStringConvertible {
+struct TestRecord: Codable, Equatable, Hashable, CustomStringConvertible {
   var objectID: ObjectID?
   var string: String
   var numeric: Int
   var bool: Bool
   var tags: [String]?
 
-  init(objectID: String) {
-    self.init(objectID: .init(rawValue: objectID))
-  }
-
-  init(objectID: ObjectID? = nil) {
+  init(objectID: ObjectID? = nil,
+       string: String? = nil,
+       numeric: Int? = nil,
+       bool: Bool? = nil,
+       tags: [String]? = nil) {
     self.objectID = objectID
-    string = .random(length: .random(in: 1 ..< 100))
-    numeric = .random(in: 1 ..< 100)
-    bool = .random()
+    self.string = string ?? .random(length: .random(in: 1 ..< 100))
+    self.numeric = numeric ?? .random(in: 1 ..< 100)
+    self.bool = bool ?? .random()
+    self.tags = tags
   }
 
   static func withGeneratedObjectID() -> Self {
-    return Self(objectID: .random(length: 10))
+    return Self(objectID: ObjectID(rawValue: .random(length: 10)))
   }
 
   var description: String {

@@ -1,9 +1,3 @@
-//
-//  Transport.swift
-//
-//
-//  Created by Vladislav Fitc on 11.08.2022.
-//
 // swiftlint:disable function_body_length
 import Foundation
 import Logging

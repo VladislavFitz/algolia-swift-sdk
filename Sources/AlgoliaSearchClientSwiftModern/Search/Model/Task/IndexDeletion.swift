@@ -1,10 +1,3 @@
-//
-//  IndexDeletion.swift
-//
-//
-//  Created by Vladislav Fitc on 29.08.2022.
-//
-
 import Foundation
 
 public struct IndexDeletion: IndexTask, Decodable {
@@ -18,12 +11,6 @@ public struct IndexDeletion: IndexTask, Decodable {
 
   enum CodingKeys: CodingKey {
     case deletedAt, taskID
-  }
-
-  public init(from decoder: Decoder) throws {
-    let container = try decoder.container(keyedBy: CodingKeys.self)
-    deletedAt = try container.decode(Date.self, forKey: .deletedAt)
-    taskID = try container.decode(TaskID.self, forKey: .taskID)
   }
 }
 

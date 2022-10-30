@@ -30,6 +30,11 @@ public struct SearchResponse: Decodable {
    - Not returned if you use offset & length for pagination.
    */
   public var hitsPerPage: Int?
+
+  /**
+    Returned only by the EndpointSearch.browse method.
+   */
+  public var cursor: Cursor?
 }
 
 public extension SearchResponse {

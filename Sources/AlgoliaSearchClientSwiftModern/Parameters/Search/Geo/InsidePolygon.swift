@@ -40,3 +40,21 @@ extension SearchParameters {
     }
   }
 }
+
+extension InsidePolygon: DeleteQueryParameter {}
+
+extension DeleteQueryParameters {
+  /**
+   Search inside a polygon (in geo coordinates).
+   - Engine default: null
+   - [Documentation](https://www.algolia.com/doc/api-reference/api-parameters/insidePolygon/?language=swift)
+   */
+  var insidePolygon: Polygon? {
+    get {
+      (parameters[InsidePolygon.key] as? InsidePolygon)?.value
+    }
+    set {
+      parameters[InsidePolygon.key] = newValue.flatMap(InsidePolygon.init)
+    }
+  }
+}

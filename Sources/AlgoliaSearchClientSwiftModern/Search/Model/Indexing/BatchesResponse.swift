@@ -9,16 +9,17 @@ import Foundation
 
 public struct BatchesResponse {
   /// A list of TaskIndex to use with .waitAll.
-  public let tasks: [BatchResponse]
+  public let tasks: [IndexedTask]
 
   /// List of ObjectID affected by .multipleBatchObjects.
   public let objectIDs: [ObjectID?]
 }
 
 extension BatchesResponse {
-  init(indexName _: IndexName, responses: [BatchResponse]) {
+  init(indexName: IndexName, responses: [BatchResponse]) {
+    let tasks: [IndexedTask] = responses.map { .init(indexName: indexName, taskID: $0.taskID) }
     let objectIDs = responses.map(\.objectIDs).flatMap { $0 }
-    self.init(tasks: responses, objectIDs: objectIDs)
+    self.init(tasks: tasks, objectIDs: objectIDs)
   }
 }
 

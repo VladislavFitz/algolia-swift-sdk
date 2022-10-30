@@ -1,10 +1,3 @@
-//
-//  IndexedTask.swift
-//
-//
-//  Created by Vladislav Fitc on 02.09.2022.
-//
-
 import Foundation
 
 public struct IndexedTask: IndexTask {
@@ -13,4 +6,12 @@ public struct IndexedTask: IndexTask {
 
   /// The TaskID which can be used with the .waitTask method.
   public let taskID: TaskID
+
+  internal var index: Index?
+
+  enum CodingKeys: CodingKey {
+    case indexName, taskID
+  }
 }
+
+extension IndexedTask: IndexContainer {}

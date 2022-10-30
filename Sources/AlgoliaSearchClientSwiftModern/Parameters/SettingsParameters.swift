@@ -19,7 +19,7 @@ public struct SettingsParameters {
   }
 
   public init(@SettingsParametersBuilder _ content: () -> [SettingsParameter]) {
-    self = SettingsParameters(content())
+    self = Self(content())
   }
 }
 

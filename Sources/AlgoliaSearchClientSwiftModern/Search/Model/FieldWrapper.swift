@@ -44,4 +44,4 @@ typealias EventsWrapper<Wrapped: Codable> = FieldWrapper<EventsKey, Wrapped>
 // typealias EditsWrapper = FieldWrapper<EditsKey, [Rule.Edit]>
 typealias ObjectIDWrapper = FieldWrapper<ObjectIDKey, ObjectID>
 typealias ClusterWrapper<Wrapped: Codable> = FieldWrapper<ClusterKey, Wrapped>
-// typealias CursorWrapper = FieldWrapper<CursorKey, Cursor>
+typealias CursorWrapper = FieldWrapper<CursorKey, Cursor>

@@ -44,3 +44,21 @@ extension SearchParameters {
     }
   }
 }
+
+extension AroundLatLng: DeleteQueryParameter {}
+
+extension DeleteQueryParameters {
+  /**
+   Search for entries around a central geolocation, enabling a geo search within a circular area.
+   - Engine default: null
+   - [Documentation](https://www.algolia.com/doc/api-reference/api-parameters/aroundLatLng/?language=swift)
+   */
+  var aroundLatLng: Point? {
+    get {
+      (parameters[AroundLatLng.key] as? AroundLatLng)?.value
+    }
+    set {
+      parameters[AroundLatLng.key] = newValue.flatMap(AroundLatLng.init)
+    }
+  }
+}
