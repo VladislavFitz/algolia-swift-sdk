@@ -57,7 +57,7 @@ public extension Index {
                                 batchSize: Int? = .none) async throws -> BatchesResponse {
     let batchSize = batchSize ?? self.batchSize
     func singleBatch(operations: [BatchOperation]) async throws -> BatchResponse {
-      let body = try client.jsonEncoder.encode(RequestsWrapper(operations))
+      let body = try client.jsonEncoder.encode(FieldWrapper.requests(operations))
       let responseData = try await client.transport.perform(method: .post,
                                                             path: "/1/indexes/\(indexName.rawValue)/batch",
                                                             headers: [:],
@@ -156,7 +156,7 @@ public extension Index {
       .map { ObjectRequest(indexName: indexName,
                            objectID: $0,
                            attributesToRetrieve: attributesToRetreive) }
-    let requests = RequestsWrapper(objectRequests)
+    let requests = FieldWrapper.requests(objectRequests)
     let body = try client.jsonEncoder.encode(requests)
     let responseData = try await client.transport.perform(method: .post,
                                                           path: "/1/indexes/*/objects",
@@ -223,7 +223,7 @@ public extension Index {
    - Returns: RevisionIndex object
    */
   @discardableResult func deleteObjects(byQuery query: DeleteQueryParameters) async throws -> IndexRevision {
-    let body = try client.jsonEncoder.encode(ParamsWrapper(query.urlEncodedString))
+    let body = try client.jsonEncoder.encode(FieldWrapper.params(query.urlEncodedString))
     let responseData = try await client.transport.perform(method: .post,
                                                           path: "/1/indexes/\(indexName.rawValue)/deleteByQuery",
                                                           headers: [:],

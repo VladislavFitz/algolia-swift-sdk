@@ -1,47 +1,30 @@
-//
-//  FieldWrapper.swift
-//
-//
-//  Created by Vladislav Fitc on 02.09.2022.
-//
-
 import Foundation
 
-struct FieldWrapper<K: Key, Wrapped: Codable>: Codable {
+internal struct FieldWrapper<Wrapped: Encodable>: Encodable {
+  
+  let key: String
   let wrapped: Wrapped
 
-  init(_ wrapped: Wrapped) {
+  init(key: String, _ wrapped: Wrapped) {
+    self.key = key
     self.wrapped = wrapped
-  }
-
-  public init(from decoder: Decoder) throws {
-    let container = try decoder.container(keyedBy: DynamicKey.self)
-    wrapped = try container.decode(Wrapped.self, forKey: DynamicKey(stringValue: K.value))
   }
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: DynamicKey.self)
-    try container.encode(wrapped, forKey: DynamicKey(stringValue: K.value))
+    try container.encode(wrapped, forKey: DynamicKey(stringValue: key))
   }
+  
+  static func make(_ key: String) -> (Wrapped) -> Self {
+    { wrapped in FieldWrapper(key: key, wrapped) }
+  }
+  
+  static func params(_ wrapped: Wrapped) -> Self { make("params")(wrapped) }
+  static func requests(_ wrapped: Wrapped) -> Self { make("requests")(wrapped) }
+  static func events(_ wrapped: Wrapped) -> Self { make("events")(wrapped) }
+  static func edits(_ wrapped: Wrapped) -> Self { make("edits")(wrapped) }
+  static func remove(_ wrapped: Wrapped) -> Self { make("remove")(wrapped) }
+  static func cluster(_ wrapped: Wrapped) -> Self { make("cluster")(wrapped) }
+  static func cursor(_ wrapped: Wrapped) -> Self { make("cursor")(wrapped) }
+  
 }
-
-protocol Key {
-  static var value: String { get }
-}
-
-struct ParamsKey: Key { static let value = "params" }
-struct RequestsKey: Key { static let value = "requests" }
-struct EventsKey: Key { static let value = "events" }
-struct EditsKey: Key { static let value = "edits" }
-struct ObjectIDKey: Key { static let value = "objectID" }
-struct RemoveKey: Key { static let value = "remove" }
-struct ClusterKey: Key { static let value = "cluster" }
-struct CursorKey: Key { static let value = "cursor" }
-
-typealias ParamsWrapper<Wrapped: Codable> = FieldWrapper<ParamsKey, Wrapped>
-typealias RequestsWrapper<Wrapped: Codable> = FieldWrapper<RequestsKey, Wrapped>
-typealias EventsWrapper<Wrapped: Codable> = FieldWrapper<EventsKey, Wrapped>
-// typealias EditsWrapper = FieldWrapper<EditsKey, [Rule.Edit]>
-typealias ObjectIDWrapper = FieldWrapper<ObjectIDKey, ObjectID>
-typealias ClusterWrapper<Wrapped: Codable> = FieldWrapper<ClusterKey, Wrapped>
-typealias CursorWrapper = FieldWrapper<CursorKey, Cursor>

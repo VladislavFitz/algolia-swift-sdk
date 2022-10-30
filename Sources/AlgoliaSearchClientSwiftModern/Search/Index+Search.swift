@@ -89,7 +89,7 @@ public extension Index {
    - Returns: SearchResponse object
    */
   func browse(cursor: Cursor) async throws -> SearchResponse {
-    let body = try client.jsonEncoder.encode(CursorWrapper(cursor))
+    let body = try client.jsonEncoder.encode(FieldWrapper.cursor(cursor))
     let responseData = try await client.transport.perform(method: .post,
                                                           path: "/1/indexes/\(indexName.rawValue)/browse",
                                                           headers: [:],

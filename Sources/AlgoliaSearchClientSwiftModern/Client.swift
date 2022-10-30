@@ -1,4 +1,3 @@
-import Combine
 import Foundation
 
 /// Algolia search client
