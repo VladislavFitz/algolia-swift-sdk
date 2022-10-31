@@ -1,10 +1,3 @@
-//
-//  HighlightResult.swift
-//
-//
-//  Created by Vladislav Fitc on 14.08.2022.
-//
-
 import Foundation
 
 /// Highlight result for an attribute of a hit.

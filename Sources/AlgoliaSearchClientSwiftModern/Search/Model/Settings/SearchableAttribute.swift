@@ -1,10 +1,3 @@
-//
-//  SearchableAttribute.swift
-//
-//
-//  Created by Vladislav Fitc on 09.10.2022.
-//
-
 import Foundation
 
 public enum SearchableAttribute: Codable, Equatable {

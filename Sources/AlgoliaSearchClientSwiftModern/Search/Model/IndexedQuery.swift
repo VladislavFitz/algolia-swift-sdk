@@ -1,10 +1,3 @@
-//
-//  IndexedQuery.swift
-//
-//
-//  Created by Vladislav Fitc on 29.08.2022.
-//
-
 import Foundation
 
 /// The composition of search parameters with an associated index name

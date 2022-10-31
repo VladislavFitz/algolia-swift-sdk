@@ -1,10 +1,3 @@
-//
-//  RankingInfo.swift
-//
-//
-//  Created by Vladislav Fitc on 14.08.2022.
-//
-
 import Foundation
 
 /// Ranking info for a hit.

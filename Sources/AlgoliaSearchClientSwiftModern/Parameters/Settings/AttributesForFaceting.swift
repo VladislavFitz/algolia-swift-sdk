@@ -1,10 +1,3 @@
-//
-//  AttributesForFaceting.swift
-//
-//
-//  Created by Vladislav Fitc on 09.10.2022.
-//
-
 import Foundation
 /// The complete list of attributes that will be used for faceting.
 struct AttributesForFaceting: SettingsParameter {

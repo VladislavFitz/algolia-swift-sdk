@@ -1,10 +1,3 @@
-//
-//  RequestTypeSupport.swift
-//
-//
-//  Created by Vladislav Fitc on 11.08.2022.
-//
-
 import Foundation
 
 struct RequestTypeSupport: OptionSet {

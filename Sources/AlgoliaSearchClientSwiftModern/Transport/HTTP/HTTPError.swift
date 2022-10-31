@@ -1,10 +1,3 @@
-//
-//  HTTPError.swift
-//
-//
-//  Created by Vladislav Fitc on 09.08.2022.
-//
-
 import Foundation
 
 public struct HTTPError: Error, LocalizedError, CustomStringConvertible {

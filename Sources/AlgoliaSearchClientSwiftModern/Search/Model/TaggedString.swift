@@ -1,11 +1,5 @@
-//
-//  TaggedString.swift
-//
-//
-//  Created by Vladislav Fitc on 14.08.2022.
-//
-
 import Foundation
+
 /// Structure embedding the calculation of tagged substring in the input string
 public struct TaggedString {
   /// Input string

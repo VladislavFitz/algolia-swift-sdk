@@ -1,10 +1,3 @@
-//
-//  SearchResponse.swift
-//
-//
-//  Created by Vladislav Fitc on 08.08.2022.
-//
-
 import Foundation
 
 public struct SearchResponse: Decodable {

@@ -1,10 +1,3 @@
-//
-//  MultiSearchResponse.swift
-//
-//
-//  Created by Vladislav Fitc on 29.08.2022.
-//
-
 import Foundation
 
 /// Wraps the list of multi search results (either FacetSearchResponse or SearchResponse)

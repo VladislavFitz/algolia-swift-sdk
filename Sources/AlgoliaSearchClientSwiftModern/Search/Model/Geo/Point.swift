@@ -1,16 +1,8 @@
-//
-//  Point.swift
-//
-//
-//  Created by Vladislav Fitc on 14.08.2022.
-//
-
 import Foundation
 
 /**
  A set of geo-coordinates latitude and longitude.
  */
-
 public struct Point: Equatable {
   public let latitude: Double
   public let longitude: Double

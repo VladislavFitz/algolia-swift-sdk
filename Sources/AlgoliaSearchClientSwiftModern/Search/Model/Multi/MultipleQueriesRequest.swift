@@ -1,10 +1,3 @@
-//
-//  MultipleQueriesRequest.swift
-//
-//
-//  Created by Vladislav Fitc on 29.08.2022.
-//
-
 import Foundation
 
 struct MultipleQueriesRequest {

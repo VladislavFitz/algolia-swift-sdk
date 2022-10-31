@@ -1,10 +1,3 @@
-//
-//  Polygon.swift
-//
-//
-//  Created by Vladislav Fitc on 23.10.2022.
-//
-
 import Foundation
 
 public struct Polygon: Equatable {

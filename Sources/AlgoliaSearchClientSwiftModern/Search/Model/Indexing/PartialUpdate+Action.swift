@@ -1,10 +1,3 @@
-//
-//  PartialUpdate+Action.swift
-//
-//
-//  Created by Vladislav Fitc on 02.09.2022.
-//
-
 import Foundation
 
 public extension PartialUpdate {

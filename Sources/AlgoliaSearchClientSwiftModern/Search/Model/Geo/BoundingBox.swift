@@ -1,10 +1,3 @@
-//
-//  BoundingBox.swift
-//
-//
-//  Created by Vladislav Fitc on 23.10.2022.
-//
-
 import Foundation
 /**
  Search inside a rectangular area (in geo coordinates).

@@ -1,10 +1,3 @@
-//
-//  Array+Convenience.swift
-//
-//
-//  Created by Vladislav Fitc on 03.09.2022.
-//
-
 import Foundation
 
 extension Array {

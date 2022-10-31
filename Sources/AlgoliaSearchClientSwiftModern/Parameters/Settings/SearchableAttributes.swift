@@ -1,4 +1,5 @@
 import Foundation
+
 /// The complete list of attributes that will be used for searching.
 public struct SearchableAttributes: SettingsParameter {
   public static let key = "searchableAttributes"

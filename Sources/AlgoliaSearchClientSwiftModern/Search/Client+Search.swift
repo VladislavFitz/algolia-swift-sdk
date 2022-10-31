@@ -1,10 +1,3 @@
-//
-//  Client+Search.swift
-//
-//
-//  Created by Vladislav Fitc on 09.08.2022.
-//
-
 import Foundation
 
 public extension Client {

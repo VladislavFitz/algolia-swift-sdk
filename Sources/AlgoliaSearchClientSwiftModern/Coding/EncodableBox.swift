@@ -1,10 +1,3 @@
-//
-//  EncodableBox.swift
-//
-//
-//  Created by Vladislav Fitc on 08.08.2022.
-//
-
 import Foundation
 
 /// Concrete type box for an arbitrary encodable value

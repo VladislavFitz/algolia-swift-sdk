@@ -1,10 +1,3 @@
-//
-//  CustomCodingKey.swift
-//
-//
-//  Created by Vladislav Fitc on 08.08.2022.
-//
-
 import Foundation
 
 /// Coding key encapsulating an arbitrary string

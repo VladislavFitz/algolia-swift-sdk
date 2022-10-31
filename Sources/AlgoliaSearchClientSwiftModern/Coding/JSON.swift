@@ -1,10 +1,3 @@
-//
-//  JSON.swift
-//
-//
-//  Created by Vladislav Fitc on 14.08.2022.
-//
-
 import Foundation
 /// Strongly-typed recursuve JSON representation
 

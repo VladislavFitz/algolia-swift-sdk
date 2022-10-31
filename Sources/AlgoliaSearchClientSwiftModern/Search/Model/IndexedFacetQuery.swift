@@ -1,10 +1,3 @@
-//
-//  IndexedFacetQuery.swift
-//
-//
-//  Created by Vladislav Fitc on 29.08.2022.
-//
-
 import Foundation
 
 /// The composition of search for facet values parameters with an associated index name
