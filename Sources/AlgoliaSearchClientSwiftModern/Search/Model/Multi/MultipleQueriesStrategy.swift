@@ -1,7 +1,7 @@
 import Foundation
 
 /// Strategy to apply to a multi-index search
-public struct MultipleQueriesStrategy: RawRepresentable, Codable {
+public struct MultipleQueriesStrategy: RawRepresentable, Encodable {
   public var rawValue: String
 
   public init(rawValue: String) {

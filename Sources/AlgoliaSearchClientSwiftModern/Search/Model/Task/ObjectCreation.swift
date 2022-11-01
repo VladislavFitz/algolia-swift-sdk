@@ -1,6 +1,6 @@
 import Foundation
 
-public struct ObjectCreation: IndexTask, Decodable {
+public struct ObjectCreation: Decodable, IndexTask, IndexContainer {
   /// The date at which the record has been created.
   public let createdAt: Date
 
@@ -16,5 +16,3 @@ public struct ObjectCreation: IndexTask, Decodable {
     case createdAt, taskID, objectID
   }
 }
-
-extension ObjectCreation: IndexContainer {}

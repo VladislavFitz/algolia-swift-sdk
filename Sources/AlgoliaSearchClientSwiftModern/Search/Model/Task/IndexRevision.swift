@@ -1,6 +1,6 @@
 import Foundation
 
-public struct IndexRevision: IndexTask, Codable {
+public struct IndexRevision: Decodable, IndexTask, IndexContainer {
   /// Date at which the Task to update the Index has been created.
   public let updatedAt: Date
 
@@ -13,5 +13,3 @@ public struct IndexRevision: IndexTask, Codable {
     case updatedAt, taskID
   }
 }
-
-extension IndexRevision: IndexContainer {}

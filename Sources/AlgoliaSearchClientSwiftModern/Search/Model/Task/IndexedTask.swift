@@ -1,6 +1,6 @@
 import Foundation
 
-public struct IndexedTask: IndexTask {
+public struct IndexedTask: IndexTask, IndexContainer {
   /// The name of the index this task is running on.
   public let indexName: IndexName
 
@@ -13,5 +13,3 @@ public struct IndexedTask: IndexTask {
     case indexName, taskID
   }
 }
-
-extension IndexedTask: IndexContainer {}

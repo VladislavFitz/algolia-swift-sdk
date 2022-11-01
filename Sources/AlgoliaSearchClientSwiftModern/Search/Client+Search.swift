@@ -12,7 +12,7 @@ public extension Client {
 
    - Parameter queries: The list of either IndexedQuery or IndexedFacetQuery.
    - Parameter strategy: The MultipleQueriesStrategy to apply (default .none).
-   - Returns: The list of either SearchResponse or FacetSearchResponse
+   - Returns: The list of either SearchResponse or FacetSearchResponse structures
    */
   func search(queries: [Either<IndexedQuery, IndexedFacetQuery>],
               strategy: MultipleQueriesStrategy = .none) async throws -> [Either<SearchResponse, FacetSearchResponse>] {

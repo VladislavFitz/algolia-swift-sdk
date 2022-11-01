@@ -2,45 +2,6 @@ import Foundation
 
 public extension Index {
   /**
-   Clear the records of an index without affecting its settings.
-
-   - Returns: RevisionIndex object
-   */
-  @discardableResult func clearObjects() async throws -> IndexRevision {
-    let responseData = try await client.transport.perform(method: .post,
-                                                          path: "/1/indexes/\(indexName.rawValue)/clear",
-                                                          headers: [:],
-                                                          body: nil,
-                                                          requestType: .write)
-    var indexRevision = try client.jsonDecoder.decode(IndexRevision.self, from: responseData)
-    indexRevision.index = self
-    return indexRevision
-  }
-
-  /**
-   Push a new set of objects and remove all previous ones. Settings, synonyms and query rules are untouched.
-   Replace all objects in an index without any downtime.
-   Internally, this method copies the existing index settings, synonyms and query rules and indexes all
-   passed objects. Finally, the existing index is replaced by the temporary one.
-
-   - Returns: [IndexedTask]  object
-   */
-  @discardableResult func replaceAllObjects<T: Encodable>(with objects: [T],
-                                                          autoGeneratingObjectID: Bool = false)
-    async throws -> [IndexedTask] {
-    let moveOperations: [BatchOperation] = objects.map { .add($0, autoGeneratingObjectID: autoGeneratingObjectID) }
-    let destinationIndexName = IndexName(rawValue: "\(indexName)_tmp_\(Int.random(in: 0 ... 100_000))")
-    let destinationIndex = Index(indexName: destinationIndexName, client: client)
-    let moveTasks = try await destinationIndex.batch(moveOperations).tasks
-    let copyTaskID = try await copy([.settings, .rules, .synonyms], to: destinationIndexName).taskID
-    let moveTaskID = try await destinationIndex.move(to: indexName).taskID
-    return [
-      IndexedTask(indexName: indexName, taskID: copyTaskID),
-      IndexedTask(indexName: destinationIndexName, taskID: moveTaskID)
-    ] + moveTasks
-  }
-
-  /**
    Perform several indexing operations in one API call.
    - Parameter batchOperations: List of BatchOperation
    - Parameter batchSize: Size of chunk
@@ -281,5 +242,44 @@ public extension Index {
     try await batch(updates.map { .partialUpdate(objectID: $0.objectID,
                                                  $0.update,
                                                  createIfNotExists: createIfNotExists) })
+  }
+
+  /**
+   Clear the records of an index without affecting its settings.
+
+   - Returns: RevisionIndex object
+   */
+  @discardableResult func clearObjects() async throws -> IndexRevision {
+    let responseData = try await client.transport.perform(method: .post,
+                                                          path: "/1/indexes/\(indexName.rawValue)/clear",
+                                                          headers: [:],
+                                                          body: nil,
+                                                          requestType: .write)
+    var indexRevision = try client.jsonDecoder.decode(IndexRevision.self, from: responseData)
+    indexRevision.index = self
+    return indexRevision
+  }
+
+  /**
+   Push a new set of objects and remove all previous ones. Settings, synonyms and query rules are untouched.
+   Replace all objects in an index without any downtime.
+   Internally, this method copies the existing index settings, synonyms and query rules and indexes all
+   passed objects. Finally, the existing index is replaced by the temporary one.
+
+   - Returns: [IndexedTask]  object
+   */
+  @discardableResult func replaceAllObjects<T: Encodable>(with objects: [T],
+                                                          autoGeneratingObjectID: Bool = false)
+    async throws -> [IndexedTask] {
+    let moveOperations: [BatchOperation] = objects.map { .add($0, autoGeneratingObjectID: autoGeneratingObjectID) }
+    let destinationIndexName = IndexName(rawValue: "\(indexName)_tmp_\(Int.random(in: 0 ... 100_000))")
+    let destinationIndex = Index(indexName: destinationIndexName, client: client)
+    let moveTasks = try await destinationIndex.batch(moveOperations).tasks
+    let copyTaskID = try await copy([.settings, .rules, .synonyms], to: destinationIndexName).taskID
+    let moveTaskID = try await destinationIndex.move(to: indexName).taskID
+    return [
+      IndexedTask(indexName: indexName, taskID: copyTaskID),
+      IndexedTask(indexName: destinationIndexName, taskID: moveTaskID)
+    ] + moveTasks
   }
 }

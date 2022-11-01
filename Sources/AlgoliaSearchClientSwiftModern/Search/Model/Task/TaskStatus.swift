@@ -1,5 +1,6 @@
 import Foundation
 
+/// Thw status of the server task
 public struct TaskStatus: RawRepresentable, Decodable {
   public let rawValue: String
 

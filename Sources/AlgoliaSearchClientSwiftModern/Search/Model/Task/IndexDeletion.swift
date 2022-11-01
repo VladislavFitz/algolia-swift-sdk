@@ -1,6 +1,6 @@
 import Foundation
 
-public struct IndexDeletion: IndexTask, Decodable {
+public struct IndexDeletion: Decodable, IndexTask, IndexContainer {
   /// Date at which the Task to delete the Index has been created.
   public let deletedAt: Date
 
@@ -13,5 +13,3 @@ public struct IndexDeletion: IndexTask, Decodable {
     case deletedAt, taskID
   }
 }
-
-extension IndexDeletion: IndexContainer {}

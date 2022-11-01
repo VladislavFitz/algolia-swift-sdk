@@ -1,6 +1,6 @@
 import Foundation
 
-public struct ObjectRevision: IndexTask, Codable {
+public struct ObjectRevision: Decodable, IndexTask, IndexContainer {
   /// The date at which the record has been revised.
   public let updatedAt: Date
 
@@ -16,5 +16,3 @@ public struct ObjectRevision: IndexTask, Codable {
     case updatedAt, taskID, objectID
   }
 }
-
-extension ObjectRevision: IndexContainer {}

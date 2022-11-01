@@ -1,6 +1,6 @@
 import Foundation
 
-public struct ObjectDeletion: IndexTask, Codable {
+public struct ObjectDeletion: Decodable, IndexTask, IndexContainer {
   /// The date at which the record has been deleted.
   public let deletedAt: Date
 
@@ -16,5 +16,3 @@ public struct ObjectDeletion: IndexTask, Codable {
     case deletedAt, taskID, objectID
   }
 }
-
-extension ObjectDeletion: IndexContainer {}

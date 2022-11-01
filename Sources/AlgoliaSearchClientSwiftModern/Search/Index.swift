@@ -14,21 +14,6 @@ public class Index {
 
 public extension Index {
   /**
-   Delete the index and all its settings, including links to its replicas.
-   - Returns: Index deletion task
-   */
-  func delete() async throws -> IndexDeletion {
-    let responseData = try await client.transport.perform(method: .delete,
-                                                          path: "/1/indexes/\(indexName.rawValue)",
-                                                          headers: [:],
-                                                          body: nil,
-                                                          requestType: .write)
-    var indexDeletion = try client.jsonDecoder.decode(IndexDeletion.self, from: responseData)
-    indexDeletion.index = self
-    return indexDeletion
-  }
-
-  /**
    Return whether an index exists or not
 
    - Returns: Bool value indicating if the index exists
@@ -42,6 +27,21 @@ public extension Index {
     } catch {
       throw error
     }
+  }
+
+  /**
+   Delete the index and all its settings, including links to its replicas.
+   - Returns: Index deletion task
+   */
+  func delete() async throws -> IndexDeletion {
+    let responseData = try await client.transport.perform(method: .delete,
+                                                          path: "/1/indexes/\(indexName.rawValue)",
+                                                          headers: [:],
+                                                          body: nil,
+                                                          requestType: .write)
+    var indexDeletion = try client.jsonDecoder.decode(IndexDeletion.self, from: responseData)
+    indexDeletion.index = self
+    return indexDeletion
   }
 
   /**
