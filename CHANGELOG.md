@@ -1,6 +1,6 @@
 # ChangeLog
 
-## [0.1.0](github.com/VladislavFitz/algoliasearch-client-swift-modern/tree/0.1.0) (2022-11-14)
+## [0.1.0](https://github.com/VladislavFitz/algoliasearch-client-swift-modern/tree/0.1.0) (2022-11-14)
 
 ## Implemented methods
 
