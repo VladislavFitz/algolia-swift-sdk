@@ -10,7 +10,9 @@ public struct BatchesResponse {
 
 extension BatchesResponse {
   init(indexName: IndexName, responses: [BatchResponse]) {
-    let tasks: [IndexedTask] = responses.map { .init(indexName: indexName, taskID: $0.taskID) }
+    let tasks: [IndexedTask] = responses.map { .init(indexName: indexName,
+                                                     taskID: $0.taskID,
+                                                     index: $0.index) }
     let objectIDs = responses.map(\.objectIDs).flatMap { $0 }
     self.init(tasks: tasks, objectIDs: objectIDs)
   }
