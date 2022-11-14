@@ -139,12 +139,12 @@ try await index.setSettings(settingsParameters)
 ### Index + Objects
 
 - Batch objects operations
-- Save object/objects
-- Get object/objects
-- Replace object/objects
+- Save object(s)
+- Get object(s)
+- Replace object(s)
 - Replace all objects
-- Delete object/objects
-- Partial update object/objects
+- Delete object(s)
+- Partial update object(s)
 - Clear objects
 
 ### Index + Search
