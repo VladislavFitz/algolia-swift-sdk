@@ -21,11 +21,13 @@ public extension Index {
 
    - Parameter parameters: settings parameters to apply.
    - Parameter resetToDefault: Reset a settings to its default value.
+     Default: []
    - Parameter forwardToReplicas: Whether to forward the same settings to the replica indices.
+     Default: false
    */
   func setSettings(_ parameters: SettingsParameters,
-                   resetToDefault _: [String],
-                   forwardToReplicas _: Bool) async throws {
+                   resetToDefault _: [String] = [],
+                   forwardToReplicas _: Bool = false) async throws {
     let body = try client.jsonEncoder.encode(parameters)
     try await client.transport.perform(method: .put,
                                        path: "/1/indexes/\(indexName.rawValue)/settings",
