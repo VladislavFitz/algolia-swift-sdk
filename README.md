@@ -101,7 +101,7 @@ var settingsParameters = SettingsParameters {
   CustomRanking([.desc("followers")])
 }
     
-/** Creation of settings parameters without result builder is supported
+/** SettingsParameters can also be created as a classic structure
 var settingsParameters = SettingsParameters()
 settingsParameters.customRanking = [.desc("followers")]
 */
