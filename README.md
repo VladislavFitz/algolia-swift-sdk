@@ -3,7 +3,7 @@
 Unofficial Algolia Swift API client using the latest Swift features to provide the best developer experience.
 
 - Pure Swift client
-- Implements Algolia retry strategy
+- Implements Algolia retry strategy and common API client test suite
 - All the methods are async
 - Convenient `wait()` methods for asynchronous backend tasks
 - Uses the result builder for search and settings parameters
