@@ -4,28 +4,19 @@ import Foundation
  - Engine default: []
  - [Documentation](https://www.algolia.com/doc/api-reference/api-parameters/tagFilters/?language=swift)
  */
-struct TagFilters {
+public struct TagFilters: ValueRepresentable {
   static let key = "tagFilters"
   public var key: String { Self.key }
-  let value: FiltersStorage
+  public let value: FiltersStorage
 
-  init(_ value: FiltersStorage) {
+  public init(_ value: FiltersStorage) {
     self.value = value
   }
-
-  func encode(to encoder: Encoder) throws {
-    var container = encoder.singleValueContainer()
-    try container.encode(value)
-  }
 }
 
-extension TagFilters: SearchParameter {
-  var urlEncodedString: String {
-    return "\(value)"
-  }
-}
+extension TagFilters: SearchParameter {}
 
-extension SearchParameters {
+public extension SearchParameters {
   /**
    Filter hits by tags.
    - Engine default: []
@@ -43,7 +34,7 @@ extension SearchParameters {
 
 extension TagFilters: DeleteQueryParameter {}
 
-extension DeleteQueryParameters {
+public extension DeleteQueryParameters {
   /**
    Filter hits by tags.
    - Engine default: []

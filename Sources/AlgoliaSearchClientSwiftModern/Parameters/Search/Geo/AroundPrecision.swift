@@ -4,45 +4,31 @@ import Foundation
  - Engine default: 1
  - [Documentation](https://www.algolia.com/doc/api-reference/api-parameters/aroundPrecision/?language=swift)
  */
-struct AroundPrecision {
+public struct AroundPrecision: ValueRepresentable {
   static let key = "aroundPrecision"
   public var key: String { Self.key }
-  let value: Either<Int, [AroundPrecisionFromDistance]>
+  public let value: Either<Int, [AroundPrecisionFromDistance]>
 
-  init(_ value: Either<Int, [AroundPrecisionFromDistance]>) {
+  public init(_ value: Either<Int, [AroundPrecisionFromDistance]>) {
     self.value = value
   }
 
-  init(_ intValue: Int) {
+  public init(_ intValue: Int) {
     self.init(.first(intValue))
   }
 
-  init(_ precisions: AroundPrecisionFromDistance...) {
+  public init(_ precisions: AroundPrecisionFromDistance...) {
     self.init(.second(precisions))
   }
 
-  init(_ precisions: [AroundPrecisionFromDistance]) {
+  public init(_ precisions: [AroundPrecisionFromDistance]) {
     self.init(.second(precisions))
   }
-
-  func encode(to encoder: Encoder) throws {
-    var container = encoder.singleValueContainer()
-    try container.encode(value)
-  }
 }
 
-extension AroundPrecision: SearchParameter {
-  var urlEncodedString: String {
-    switch value {
-    case let .first(intValue):
-      return "\(intValue)"
-    case let .second(listValue):
-      return "\(listValue.map(\.urlEncodedString))"
-    }
-  }
-}
+extension AroundPrecision: SearchParameter {}
 
-extension SearchParameters {
+public extension SearchParameters {
   /**
    Precision of geo search (in meters), to add grouping by geo location to the ranking formula.
    - Engine default: 1
@@ -60,7 +46,7 @@ extension SearchParameters {
 
 extension AroundPrecision: DeleteQueryParameter {}
 
-extension DeleteQueryParameters {
+public extension DeleteQueryParameters {
   /**
    Precision of geo search (in meters), to add grouping by geo location to the ranking formula.
    - Engine default: 1

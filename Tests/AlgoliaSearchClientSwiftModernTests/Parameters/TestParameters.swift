@@ -59,6 +59,7 @@ final class TestParameters: XCTestCase {
 
     parameters.aroundPrecision = .first(400)
     try assertEncode(parameters, expected: ["aroundPrecision": 400])
+    XCTAssertEqual(parameters.urlEncodedString, "aroundPrecision=400")
   }
 
   func testAroundRadius() throws {
@@ -101,6 +102,8 @@ final class TestParameters: XCTestCase {
       [10, 20, 30, 40],
       [50, 60, 70, 80]
     ]])
+    XCTAssertEqual(parameters.urlEncodedString,
+                   "insideBoundingBox=%5B%5B10.0,20.0,30.0,40.0%5D,%5B50.0,60.0,70.0,80.0%5D%5D")
     parameters.insideBoundingBox = [
       BoundingBox(point1: Point(latitude: 20,
                                 longitude: 30),
@@ -115,6 +118,8 @@ final class TestParameters: XCTestCase {
       [20, 30, 40, 50],
       [60, 70, 80, 90]
     ]])
+    XCTAssertEqual(parameters.urlEncodedString,
+                   "insideBoundingBox=%5B%5B20.0,30.0,40.0,50.0%5D,%5B60.0,70.0,80.0,90.0%5D%5D")
   }
 
   func testInsidePolygon() throws {

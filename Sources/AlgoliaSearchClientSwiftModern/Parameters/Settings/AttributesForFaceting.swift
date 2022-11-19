@@ -1,21 +1,16 @@
 import Foundation
 /// The complete list of attributes that will be used for faceting.
-struct AttributesForFaceting: SettingsParameter {
+public struct AttributesForFaceting: ValueRepresentable, SettingsParameter {
   static let key = "attributesForFaceting"
-  var key: String { Self.key }
-  let value: [AttributeForFaceting]
+  public var key: String { Self.key }
+  public let value: [AttributeForFaceting]
 
-  init(_ value: [AttributeForFaceting]) {
+  public init(_ value: [AttributeForFaceting]) {
     self.value = value
-  }
-
-  func encode(to encoder: Encoder) throws {
-    var container = encoder.singleValueContainer()
-    try container.encode(value)
   }
 }
 
-extension SettingsParameters {
+public extension SettingsParameters {
   /// The complete list of attributes that will be used for faceting.
   var attributesForFaceting: [AttributeForFaceting]? {
     get {

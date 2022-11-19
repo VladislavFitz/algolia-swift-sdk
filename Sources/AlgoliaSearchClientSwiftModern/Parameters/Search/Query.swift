@@ -4,28 +4,19 @@ import Foundation
  - Engine default: ""
  - [Documentation](https://www.algolia.com/doc/api-reference/api-parameters/query/?language=swift)
  */
-public struct Query {
+public struct Query: ValueRepresentable {
   static let key = "query"
   public var key: String { Self.key }
   public let value: String
 
-  init(_ value: String) {
+  public init(_ value: String) {
     self.value = value
   }
-
-  public func encode(to encoder: Encoder) throws {
-    var container = encoder.singleValueContainer()
-    try container.encode(value)
-  }
 }
 
-extension Query: SearchParameter {
-  public var urlEncodedString: String {
-    return value
-  }
-}
+extension Query: SearchParameter {}
 
-extension SearchParameters {
+public extension SearchParameters {
   /**
     The text to search in the index.
     - Engine default: ""

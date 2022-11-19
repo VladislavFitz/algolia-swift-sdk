@@ -5,7 +5,7 @@ import Foundation
    enabled by aroundLatLngViaIP or aroundLatLng.
  - [Documentation](https://www.algolia.com/doc/api-reference/api-parameters/aroundRadius/?language=swift)
  */
-public struct AroundRadius {
+public struct AroundRadius: ValueRepresentable {
   static let key = "aroundRadius"
   public let key: String
   public let value: Value
@@ -13,18 +13,6 @@ public struct AroundRadius {
   public init(_ value: Value) {
     key = AroundRadius.key
     self.value = value
-  }
-
-  public func encode(to encoder: Encoder) throws {
-    var container = encoder.singleValueContainer()
-    switch value {
-    case .all:
-      try container.encode("all")
-    case let .meters(meters):
-      try container.encode(meters)
-    case let .custom(value):
-      try container.encode(value)
-    }
   }
 }
 
@@ -61,6 +49,17 @@ extension AroundRadius.Value: RawRepresentable {
     }
   }
 
+  public var urlEncodedString: String {
+    switch self {
+    case let .meters(meters):
+      return "\(meters)"
+    case .all:
+      return "all"
+    case let .custom(value):
+      return value
+    }
+  }
+
   public init(rawValue: Either<String, Int>) {
     switch rawValue {
     case let .first(stringValue):
@@ -77,25 +76,22 @@ extension AroundRadius.Value: RawRepresentable {
     }
   }
 
-  public var urlEncodedString: String {
+  public func encode(to encoder: Encoder) throws {
+    var container = encoder.singleValueContainer()
     switch self {
-    case let .meters(meters):
-      return "\(meters)"
     case .all:
-      return "all"
+      try container.encode("all")
+    case let .meters(meters):
+      try container.encode(meters)
     case let .custom(value):
-      return value
+      try container.encode(value)
     }
   }
 }
 
-extension AroundRadius: SearchParameter {
-  public var urlEncodedString: String {
-    return value.urlEncodedString
-  }
-}
+extension AroundRadius: SearchParameter {}
 
-extension SearchParameters {
+public extension SearchParameters {
   /**
    Define the maximum radius for a geo search (in meters).
    - This setting only works within the context of a radial (circular) geo search,
@@ -114,7 +110,7 @@ extension SearchParameters {
 
 extension AroundRadius: DeleteQueryParameter {}
 
-extension DeleteQueryParameters {
+public extension DeleteQueryParameters {
   /**
    Define the maximum radius for a geo search (in meters).
    - This setting only works within the context of a radial (circular) geo search,

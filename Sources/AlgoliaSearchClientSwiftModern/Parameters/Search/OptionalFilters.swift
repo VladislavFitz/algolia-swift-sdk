@@ -4,28 +4,19 @@ import Foundation
  - Engine default: []
  - [Documentation](https://www.algolia.com/doc/api-reference/api-parameters/optionalFilters/?language=swift)
  */
-struct OptionalFilters {
+public struct OptionalFilters: ValueRepresentable {
   static let key = "optionalFilters"
   public var key: String { Self.key }
-  let value: FiltersStorage
+  public let value: FiltersStorage
 
-  init(_ value: FiltersStorage) {
+  public init(_ value: FiltersStorage) {
     self.value = value
   }
-
-  func encode(to encoder: Encoder) throws {
-    var container = encoder.singleValueContainer()
-    try container.encode(value)
-  }
 }
 
-extension OptionalFilters: SearchParameter {
-  var urlEncodedString: String {
-    return "\(value)"
-  }
-}
+extension OptionalFilters: SearchParameter {}
 
-extension SearchParameters {
+public extension SearchParameters {
   /**
    Create filters for ranking purposes, where records that match the filter are ranked highest.
    - Engine default: []
@@ -43,7 +34,7 @@ extension SearchParameters {
 
 extension OptionalFilters: DeleteQueryParameter {}
 
-extension DeleteQueryParameters {
+public extension DeleteQueryParameters {
   /**
    Create filters for ranking purposes, where records that match the filter are ranked highest.
    - Engine default: []

@@ -4,28 +4,19 @@ import Foundation
  - Engine default: []
  - [Documentation](https://www.algolia.com/doc/api-reference/api-parameters/facetFilters/?language=swift)
  */
-struct FacetFilters {
+public struct FacetFilters: ValueRepresentable {
   static let key = "facetFilters"
   public var key: String { Self.key }
-  let value: FiltersStorage
+  public let value: FiltersStorage
 
-  init(_ value: FiltersStorage) {
+  public init(_ value: FiltersStorage) {
     self.value = value
   }
-
-  func encode(to encoder: Encoder) throws {
-    var container = encoder.singleValueContainer()
-    try container.encode(value)
-  }
 }
 
-extension FacetFilters: SearchParameter {
-  var urlEncodedString: String {
-    return "\(value)"
-  }
-}
+extension FacetFilters: SearchParameter {}
 
-extension SearchParameters {
+public extension SearchParameters {
   /**
    Filter hits by facet value.
    - Engine default: []
@@ -43,7 +34,7 @@ extension SearchParameters {
 
 extension FacetFilters: DeleteQueryParameter {}
 
-extension DeleteQueryParameters {
+public extension DeleteQueryParameters {
   /**
    Filter hits by facet value.
    - Engine default: []

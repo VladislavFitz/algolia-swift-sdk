@@ -77,3 +77,22 @@ extension FiltersStorage: ExpressibleByArrayLiteral {
     self.init(units: elements)
   }
 }
+
+extension FiltersStorage: URLEncodable {
+  public var urlEncodedString: String {
+    func toString(_ singleOrList: SingleOrList<String>) -> String {
+      switch singleOrList {
+      case let .first(value):
+        return value.wrappedInQuotes()
+      case let .second(list):
+        return list.map { $0.wrappedInQuotes() }.joined(separator: ",").wrappedInBrackets()
+      }
+    }
+    return rawValue.map(toString).joined(separator: ",").wrappedInBrackets()
+  }
+}
+
+extension String {
+  func wrappedInQuotes() -> String { "\"\(self)\"" }
+  func wrappedInBrackets() -> String { "[\(self)]" }
+}

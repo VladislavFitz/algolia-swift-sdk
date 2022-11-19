@@ -4,28 +4,19 @@ import Foundation
  - Engine default: null
  - [Documentation](https://www.algolia.com/doc/api-reference/api-parameters/length/?language=swift)
  */
-struct Length {
+public struct Length: ValueRepresentable {
   static let key = "length"
   public var key: String { Self.key }
-  let value: Int
-  
-  init(_ value: Int) {
+  public let value: Int
+
+  public init(_ value: Int) {
     self.value = value
   }
-  
-  func encode(to encoder: Encoder) throws {
-    var container = encoder.singleValueContainer()
-    try container.encode(value)
-  }
 }
 
-extension Length: SearchParameter {
-  var urlEncodedString: String {
-    return "\(value)"
-  }
-}
+extension Length: SearchParameter {}
 
-extension SearchParameters {
+public extension SearchParameters {
   /**
    Set the number of hits to retrieve (used only with offset).
    - Engine default: null

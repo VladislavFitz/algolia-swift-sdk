@@ -4,28 +4,19 @@ import Foundation
  - Engine default: 0
  - [Documentation](https://www.algolia.com/doc/api-reference/api-parameters/page/?language=swift)
  */
-struct Page {
+public struct Page: ValueRepresentable {
   static let key = "page"
   public var key: String { Self.key }
-  let value: Int
-  
-  init(_ value: Int) {
+  public let value: Int
+
+  public init(_ value: Int) {
     self.value = value
   }
-  
-  func encode(to encoder: Encoder) throws {
-    var container = encoder.singleValueContainer()
-    try container.encode(value)
-  }
 }
 
-extension Page: SearchParameter {
-  var urlEncodedString: String {
-    return "\(value)"
-  }
-}
+extension Page: SearchParameter {}
 
-extension SearchParameters {
+public extension SearchParameters {
   /**
    Specify the page to retrieve.
    - Engine default: 0

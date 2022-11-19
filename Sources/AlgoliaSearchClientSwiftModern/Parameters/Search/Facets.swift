@@ -4,28 +4,19 @@ import Foundation
  - Engine default: []
  - [Documentation](https://www.algolia.com/doc/api-reference/api-parameters/facets/?language=swift)
  */
-struct Facets {
+public struct Facets: ValueRepresentable {
   static let key = "facets"
-  var key: String { Self.key }
-  let value: [Attribute]
+  public var key: String { Self.key }
+  public let value: [Attribute]
 
-  init(_ value: [Attribute]) {
+  public init(_ value: [Attribute]) {
     self.value = value
   }
-
-  func encode(to encoder: Encoder) throws {
-    var container = encoder.singleValueContainer()
-    try container.encode(value)
-  }
 }
 
-extension Facets: SearchParameter {
-  var urlEncodedString: String {
-    return "[\(value.map(\.rawValue).joined(separator: ","))]"
-  }
-}
+extension Facets: SearchParameter {}
 
-extension SearchParameters {
+public extension SearchParameters {
   /**
    Facets to retrieve.
    - Engine default: []

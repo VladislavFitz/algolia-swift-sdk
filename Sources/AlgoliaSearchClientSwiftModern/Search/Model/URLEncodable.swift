@@ -39,3 +39,9 @@ extension Double: URLEncodable {
     return String(self)
   }
 }
+
+extension Array: URLEncodable where Element: URLEncodable {
+  public var urlEncodedString: String {
+    return map(\.urlEncodedString).joined(separator: ",").wrappedInBrackets()
+  }
+}

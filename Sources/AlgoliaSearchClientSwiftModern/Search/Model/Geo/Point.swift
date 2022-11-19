@@ -30,6 +30,12 @@ extension Point: RawRepresentable {
   }
 }
 
+extension Point: URLEncodable {
+  public var urlEncodedString: String {
+    return description
+  }
+}
+
 extension Point: Codable {
   struct StringForm: Decodable {
     let point: Point

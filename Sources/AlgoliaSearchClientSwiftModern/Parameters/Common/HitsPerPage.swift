@@ -4,7 +4,7 @@ import Foundation
  - Engine default: 20
  - [Documentation](https://www.algolia.com/doc/api-reference/api-parameters/hitsPerPage/?language=swift)
  */
-public struct HitsPerPage {
+public struct HitsPerPage: ValueRepresentable {
   static let key = "hitsPerPage"
   public var key: String { HitsPerPage.key }
   public let value: Int
@@ -12,20 +12,16 @@ public struct HitsPerPage {
   public init(_ value: Int) {
     self.value = value
   }
-
-  public func encode(to encoder: Encoder) throws {
-    var container = encoder.singleValueContainer()
-    try container.encode(value)
-  }
 }
 
-extension HitsPerPage: SearchParameter {
-  public var urlEncodedString: String {
-    return "\(value)"
-  }
-}
+extension HitsPerPage: SearchParameter {}
 
-extension SearchParameters {
+public extension SearchParameters {
+  /**
+   Set the number of hits per page.
+   - Engine default: 20
+   - [Documentation](https://www.algolia.com/doc/api-reference/api-parameters/hitsPerPage/?language=swift)
+   */
   var hitsPerPage: Int? {
     get {
       (parameters[HitsPerPage.key] as? HitsPerPage)?.value
@@ -38,7 +34,7 @@ extension SearchParameters {
 
 extension HitsPerPage: SettingsParameter {}
 
-extension SettingsParameters {
+public extension SettingsParameters {
   /**
    Set the number of hits per page.
    - Engine default: 20

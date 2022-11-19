@@ -4,7 +4,7 @@ public protocol StringWrapper: RawRepresentable,
   ExpressibleByStringInterpolation,
   Codable,
   CustomStringConvertible,
-  Hashable where RawValue == String {
+  Hashable, URLEncodable where RawValue == String {
   init(rawValue: String)
 }
 
@@ -34,5 +34,11 @@ public extension StringWrapper {
 public extension StringWrapper {
   var description: String {
     return rawValue
+  }
+}
+
+public extension StringWrapper {
+  var urlEncodedString: String {
+    return rawValue.urlEncodedString
   }
 }

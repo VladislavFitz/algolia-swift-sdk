@@ -1,22 +1,16 @@
 import Foundation
-
 /// The complete list of attributes that will be used for searching.
-public struct SearchableAttributes: SettingsParameter {
+public struct SearchableAttributes: ValueRepresentable, SettingsParameter {
   public static let key = "searchableAttributes"
   public var key: String { Self.key }
   public let value: [SearchableAttribute]
 
-  init(_ value: [SearchableAttribute]) {
+  public init(_ value: [SearchableAttribute]) {
     self.value = value
-  }
-
-  public func encode(to encoder: Encoder) throws {
-    var container = encoder.singleValueContainer()
-    try container.encode(value)
   }
 }
 
-extension SettingsParameters {
+public extension SettingsParameters {
   /// The complete list of attributes that will be used for searching.
   var searchableAttributes: [SearchableAttribute]? {
     get {

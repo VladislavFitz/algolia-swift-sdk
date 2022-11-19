@@ -4,28 +4,19 @@ import Foundation
  - Engine default: null
  - [Documentation](https://www.algolia.com/doc/api-reference/api-parameters/minimumAroundRadius/?language=swift)
  */
-public struct MinimumAroundRadius {
+public struct MinimumAroundRadius: ValueRepresentable {
   static let key = "minimumAroundRadius"
-  public let key: String = MinimumAroundRadius.key
+  public var key: String { Self.key }
   public let value: Int
 
   public init(_ value: Int) {
     self.value = value
   }
-
-  public func encode(to encoder: Encoder) throws {
-    var container = encoder.singleValueContainer()
-    try container.encode(value)
-  }
 }
 
-extension MinimumAroundRadius: SearchParameter {
-  public var urlEncodedString: String {
-    return "\(value)"
-  }
-}
+extension MinimumAroundRadius: SearchParameter {}
 
-extension SearchParameters {
+public extension SearchParameters {
   /**
    Minimum radius (in meters) used for a geo search when [aroundRadius] is not set.
    - Engine default: null

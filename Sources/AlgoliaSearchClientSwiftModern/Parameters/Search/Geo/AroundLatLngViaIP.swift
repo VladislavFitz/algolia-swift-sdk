@@ -4,28 +4,19 @@ import Foundation
  - Engine default: false
  - [Documentation](https://www.algolia.com/doc/api-reference/api-parameters/aroundLatLngViaIP/?language=swift)
  */
-struct AroundLatLngViaIP {
+public struct AroundLatLngViaIP: ValueRepresentable {
   static let key = "aroundLatLngViaIP"
   public var key: String { Self.key }
-  let value: Bool
+  public let value: Bool
 
-  init(_ value: Bool) {
+  public init(_ value: Bool) {
     self.value = value
   }
-
-  func encode(to encoder: Encoder) throws {
-    var container = encoder.singleValueContainer()
-    try container.encode(value)
-  }
 }
 
-extension AroundLatLngViaIP: SearchParameter {
-  var urlEncodedString: String {
-    return "\(value)"
-  }
-}
+extension AroundLatLngViaIP: SearchParameter {}
 
-extension SearchParameters {
+public extension SearchParameters {
   /**
    Whether to search entries around a given location automatically computed from the requester’s IP address.
    - Engine default: false

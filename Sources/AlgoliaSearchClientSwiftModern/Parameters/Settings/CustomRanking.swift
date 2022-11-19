@@ -4,22 +4,17 @@ import Foundation
  - Engine default: []
  - [Documentation](https://www.algolia.com/doc/api-reference/api-parameters/customRanking/?language=swift)
  */
-struct CustomRanking: SettingsParameter {
+public struct CustomRanking: ValueRepresentable, SettingsParameter {
   static let key = "customRanking"
-  var key: String { Self.key }
-  let value: [CustomRankingCriterion]
+  public var key: String { Self.key }
+  public let value: [CustomRankingCriterion]
 
-  init(_ value: [CustomRankingCriterion]) {
+  public init(_ value: [CustomRankingCriterion]) {
     self.value = value
-  }
-
-  func encode(to encoder: Encoder) throws {
-    var container = encoder.singleValueContainer()
-    try container.encode(value)
   }
 }
 
-extension SettingsParameters {
+public extension SettingsParameters {
   /**
    Specifies the [CustomRankingCriterion].
    - Engine default: []

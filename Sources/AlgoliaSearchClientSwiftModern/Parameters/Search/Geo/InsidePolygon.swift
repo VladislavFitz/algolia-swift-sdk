@@ -4,28 +4,19 @@ import Foundation
  - Engine default: null
  - [Documentation](https://www.algolia.com/doc/api-reference/api-parameters/insidePolygon/?language=swift)
  */
-struct InsidePolygon {
+public struct InsidePolygon: ValueRepresentable {
   static let key = "insidePolygon"
   public var key: String { Self.key }
-  let value: Polygon
+  public let value: Polygon
 
-  init(_ value: Polygon) {
+  public init(_ value: Polygon) {
     self.value = value
   }
-
-  func encode(to encoder: Encoder) throws {
-    var container = encoder.singleValueContainer()
-    try container.encode(value)
-  }
 }
 
-extension InsidePolygon: SearchParameter {
-  var urlEncodedString: String {
-    return "\(value)"
-  }
-}
+extension InsidePolygon: SearchParameter {}
 
-extension SearchParameters {
+public extension SearchParameters {
   /**
    Search inside a polygon (in geo coordinates).
    - Engine default: null
@@ -43,7 +34,7 @@ extension SearchParameters {
 
 extension InsidePolygon: DeleteQueryParameter {}
 
-extension DeleteQueryParameters {
+public extension DeleteQueryParameters {
   /**
    Search inside a polygon (in geo coordinates).
    - Engine default: null

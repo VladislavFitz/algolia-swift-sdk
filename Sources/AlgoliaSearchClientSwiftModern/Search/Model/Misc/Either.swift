@@ -85,3 +85,14 @@ extension Either: CustomStringConvertible {
     }
   }
 }
+
+extension Either: URLEncodable where A: URLEncodable, B: URLEncodable {
+  public var urlEncodedString: String {
+    switch self {
+    case let .first(value):
+      return value.urlEncodedString
+    case let .second(value):
+      return value.urlEncodedString
+    }
+  }
+}

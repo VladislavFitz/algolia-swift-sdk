@@ -4,18 +4,13 @@ import Foundation
  - Engine default: [.typo, .geo, .words, .filters, .proximity, .attribute, .exact, .custom]
  - [Documentation](https://www.algolia.com/doc/api-reference/api-parameters/ranking/?language=swift)
  */
-struct Ranking: SettingsParameter {
+public struct Ranking: ValueRepresentable, SettingsParameter {
   static let key = "customRanking"
-  var key: String { Self.key }
-  let value: [RankingCriterion]
+  public var key: String { Self.key }
+  public let value: [RankingCriterion]
 
-  init(_ value: [RankingCriterion]) {
+  public init(_ value: [RankingCriterion]) {
     self.value = value
-  }
-
-  func encode(to encoder: Encoder) throws {
-    var container = encoder.singleValueContainer()
-    try container.encode(value)
   }
 }
 
