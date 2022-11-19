@@ -1,6 +1,6 @@
 import Foundation
 
-public extension Client {
+public extension SearchClient {
   /**
    Get a list of indices with their associated metadata.
 

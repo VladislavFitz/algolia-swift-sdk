@@ -1,12 +1,12 @@
 import Foundation
 
-public extension Client {
+public extension SearchClient {
   func index(withName indexName: IndexName) -> Index {
     return Index(indexName: indexName, client: self)
   }
 }
 
-public extension Client {
+public extension SearchClient {
   /**
    Perform a search for hits or facet values on several indices at the same time, with one method call.
 

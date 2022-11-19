@@ -1,7 +1,7 @@
 @testable import AlgoliaSearchClientSwiftModern
 import Foundation
 
-extension Client {
+extension SearchClient {
   convenience init(credentials: Credentials) {
     self.init(appID: credentials.applicationID, apiKey: credentials.apiKey)
   }

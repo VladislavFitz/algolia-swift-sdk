@@ -18,7 +18,7 @@ class IndexingIntegrationTests: XCTestCase {
 
   // swiftlint:disable function_body_length
   func testIndexing() async throws {
-    let index = Client(credentials: .primary).index(withName: "\(uniquePrefix())_\(name)")
+    let index = SearchClient(credentials: .primary).index(withName: "\(uniquePrefix())_\(name)")
 
     // Add 1 record with saveObject with an objectID and collect taskID/objectID
     let object = TestRecord.withGeneratedObjectID()
@@ -156,7 +156,7 @@ class IndexingIntegrationTests: XCTestCase {
   }
 
   func testExists() async throws {
-    let index = Client(credentials: .primary).index(withName: "\(uniquePrefix())_\(name)")
+    let index = SearchClient(credentials: .primary).index(withName: "\(uniquePrefix())_\(name)")
 
     var indexExists = try await index.exists()
     XCTAssertFalse(indexExists)

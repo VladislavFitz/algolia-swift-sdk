@@ -18,7 +18,7 @@ class SnippetsTest: XCTestCase {
   }
 
   func gettingStarted() async throws {
-    let client = Client(appID: "YourApplicationID", apiKey: "YourAdminAPIKey")
+    let client = SearchClient(appID: "YourApplicationID", apiKey: "YourAdminAPIKey")
     let index = client.index(withName: "your_index_name")
 
     let contacts: [Contact] = [
