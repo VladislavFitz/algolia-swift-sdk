@@ -1,11 +1,11 @@
 import Foundation
 
-class Host {
+public class Host {
   /// Url to target.
-  let value: String
+  public let value: String
 
   /// Supported request types
-  let requestType: RequestTypeSupport
+  public let requestType: RequestTypeSupport
 
   var isUp: Bool
 
@@ -59,13 +59,13 @@ extension Host {
 }
 
 extension Host: CustomStringConvertible {
-  var description: String {
+  public var description: String {
     return value
   }
 }
 
 extension Host: CustomDebugStringConvertible {
-  var debugDescription: String {
+  public var debugDescription: String {
     return """
     Host {
       url: \(value)

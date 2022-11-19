@@ -24,12 +24,12 @@ public class SearchClient: Client {
 
     let hosts = specializedHosts + unversalHosts
 
-    let confugration = URLSessionConfiguration.default
-    confugration.httpAdditionalHeaders = [
+    let urlSessionConfiguration = URLSessionConfiguration.default
+    urlSessionConfiguration.httpAdditionalHeaders = [
       "X-Algolia-Application-Id": appID.rawValue,
       "X-Algolia-API-Key": apiKey.rawValue
     ]
-    let urlSession = URLSession(configuration: confugration)
+    let urlSession = URLSession(configuration: urlSessionConfiguration)
     let transport = Transport(httpClient: urlSession,
                               hosts: hosts)
     let jsonEncoder = JSONEncoder()

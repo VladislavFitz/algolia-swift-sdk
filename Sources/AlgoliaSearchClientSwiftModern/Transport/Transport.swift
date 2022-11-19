@@ -4,34 +4,36 @@ import Logging
 
 public class Transport {
   /// The client which performs HTTP requests
-  let httpClient: HTTPClient
+  public let httpClient: HTTPClient
 
   /// The list of retryable hosts
-  let hosts: [Host]
+  public let hosts: [Host]
 
   /// The interval of host state reset
-  let hostExpirationDelay: TimeInterval
+  public let hostExpirationDelay: TimeInterval
 
   /// The timeout for each request when performing write operations (POST, PUT ..).
-  var writeTimeout: TimeInterval
+  public var writeTimeout: TimeInterval
 
   /// The timeout for each request when performing read operations (GET).
-  var readTimeout: TimeInterval
+  public var readTimeout: TimeInterval
 
-  var logger: Logger
+  /// The transport events logger
+  public var logger: Logger
 
-  init(httpClient: HTTPClient,
-       hosts: [Host],
-       hostExpirationDelay: TimeInterval = 60 * 5,
-       writeTimeout: TimeInterval = 30,
-       readTimeout: TimeInterval = 5) {
+  public init(httpClient: HTTPClient = URLSession(configuration: .default),
+              hosts: [Host],
+              hostExpirationDelay: TimeInterval = 60 * 5,
+              writeTimeout: TimeInterval = 30,
+              readTimeout: TimeInterval = 5,
+              logger: Logger = Logger(label: "Algolia Swift client")) {
     self.httpClient = httpClient
     self.hosts = hosts
     self.hostExpirationDelay = hostExpirationDelay
     self.writeTimeout = writeTimeout
     self.readTimeout = readTimeout
-    logger = .init(label: "Algolia Swift client")
-    logger.logLevel = .trace
+    self.logger = logger
+    self.logger.logLevel = .trace
   }
 
   private func prepareHosts() {
