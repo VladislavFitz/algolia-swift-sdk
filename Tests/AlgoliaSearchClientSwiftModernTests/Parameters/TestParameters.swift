@@ -53,9 +53,9 @@ final class TestParameters: XCTestCase {
         ["from": 500, "value": 300]]
     ])
     XCTAssertEqual(parameters.urlEncodedString,
-                   "aroundPrecision=%5B%22%7B%5C" +
-                     "%22from%5C%22:10,%5C%22value%5C%22:100%7D%22,%20%22%7B%5C" +
-                     "%22from%5C%22:500,%5C%22value%5C%22:300%7D%22%5D")
+                   "aroundPrecision=%5B%7B" +
+                   "%22from%22:10,%22value%22:100%7D,%7B" +
+                   "%22from%22:500,%22value%22:300%7D%5D")
 
     parameters.aroundPrecision = .first(400)
     try assertEncode(parameters, expected: ["aroundPrecision": 400])
