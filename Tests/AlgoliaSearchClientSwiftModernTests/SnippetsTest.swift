@@ -43,7 +43,6 @@ class SnippetsTest: XCTestCase {
      var searchParameters = SearchParameters()
      searchParameters.query = "jimmie"
      */
-
     let searchResponse = try await index.search(parameters: searchParameters)
 
     let foundContacts = try searchResponse.hitsAsListOf(Contact.self)
