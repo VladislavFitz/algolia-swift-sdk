@@ -1,3 +1,5 @@
+[![test](https://github.com/VladislavFitz/algoliasearch-client-swift-modern/actions/workflows/test.yml/badge.svg)](https://github.com/VladislavFitz/algoliasearch-client-swift-modern/actions/workflows/test.yml)
+
 # Algolia Swift API client
 
 Unofficial Algolia Swift API client using the latest Swift features to provide the best developer experience.
