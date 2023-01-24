@@ -1,3 +1,4 @@
+[![swift](https://img.shields.io/badge/Swift-5.6-orange)](https://www.swift.org)
 [![test](https://github.com/VladislavFitz/algoliasearch-client-swift-modern/actions/workflows/test.yml/badge.svg)](https://github.com/VladislavFitz/algoliasearch-client-swift-modern/actions/workflows/test.yml)
 [![MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
