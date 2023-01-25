@@ -3,7 +3,7 @@
 import PackageDescription
 
 let package = Package(
-  name: "AlgoliaSearchClientSwiftModern",
+  name: "AlgoliaSDK",
   platforms: [
     .iOS(.v15),
     .macOS(.v12),
@@ -12,8 +12,16 @@ let package = Package(
   ],
   products: [
     .library(
-      name: "AlgoliaSearchClientSwiftModern",
-      targets: ["AlgoliaSearchClientSwiftModern"]
+      name: "AlgoliaFoundation",
+      targets: ["AlgoliaFoundation"]
+    ),
+    .library(
+      name: "AlgoliaSearchClient",
+      targets: ["AlgoliaSearchClient"]
+    ),
+    .library(
+      name: "AlgoliaInsightsClient",
+      targets: ["AlgoliaInsightsClient"]
     )
   ],
   dependencies: [
@@ -21,15 +29,45 @@ let package = Package(
   ],
   targets: [
     .target(
-      name: "AlgoliaSearchClientSwiftModern",
+      name: "AlgoliaFoundation",
       dependencies: [
         .product(name: "Logging", package: "swift-log")
       ]
     ),
-    .testTarget(
-      name: "AlgoliaSearchClientSwiftModernTests",
+    .target(
+      name: "AlgoliaSearchClient",
       dependencies: [
-        .target(name: "AlgoliaSearchClientSwiftModern"),
+        .target(name: "AlgoliaFoundation"),
+        .product(name: "Logging", package: "swift-log")
+      ]
+    ),
+    .target(
+      name: "AlgoliaInsightsClient",
+      dependencies: [
+        .target(name: "AlgoliaFoundation"),
+        .product(name: "Logging", package: "swift-log")
+      ]
+    ),
+    .testTarget(
+      name: "AlgoliaFoundationTests",
+      dependencies: [
+        .target(name: "AlgoliaFoundation"),
+        .product(name: "Logging", package: "swift-log")
+      ]
+    ),
+    .testTarget(
+      name: "AlgoliaSearchClientTests",
+      dependencies: [
+        .target(name: "AlgoliaFoundation"),
+        .target(name: "AlgoliaSearchClient"),
+        .product(name: "Logging", package: "swift-log")
+      ]
+    ),
+    .testTarget(
+      name: "AlgoliaInsightsClientTests",
+      dependencies: [
+        .target(name: "AlgoliaFoundation"),
+        .target(name: "AlgoliaInsightsClient"),
         .product(name: "Logging", package: "swift-log")
       ]
     )
