@@ -32,12 +32,12 @@ struct ClientDateCodingStrategy {
   }
 }
 
-extension JSONDecoder.DateDecodingStrategy {
+public extension JSONDecoder.DateDecodingStrategy {
   static let algoliaClientDateDecodingStrategy = JSONDecoder.DateDecodingStrategy
     .custom(ClientDateCodingStrategy.decoding)
 }
 
-extension JSONEncoder.DateEncodingStrategy {
+public extension JSONEncoder.DateEncodingStrategy {
   static let algoliaClientDateEncodingStrategy = JSONEncoder.DateEncodingStrategy
     .custom(ClientDateCodingStrategy.encoding)
 }

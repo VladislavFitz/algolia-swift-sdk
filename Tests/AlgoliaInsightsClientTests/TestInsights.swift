@@ -1,8 +1,6 @@
-//
-//  TestInsights.swift
-//  
-//
-//  Created by Vladislav Fitc on 26.01.2023.
-//
-
+import AlgoliaFoundation
+@testable import AlgoliaInsightsClient
 import Foundation
+import XCTest
+
+class InsightsIntegrationTests: XCTestCase {}

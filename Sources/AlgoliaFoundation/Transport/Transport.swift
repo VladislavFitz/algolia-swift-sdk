@@ -72,11 +72,11 @@ public class Transport {
   }
 
   @discardableResult public func perform(method: HTTPMethod,
-                                           path: String,
-                                           queryItems: [URLQueryItem] = [],
-                                           headers: [String: String],
-                                           body: Data?,
-                                           requestType: RequestType) async throws -> Data {
+                                         path: String,
+                                         queryItems: [URLQueryItem] = [],
+                                         headers: [String: String],
+                                         body: Data?,
+                                         requestType: RequestType) async throws -> Data {
     prepareHosts()
 
     let bodyDescription: String

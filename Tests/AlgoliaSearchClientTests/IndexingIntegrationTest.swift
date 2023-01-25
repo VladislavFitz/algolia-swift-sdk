@@ -4,8 +4,8 @@
 //
 //  Created by Vladislav Fitc on 09.10.2022.
 //
-@testable import AlgoliaSearchClient
 import AlgoliaFoundation
+@testable import AlgoliaSearchClient
 import Foundation
 import XCTest
 

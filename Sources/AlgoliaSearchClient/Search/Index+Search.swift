@@ -1,3 +1,4 @@
+import AlgoliaFoundation
 import Foundation
 
 public extension Index {

@@ -1,5 +1,5 @@
-@testable import AlgoliaSearchClient
 import AlgoliaFoundation
+@testable import AlgoliaSearchClient
 import Foundation
 
 class MockHTTPClient: HTTPClient {
