@@ -10,12 +10,17 @@ import Foundation
 import TestHelper
 import XCTest
 
+extension SearchClient {
+  convenience init(credentials: Credentials) {
+    self.init(appID: credentials.applicationID,
+              apiKey: credentials.apiKey)
+  }
+}
+
 class IndexingIntegrationTests: XCTestCase {
   // swiftlint:disable function_body_length
   func testIndexing() async throws {
-    let credentials = Credentials.primary
-
-    let index = SearchClient(appID: credentials.applicationID, apiKey: credentials.apiKey).index(withName: "\(String.uniquePrefix)_\(name)")
+    let index = SearchClient(credentials: .primary).index(withName: "\(String.uniquePrefix)_\(name)")
 
     // Add 1 record with saveObject with an objectID and collect taskID/objectID
     let object = TestRecord.withGeneratedObjectID()
@@ -153,9 +158,7 @@ class IndexingIntegrationTests: XCTestCase {
   }
 
   func testExists() async throws {
-    let credentials = Credentials.primary
-
-    let index = SearchClient(appID: credentials.applicationID, apiKey: credentials.apiKey).index(withName: "\(String.uniquePrefix)_\(name)")
+    let index = SearchClient(credentials: .primary).index(withName: "\(String.uniquePrefix)_\(name)")
 
     var indexExists = try await index.exists()
     XCTAssertFalse(indexExists)
