@@ -7,3 +7,9 @@ public extension StringOption {
     self.init(rawValue: rawValue)!
   }
 }
+
+public extension ExpressibleByStringInterpolation where Self: StringOption {
+  init(stringLiteral value: String) {
+    self = .init(rawValue: value)
+  }
+}

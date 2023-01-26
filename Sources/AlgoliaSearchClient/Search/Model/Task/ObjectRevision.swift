@@ -11,7 +11,7 @@ public struct ObjectRevision: Decodable, IndexTask, IndexContainer {
   /// The inserted record ObjectID
   public let objectID: ObjectID
 
-  internal var index: Index?
+  public var index: Index?
 
   enum CodingKeys: CodingKey {
     case updatedAt, taskID, objectID

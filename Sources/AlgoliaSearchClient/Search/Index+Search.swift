@@ -15,7 +15,7 @@ public extension Index {
   func search(parameters: SearchParameters) async throws -> SearchResponse {
     let body = try client.jsonEncoder.encode(parameters)
     let responseData = try await client.transport.perform(method: .post,
-                                                          path: "/1/indexes/\(indexName.rawValue)/query",
+                                                          path: "/1/indexes/\(name.rawValue)/query",
                                                           headers: ["Content-Type": "application/json"],
                                                           body: body,
                                                           requestType: .read)
@@ -49,7 +49,7 @@ public extension Index {
   func browse(parameters: SearchParameters = SearchParameters([])) async throws -> SearchResponse {
     let body = try client.jsonEncoder.encode(parameters)
     let responseData = try await client.transport.perform(method: .post,
-                                                          path: "/1/indexes/\(indexName.rawValue)/browse",
+                                                          path: "/1/indexes/\(name.rawValue)/browse",
                                                           headers: [:],
                                                           body: body,
                                                           requestType: .read)
@@ -85,7 +85,7 @@ public extension Index {
   func browse(cursor: Cursor) async throws -> SearchResponse {
     let body = try client.jsonEncoder.encode(FieldWrapper.cursor(cursor))
     let responseData = try await client.transport.perform(method: .post,
-                                                          path: "/1/indexes/\(indexName.rawValue)/browse",
+                                                          path: "/1/indexes/\(name.rawValue)/browse",
                                                           headers: [:],
                                                           body: body,
                                                           requestType: .read)

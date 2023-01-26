@@ -8,7 +8,7 @@ public struct BatchResponse: Decodable, IndexTask, IndexContainer {
   /// The TaskID which can be used with the .waitTask method.
   public let taskID: TaskID
 
-  internal var index: Index?
+  public var index: Index?
 
   enum CodingKeys: CodingKey {
     case taskID, objectIDs

@@ -11,7 +11,7 @@ public struct ObjectCreation: Decodable, IndexTask, IndexContainer {
   /// The inserted record ObjectID
   public let objectID: ObjectID
 
-  internal var index: Index?
+  public var index: Index?
 
   enum CodingKeys: CodingKey {
     case createdAt, taskID, objectID

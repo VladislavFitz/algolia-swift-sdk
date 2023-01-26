@@ -9,7 +9,7 @@ public extension Index {
    */
   @discardableResult func taskStatus(for taskID: TaskID) async throws -> TaskInfo {
     let responseData = try await client.transport.perform(method: .get,
-                                                          path: "/1/indexes/\(indexName.rawValue)/task/\(taskID)",
+                                                          path: "/1/indexes/\(name.rawValue)/task/\(taskID)",
                                                           headers: [:],
                                                           body: nil,
                                                           requestType: .read)

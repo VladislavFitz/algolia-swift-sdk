@@ -1,6 +1,6 @@
 import Foundation
 
-protocol IndexContainer {
+public protocol IndexContainer {
   /// The target index reference
   var index: Index? { get set }
 }

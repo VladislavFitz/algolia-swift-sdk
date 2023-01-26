@@ -9,7 +9,7 @@ public struct BatchesResponse {
   public let objectIDs: [ObjectID?]
 }
 
-extension BatchesResponse {
+public extension BatchesResponse {
   init(indexName: IndexName, responses: [BatchResponse]) {
     let tasks: [IndexedTask] = responses.map { .init(indexName: indexName,
                                                      taskID: $0.taskID,
@@ -19,7 +19,7 @@ extension BatchesResponse {
   }
 }
 
-extension BatchesResponse {
+public extension BatchesResponse {
   /**
      Wait for a IndexTask to complete before executing the next line of code, to synchronize index updates.
      All write operations in Algolia are asynchronous by design.

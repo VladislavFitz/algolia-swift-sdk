@@ -1,7 +1,7 @@
 import AlgoliaFoundation
 import Foundation
 
-public struct UserToken: StringOption {
+public struct UserToken: StringWrapper {
   public let rawValue: String
 
   private let allowedCharacters: CharacterSet = CharacterSet.alphanumerics.union(.init(charactersIn: "._-"))

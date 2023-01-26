@@ -1,12 +1,11 @@
 import AlgoliaFoundation
-@testable import AlgoliaSearchClient
 import Foundation
 import XCTest
 
-func assertEncode<T: Encodable>(_ value: T,
-                                expected: JSON,
-                                file: StaticString = #file,
-                                line: UInt = #line) throws {
+public func assertEncode<T: Encodable>(_ value: T,
+                                       expected: JSON,
+                                       file: StaticString = #file,
+                                       line: UInt = #line) throws {
   let encoder = JSONEncoder()
   encoder.dateEncodingStrategy = .algoliaClientDateEncodingStrategy
   let valueData = try encoder.encode(value)
@@ -18,10 +17,10 @@ func assertEncode<T: Encodable>(_ value: T,
   XCTAssertEqual(jsonFromValue, expected, file: file, line: line)
 }
 
-func assertDecode<T: Codable>(_ input: JSON,
-                              expected: T,
-                              file: StaticString = #file,
-                              line: UInt = #line) throws {
+public func assertDecode<T: Codable>(_ input: JSON,
+                                     expected: T,
+                                     file: StaticString = #file,
+                                     line: UInt = #line) throws {
   let encoder = JSONEncoder()
   encoder.dateEncodingStrategy = .algoliaClientDateEncodingStrategy
   let data = try encoder.encode(input)

@@ -1,4 +1,5 @@
 @testable import AlgoliaSearchClient
+import TestHelper
 import XCTest
 
 final class TestParameters: XCTestCase {

@@ -14,7 +14,7 @@ public extension Index {
     func singleBatch(operations: [BatchOperation]) async throws -> BatchResponse {
       let body = try client.jsonEncoder.encode(FieldWrapper.requests(operations))
       let responseData = try await client.transport.perform(method: .post,
-                                                            path: "/1/indexes/\(indexName.rawValue)/batch",
+                                                            path: "/1/indexes/\(name.rawValue)/batch",
                                                             headers: [:],
                                                             body: body,
                                                             requestType: .write)
@@ -27,7 +27,7 @@ public extension Index {
       let response = try await singleBatch(operations: operationsChunk)
       responses.append(response)
     }
-    return BatchesResponse(indexName: indexName, responses: responses)
+    return BatchesResponse(indexName: name, responses: responses)
   }
 
   /**
@@ -52,7 +52,7 @@ public extension Index {
     }
     let body = try client.jsonEncoder.encode(object)
     let responseData = try await client.transport.perform(method: .post,
-                                                          path: "/1/indexes/\(indexName.rawValue)",
+                                                          path: "/1/indexes/\(name.rawValue)",
                                                           headers: [:], // "Content-Type": "application/json"
                                                           body: body,
                                                           requestType: .write)
@@ -89,7 +89,7 @@ public extension Index {
       value: attributesToRetrieve.map(\.rawValue).joined(separator: ",")
     )
     let responseData = try await client.transport.perform(method: .get,
-                                                          path: "/1/indexes/\(indexName.rawValue)/\(objectID.rawValue)",
+                                                          path: "/1/indexes/\(name.rawValue)/\(objectID.rawValue)",
                                                           queryItems: [attributesToRetrieveItem],
                                                           headers: [:],
                                                           body: nil,
@@ -108,7 +108,7 @@ public extension Index {
   func getObjects<T: Decodable>(withIDs objectIDs: [ObjectID],
                                 attributesToRetreive: [Attribute]? = .none) async throws -> ObjectsResponse<T> {
     let objectRequests = objectIDs
-      .map { ObjectRequest(indexName: indexName,
+      .map { ObjectRequest(indexName: name,
                            objectID: $0,
                            attributesToRetrieve: attributesToRetreive) }
     let requests = FieldWrapper.requests(objectRequests)
@@ -132,7 +132,7 @@ public extension Index {
                                                       by object: T) async throws -> ObjectRevision {
     let body = try client.jsonEncoder.encode(object)
     let responseData = try await client.transport.perform(method: .put,
-                                                          path: "/1/indexes/\(indexName.rawValue)/\(objectID.rawValue)",
+                                                          path: "/1/indexes/\(name.rawValue)/\(objectID.rawValue)",
                                                           headers: [:],
                                                           body: body,
                                                           requestType: .write)
@@ -161,7 +161,7 @@ public extension Index {
    */
   @discardableResult func deleteObject(withID objectID: ObjectID) async throws -> ObjectDeletion {
     let responseData = try await client.transport.perform(method: .delete,
-                                                          path: "/1/indexes/\(indexName.rawValue)/\(objectID.rawValue)",
+                                                          path: "/1/indexes/\(name.rawValue)/\(objectID.rawValue)",
                                                           headers: [:],
                                                           body: nil,
                                                           requestType: .write)
@@ -180,7 +180,7 @@ public extension Index {
   @discardableResult func deleteObjects(byQuery query: DeleteQueryParameters) async throws -> IndexRevision {
     let body = try client.jsonEncoder.encode(FieldWrapper.params(query.urlEncodedString))
     let responseData = try await client.transport.perform(method: .post,
-                                                          path: "/1/indexes/\(indexName.rawValue)/deleteByQuery",
+                                                          path: "/1/indexes/\(name.rawValue)/deleteByQuery",
                                                           headers: [:],
                                                           body: body,
                                                           requestType: .write)
@@ -212,7 +212,7 @@ public extension Index {
                                               with partialUpdate: PartialUpdate,
                                               createIfNotExists: Bool = true) async throws -> ObjectRevision {
     let body = try client.jsonEncoder.encode(partialUpdate)
-    let path = "/1/indexes/\(indexName.rawValue)/\(objectID.rawValue)/partial"
+    let path = "/1/indexes/\(name.rawValue)/\(objectID.rawValue)/partial"
     let queryItems = [
       URLQueryItem(name: "createIfNotExists",
                    value: String(createIfNotExists))
@@ -252,7 +252,7 @@ public extension Index {
    */
   @discardableResult func clearObjects() async throws -> IndexRevision {
     let responseData = try await client.transport.perform(method: .post,
-                                                          path: "/1/indexes/\(indexName.rawValue)/clear",
+                                                          path: "/1/indexes/\(name.rawValue)/clear",
                                                           headers: [:],
                                                           body: nil,
                                                           requestType: .write)
@@ -273,13 +273,13 @@ public extension Index {
                                                           autoGeneratingObjectID: Bool = false)
     async throws -> [IndexedTask] {
     let moveOperations: [BatchOperation] = objects.map { .add($0, autoGeneratingObjectID: autoGeneratingObjectID) }
-    let destinationIndexName = IndexName(rawValue: "\(indexName)_tmp_\(Int.random(in: 0 ... 100_000))")
-    let destinationIndex = Index(indexName: destinationIndexName, client: client)
+    let destinationIndexName = IndexName(rawValue: "\(name)_tmp_\(Int.random(in: 0 ... 100_000))")
+    let destinationIndex = Index(name: destinationIndexName, client: client)
     let moveTasks = try await destinationIndex.batch(moveOperations).tasks
     let copyTaskID = try await copy([.settings, .rules, .synonyms], to: destinationIndexName).taskID
-    let moveTaskID = try await destinationIndex.move(to: indexName).taskID
+    let moveTaskID = try await destinationIndex.move(to: name).taskID
     return [
-      IndexedTask(indexName: indexName, taskID: copyTaskID),
+      IndexedTask(indexName: name, taskID: copyTaskID),
       IndexedTask(indexName: destinationIndexName, taskID: moveTaskID)
     ] + moveTasks
   }

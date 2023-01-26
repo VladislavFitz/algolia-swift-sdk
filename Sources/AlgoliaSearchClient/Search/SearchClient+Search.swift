@@ -3,7 +3,7 @@ import Foundation
 
 public extension SearchClient {
   func index(withName indexName: IndexName) -> Index {
-    return Index(indexName: indexName, client: self)
+    return Index(name: indexName, client: self)
   }
 }
 

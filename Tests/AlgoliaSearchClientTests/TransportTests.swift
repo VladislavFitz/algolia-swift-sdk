@@ -1,5 +1,6 @@
 import AlgoliaFoundation
 @testable import AlgoliaSearchClient
+import TestHelper
 import XCTest
 // swiftlint:disable cyclomatic_complexity function_body_length
 

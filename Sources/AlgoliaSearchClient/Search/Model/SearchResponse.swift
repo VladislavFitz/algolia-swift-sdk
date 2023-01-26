@@ -29,6 +29,11 @@ public struct SearchResponse: Decodable {
     Returned only by the EndpointSearch.browse method.
    */
   public var cursor: Cursor?
+
+  /**
+    Identifies the query uniquely. Can be used by Insights Event.
+   */
+  public var queryID: QueryID?
 }
 
 public extension SearchResponse {

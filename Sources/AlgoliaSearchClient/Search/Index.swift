@@ -2,13 +2,13 @@ import AlgoliaFoundation
 import Foundation
 
 public class Index {
-  public let indexName: IndexName
+  public let name: IndexName
   internal let client: Client
 
   internal let batchSize = 10000
 
-  internal init(indexName: IndexName, client: Client) {
-    self.indexName = indexName
+  internal init(name: IndexName, client: Client) {
+    self.name = name
     self.client = client
   }
 }
@@ -36,7 +36,7 @@ public extension Index {
    */
   func delete() async throws -> IndexDeletion {
     let responseData = try await client.transport.perform(method: .delete,
-                                                          path: "/1/indexes/\(indexName.rawValue)",
+                                                          path: "/1/indexes/\(name.rawValue)",
                                                           headers: [:],
                                                           body: nil,
                                                           requestType: .write)
@@ -87,7 +87,7 @@ public extension Index {
   internal func perform(_ operation: IndexOperation) async throws -> IndexRevision {
     let body = try client.jsonEncoder.encode(operation)
     let responseData = try await client.transport.perform(method: .post,
-                                                          path: "/1/indexes/\(indexName.rawValue)/operation",
+                                                          path: "/1/indexes/\(name.rawValue)/operation",
                                                           headers: [:],
                                                           body: body,
                                                           requestType: .write)

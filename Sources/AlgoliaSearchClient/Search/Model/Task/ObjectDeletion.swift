@@ -11,7 +11,7 @@ public struct ObjectDeletion: Decodable, IndexTask, IndexContainer {
   /// The deleted record ObjectID
   public let objectID: ObjectID
 
-  internal var index: Index?
+  public var index: Index?
 
   enum CodingKeys: CodingKey {
     case deletedAt, taskID, objectID

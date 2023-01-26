@@ -7,7 +7,7 @@ public extension Index {
    */
   func getSettings() async throws -> Settings {
     let responseData = try await client.transport.perform(method: .get,
-                                                          path: "/1/indexes/\(indexName.rawValue)/settings",
+                                                          path: "/1/indexes/\(name.rawValue)/settings",
                                                           headers: [:],
                                                           body: .none,
                                                           requestType: .read)
@@ -30,7 +30,7 @@ public extension Index {
                    forwardToReplicas _: Bool = false) async throws {
     let body = try client.jsonEncoder.encode(parameters)
     try await client.transport.perform(method: .put,
-                                       path: "/1/indexes/\(indexName.rawValue)/settings",
+                                       path: "/1/indexes/\(name.rawValue)/settings",
                                        headers: ["Content-Type": "application/json"],
                                        body: body,
                                        requestType: .write)

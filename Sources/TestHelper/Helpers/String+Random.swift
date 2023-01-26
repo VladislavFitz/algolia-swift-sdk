@@ -16,3 +16,12 @@ extension String {
   static var random: String { .random(length: .random(in: 1 ... 30)) }
   static func random(length: Int) -> String { .init(randomWithLength: length) }
 }
+
+public extension String {
+  static var uniquePrefix: String {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "YYYY-MM-DD_HH:mm:ss"
+    let dateString = dateFormatter.string(from: .init())
+    return "swift_\(dateString)_\(NSUserName().description)"
+  }
+}

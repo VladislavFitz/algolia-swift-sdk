@@ -7,19 +7,15 @@
 import AlgoliaFoundation
 @testable import AlgoliaSearchClient
 import Foundation
+import TestHelper
 import XCTest
 
 class IndexingIntegrationTests: XCTestCase {
-  func uniquePrefix() -> String {
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "YYYY-MM-DD_HH:mm:ss"
-    let dateString = dateFormatter.string(from: .init())
-    return "swift_\(dateString)_\(NSUserName().description)"
-  }
-
   // swiftlint:disable function_body_length
   func testIndexing() async throws {
-    let index = SearchClient(credentials: .primary).index(withName: "\(uniquePrefix())_\(name)")
+    let credentials = Credentials.primary
+
+    let index = SearchClient(appID: credentials.applicationID, apiKey: credentials.apiKey).index(withName: "\(String.uniquePrefix)_\(name)")
 
     // Add 1 record with saveObject with an objectID and collect taskID/objectID
     let object = TestRecord.withGeneratedObjectID()
@@ -157,7 +153,9 @@ class IndexingIntegrationTests: XCTestCase {
   }
 
   func testExists() async throws {
-    let index = SearchClient(credentials: .primary).index(withName: "\(uniquePrefix())_\(name)")
+    let credentials = Credentials.primary
+
+    let index = SearchClient(appID: credentials.applicationID, apiKey: credentials.apiKey).index(withName: "\(String.uniquePrefix)_\(name)")
 
     var indexExists = try await index.exists()
     XCTAssertFalse(indexExists)

@@ -10,13 +10,13 @@ public struct Event {
   public let queryID: QueryID?
   public let payload: Payload
 
-  init(type: Type,
-       name: Name,
-       indexName: IndexName,
-       userToken: UserToken?,
-       timestamp: Int64?,
-       queryID: QueryID?,
-       payload: Payload) throws {
+  public init(type: Type,
+              name: Name,
+              indexName: IndexName,
+              userToken: UserToken?,
+              timestamp: Int64?,
+              queryID: QueryID?,
+              payload: Payload) throws {
     try Event.checkEventName(name)
     try Event.check(payload)
 
@@ -29,13 +29,13 @@ public struct Event {
     self.payload = payload
   }
 
-  init(type: Type,
-       name: Name,
-       indexName: IndexName,
-       userToken: UserToken?,
-       timestamp: Date?,
-       queryID: QueryID?,
-       payload: Payload) throws {
+  public init(type: Type,
+              name: Name,
+              indexName: IndexName,
+              userToken: UserToken?,
+              timestamp: Date?,
+              queryID: QueryID?,
+              payload: Payload) throws {
     let rawTimestamp = timestamp?.timeIntervalSince1970.milliseconds
     try self.init(type: type,
                   name: name,
@@ -103,7 +103,7 @@ extension Event: Codable {
 }
 
 public extension Event {
-  struct Name: StringOption {
+  struct Name: StringWrapper {
     public let rawValue: String
 
     public init(rawValue: String) {
