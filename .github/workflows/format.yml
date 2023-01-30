@@ -1,4 +1,4 @@
-name: format
+name: SwiftFormat
 on:
   push:
     branches: [main]
@@ -7,7 +7,7 @@ on:
 
 jobs:
   lint:
-    name: Format
+    name: lint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
