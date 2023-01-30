@@ -5,10 +5,10 @@ import PackageDescription
 let package = Package(
   name: "AlgoliaSDK",
   platforms: [
-    .iOS(.v15),
-    .macOS(.v12),
-    .watchOS(.v2),
-    .tvOS(.v9)
+    .iOS(.v13),
+    .macOS(.v10_15),
+    .watchOS(.v6),
+    .tvOS(.v13)
   ],
   products: [
     .library(
