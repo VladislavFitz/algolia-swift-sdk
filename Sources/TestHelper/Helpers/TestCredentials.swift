@@ -17,15 +17,3 @@ public struct Credentials {
   public static let secondary = fromEnv("ALGOLIA_APPLICATION_ID_2", "ALGOLIA_ADMIN_KEY_2")
   public static let mcm = fromEnv("ALGOLIA_APPLICATION_ID_MCM", "ALGOLIA_ADMIN_KEY_MCM")
 }
-
-public extension String {
-  init?(environmentVariable: String) {
-    if
-      let rawValue = getenv(environmentVariable),
-      let value = String(utf8String: rawValue) {
-      self = value
-    } else {
-      return nil
-    }
-  }
-}

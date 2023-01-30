@@ -1,5 +1,6 @@
 import AlgoliaFoundation
 import Foundation
+import Logging
 
 /// Algolia Insights client
 public class InsightsClient: Client {
@@ -9,11 +10,16 @@ public class InsightsClient: Client {
    */
   public convenience init(appID: ApplicationID,
                           apiKey: APIKey,
-                          region: Region? = nil) {
+                          region: Region? = nil,
+                          extraUserAgents: [String] = []) {
+    let userAgents = [
+      "AlgoliaSDK-Insights/\(CurrentVersion.version) (\(OperatingSystem.description))"
+    ] + extraUserAgents
     let urlSessionConfiguration = URLSessionConfiguration.default
     urlSessionConfiguration.httpAdditionalHeaders = [
       "X-Algolia-Application-Id": appID.rawValue,
-      "X-Algolia-API-Key": apiKey.rawValue
+      "X-Algolia-API-Key": apiKey.rawValue,
+      "User-Agent": userAgents.joined(separator: ";")
     ]
     let urlSession = URLSession(configuration: urlSessionConfiguration)
 
@@ -21,7 +27,8 @@ public class InsightsClient: Client {
     let hosts = [Host(url: "insights\(regionComponent).algolia.io")]
 
     let transport = Transport(httpClient: urlSession,
-                              hosts: hosts)
+                              hosts: hosts,
+                              logger: Logger(label: "AlgoliaInsightsClient"))
     let jsonEncoder = JSONEncoder()
     jsonEncoder.dateEncodingStrategy = .algoliaClientDateEncodingStrategy
     let jsonDecoder = JSONDecoder()

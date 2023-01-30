@@ -1,13 +1,6 @@
-//
-//  String+Random.swift
-//
-//
-//  Created by Vladislav Fitc on 09.10.2022.
-//
-
 import Foundation
 
-extension String {
+public extension String {
   init(randomWithLength length: Int) {
     let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
     self = String((0 ..< length).compactMap { _ in letters.randomElement() })
@@ -23,5 +16,17 @@ public extension String {
     dateFormatter.dateFormat = "YYYY-MM-DD_HH:mm:ss"
     let dateString = dateFormatter.string(from: .init())
     return "swift_\(dateString)_\(NSUserName().description)"
+  }
+}
+
+public extension String {
+  init?(environmentVariable: String) {
+    if
+      let rawValue = getenv(environmentVariable),
+      let value = String(utf8String: rawValue) {
+      self = value
+    } else {
+      return nil
+    }
   }
 }

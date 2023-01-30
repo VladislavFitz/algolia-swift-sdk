@@ -26,7 +26,7 @@ public class Transport {
               hostExpirationDelay: TimeInterval = 60 * 5,
               writeTimeout: TimeInterval = 30,
               readTimeout: TimeInterval = 5,
-              logger: Logger = Logger(label: "Algolia Swift client")) {
+              logger: Logger = Logger(label: "Algolia SDK")) {
     self.httpClient = httpClient
     self.hosts = hosts
     self.hostExpirationDelay = hostExpirationDelay
