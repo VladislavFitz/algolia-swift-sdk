@@ -1,12 +1,6 @@
 import AlgoliaFoundation
 import Foundation
 
-// extension SearchClient {
-//  convenience init(credentials: Credentials) {
-//    self.init(appID: credentials.applicationID, apiKey: credentials.apiKey)
-//  }
-// }
-
 public struct Credentials {
   public let applicationID: ApplicationID
   public let apiKey: APIKey
