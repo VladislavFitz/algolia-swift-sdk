@@ -1,5 +1,6 @@
 [![swift](https://img.shields.io/badge/Swift-5.6-orange)](https://www.swift.org)
 [![test](https://github.com/VladislavFitz/algolia-swift-sdk/actions/workflows/test.yml/badge.svg)](https://github.com/VladislavFitz/algolia-swift-sdk/actions/workflows/test.yml)
+![platform](https://img.shields.io/badge/platforms-iOS_13+%20%7C%20macOS_10.15+%20%7C%20tvOS_13+%20%7C%20watchOS_6+-blue.svg?style=flat")
 [![MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # Algolia Swift SDK
