@@ -1,4 +1,5 @@
 import Foundation
+import AlgoliaFoundation
 
 public enum AttributeForFaceting: Equatable, Codable {
   case `default`(Attribute)

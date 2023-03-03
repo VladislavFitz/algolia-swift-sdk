@@ -26,6 +26,10 @@ let package = Package(
     .library(
       name: "AlgoliaInsightsClient",
       targets: ["AlgoliaInsightsClient"]
+    ),
+    .library(
+      name: "Filters",
+      targets: ["Filters"]
     )
   ],
   dependencies: [
@@ -58,6 +62,13 @@ let package = Package(
         .product(name: "Logging", package: "swift-log")
       ]
     ),
+    .target(
+      name: "Filters",
+      dependencies: [
+        .target(name: "AlgoliaFoundation"),
+        .product(name: "Logging", package: "swift-log")
+      ]
+    ),
     .testTarget(
       name: "AlgoliaFoundationTests",
       dependencies: [
@@ -83,6 +94,14 @@ let package = Package(
         .target(name: "TestHelper"),
         .product(name: "Logging", package: "swift-log")
       ]
-    )
+    ),
+    .testTarget(
+      name: "FiltersTests",
+      dependencies: [
+        .target(name: "AlgoliaFoundation"),
+        .product(name: "Logging", package: "swift-log"),
+        .target(name: "Filters"),
+      ]
+    ),
   ]
 )

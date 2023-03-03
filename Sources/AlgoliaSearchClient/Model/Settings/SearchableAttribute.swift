@@ -1,4 +1,5 @@
 import Foundation
+import AlgoliaFoundation
 
 public enum SearchableAttribute: Codable, Equatable {
   case `default`(Attribute)

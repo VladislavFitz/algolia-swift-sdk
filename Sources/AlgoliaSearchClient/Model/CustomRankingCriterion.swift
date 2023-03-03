@@ -1,4 +1,5 @@
 import Foundation
+import AlgoliaFoundation
 
 public enum CustomRankingCriterion: Codable, Equatable {
   case asc(Attribute)
