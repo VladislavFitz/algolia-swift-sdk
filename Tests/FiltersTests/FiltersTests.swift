@@ -22,7 +22,7 @@ class FiltersTests: XCTestCase {
     group.add(facetFilter)
     group.add(numericFilter)
     XCTAssertEqual(group.description, """
-    ( "_tags":"someTag" AND "size":"36.0" AND "price":1.0 TO 10.0 )
+    ( "_tags":"someTag" AND "price":1.0 TO 10.0 AND "size":"36.0" )
     """)
     XCTAssertEqual(group.filters(withAttribute: "size").first as? FacetFilter, facetFilter)
     group.remove(facetFilter)
@@ -52,7 +52,7 @@ class FiltersTests: XCTestCase {
     group.add(availableFilter)
     group.add(colorFilter)
     XCTAssertEqual(group.description, """
-    ( "price":"99.9" OR "isAvailable":"true" OR "color":"red" )
+    ( "color":"red" OR "isAvailable":"true" OR "price":"99.9" )
     """)
     XCTAssertEqual(group.filters(withAttribute: "isAvailable"), [availableFilter])
     XCTAssertEqual(group.filters(withAttribute: "price"), [priceFilter])
