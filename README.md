@@ -38,6 +38,12 @@ let package = Package(
 )
 ```
 
+## Products
+
+- [Search client](/Sources/AlgoliaSearchClient) - client for search and indexing requests
+- [Insights client](/Sources/AlgoliaInsightsClient) - client for the [Insights API](https://www.algolia.com/doc/api-client/methods/insights/) which lets you capture click, conversion, and view events to help you understand how your users interact with your digital experience.
+- [Filters](Sources/AlgoliaFilters) - component which provides a user-friendly interface for managing filters
+
 ## Getting started
 
 ### Initialize the client
