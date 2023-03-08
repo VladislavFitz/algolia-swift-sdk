@@ -11,14 +11,6 @@ let package = Package(
     .tvOS(.v13)
   ],
   products: [
-    //    .library(
-//      name: "TestHelper",
-//      targets: ["TestHelper"]
-//    ),
-//    .library(
-//      name: "AlgoliaFoundation",
-//      targets: ["AlgoliaFoundation"]
-//    ),
     .library(
       name: "AlgoliaSearchClient",
       targets: ["AlgoliaSearchClient"]
