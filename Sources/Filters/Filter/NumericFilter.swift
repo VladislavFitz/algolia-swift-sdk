@@ -5,7 +5,6 @@ import Foundation
  # See also:
  [Reference](https:www.algolia.com/doc/guides/managing-results/refine-results/filtering/how-to/filter-by-numeric-value/)
  */
-
 struct NumericFilter: Filter, Hashable, Equatable {
   public enum ValueType: Hashable {
     case range(ClosedRange<Double>)

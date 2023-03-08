@@ -5,7 +5,6 @@ import Foundation
  # See also:
  [Reference](https:www.algolia.com/doc/guides/managing-results/refine-results/filtering/how-to/filter-by-tags/)
  */
-
 struct TagFilter: Filter, Hashable, Equatable {
   public let attribute: Attribute = "_tags"
   public var isNegated: Bool
