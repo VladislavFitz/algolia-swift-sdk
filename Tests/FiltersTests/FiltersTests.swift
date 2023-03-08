@@ -1,10 +1,9 @@
+import Combine
 @testable import Filters
 import Foundation
-import Combine
 import XCTest
 
 class FiltersTests: XCTestCase {
-
   var filtersSubscription: AnyCancellable?
   var andGroupSubscription: AnyCancellable?
   var orGroupSubscription: AnyCancellable?
@@ -18,7 +17,7 @@ class FiltersTests: XCTestCase {
     }
     let tagFilter = "someTag" as TagFilter
     let facetFilter = FacetFilter(attribute: "size", value: 36)
-    let numericFilter = NumericFilter(attribute: "price", range: 1...10)
+    let numericFilter = NumericFilter(attribute: "price", range: 1 ... 10)
     group.add(tagFilter)
     group.add(facetFilter)
     group.add(numericFilter)
@@ -69,7 +68,7 @@ class FiltersTests: XCTestCase {
     let filters = Filters()
 
     let exp = expectation(description: "exp")
-    exp.expectedFulfillmentCount = 3
+    exp.expectedFulfillmentCount = 7
 
     filtersSubscription = filters.$groups
       .sink { _ in
@@ -87,12 +86,12 @@ class FiltersTests: XCTestCase {
 
     andGroup.add("someTag" as TagFilter)
     andGroup.add(FacetFilter(attribute: "size", floatValue: 36))
-    andGroup.add(NumericFilter(attribute: "price", range: 1...10))
+    andGroup.add(NumericFilter(attribute: "price", range: 1 ... 10))
 
     let orGroup = OrFilterGroup<FacetFilter>()
 
-    orGroupSubscription = orGroup.$filters.sink { group in
-      print(group)
+    orGroupSubscription = orGroup.$filters.sink { _ in
+      exp.fulfill()
     }
 
     orGroup.add(FacetFilter(attribute: "price", value: 99.90))
@@ -100,9 +99,11 @@ class FiltersTests: XCTestCase {
     orGroup.add(FacetFilter(attribute: "color", value: "red"))
 
     filters.groups["anotherGroup"] = orGroup
-
+    // swiftlint:disable line_length
+    XCTAssertEqual(filters.description, """
+    ( "_tags":"someTag" AND "price":1.0 TO 10.0 AND "size":"36.0" ) AND ( "color":"red" OR "isAvailable":"true" OR "price":"99.9" )
+    """)
+    // swiftlint:enable line_length
     wait(for: [exp], timeout: 1)
-
   }
-
 }

@@ -1,5 +1,5 @@
-import Foundation
 import AlgoliaFoundation
+import Foundation
 
 /** Defines filter representing a numeric relation or a range
  # See also:
@@ -7,7 +7,6 @@ import AlgoliaFoundation
  */
 
 struct NumericFilter: Filter, Hashable, Equatable {
-
   public enum ValueType: Hashable {
     case range(ClosedRange<Double>)
     case comparison(Operator, Double)
@@ -41,7 +40,6 @@ struct NumericFilter: Filter, Hashable, Equatable {
     public var description: String {
       return rawValue
     }
-
   }
 
   public let attribute: Attribute
@@ -54,40 +52,45 @@ struct NumericFilter: Filter, Hashable, Equatable {
     self.value = value
   }
 
-  public init(attribute: Attribute, range: ClosedRange<Double>, isNegated: Bool = false) {
-    self.init(attribute: attribute, value: .range(range), isNegated: isNegated)
+  public init(attribute: Attribute,
+              range: ClosedRange<Double>,
+              isNegated: Bool = false) {
+    self.init(attribute: attribute,
+              value: .range(range),
+              isNegated: isNegated)
   }
 
-  public init(attribute: Attribute, `operator`: Operator, value: Double, isNegated: Bool = false) {
-    self.init(attribute: attribute, value: .comparison(`operator`, value), isNegated: isNegated)
+  public init(attribute: Attribute,
+              operator: Operator,
+              value: Double,
+              isNegated: Bool = false) {
+    self.init(attribute: attribute,
+              value: .comparison(`operator`, value),
+              isNegated: isNegated)
   }
-
 }
 
 extension NumericFilter.ValueType: CustomStringConvertible {
-
   public var description: String {
     switch self {
-    case .range(let range):
+    case let .range(range):
       return "\(range.lowerBound) – \(range.upperBound)"
-    case .comparison(let compOperator, let value):
+    case let .comparison(compOperator, value):
       return "\(compOperator.description) \(value)"
     }
   }
-
 }
 
 extension NumericFilter: CustomStringConvertible {
-
   public var description: String {
     let expression: String
     switch value {
-    case .comparison(let `operator`, let value):
+    case let .comparison(`operator`, value):
       expression = """
       "\(attribute)" \(`operator`.rawValue) \(value)
       """
 
-    case .range(let range):
+    case let .range(range):
       expression = """
       "\(attribute)":\(range.lowerBound) TO \(range.upperBound)
       """
@@ -95,5 +98,4 @@ extension NumericFilter: CustomStringConvertible {
     let prefix = isNegated ? "NOT " : ""
     return prefix + expression
   }
-
 }

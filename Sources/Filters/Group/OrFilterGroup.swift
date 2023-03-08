@@ -1,11 +1,10 @@
-import Foundation
 import AlgoliaFoundation
+import Foundation
 
 /// Disjunctive filter group сombines filters with the logical operator "or".
 /// Can contain filters of the same type only (facet, numeric or tag).
-final public class OrFilterGroup<GroupFilter: Filter>: FilterGroup {
-
-  @Published private(set) public var filters: [GroupFilter]
+public final class OrFilterGroup<GroupFilter: Filter>: FilterGroup {
+  @Published public private(set) var filters: [GroupFilter]
 
   public var separator: String = " OR "
 
@@ -39,14 +38,11 @@ final public class OrFilterGroup<GroupFilter: Filter>: FilterGroup {
   public func removeAll() {
     filters.removeAll()
   }
-
 }
 
 extension OrFilterGroup: CustomStringConvertible {
-
   /// Textual representation of the group accepted by Algolia API
   public var description: String {
-    return "( \(filters.map { $0.description }.joined(separator: " OR ")) )"
+    return "( \(filters.map { $0.description }.sorted().joined(separator: " OR ")) )"
   }
-
 }

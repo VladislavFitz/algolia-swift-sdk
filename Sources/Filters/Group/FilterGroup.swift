@@ -1,8 +1,7 @@
-import Foundation
 import AlgoliaFoundation
+import Foundation
 
 public protocol FilterGroup: CustomStringConvertible {
-
   associatedtype Filter
 
   /// List of filters in the group
@@ -25,5 +24,4 @@ public protocol FilterGroup: CustomStringConvertible {
 
   /// Remove all filters from the group
   func removeAll()
-
 }

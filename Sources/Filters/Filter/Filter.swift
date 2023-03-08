@@ -2,7 +2,6 @@ import AlgoliaFoundation
 
 /// Abstract filter protocol
 public protocol Filter: Equatable, CustomStringConvertible {
-
   /// Identifier of field affected by filter
   var attribute: Attribute { get }
 
@@ -12,15 +11,12 @@ public protocol Filter: Equatable, CustomStringConvertible {
   /// Replaces isNegated property by a new value
   /// parameter value: new value of isNegated
   mutating func not(value: Bool)
-
 }
 
 public extension Filter {
-
   mutating func not(value: Bool = true) {
     isNegated = value
   }
-
 }
 
 @discardableResult public prefix func ! <T: Filter>(filter: T) -> T {
