@@ -13,7 +13,7 @@ let filters = Filters()
 
 let andGroup = AndFilterGroup()
 
-andGroup.add("someTag" as TagFilter)
+andGroup.add("free shipping" as TagFilter)
 andGroup.add(FacetFilter(attribute: "size", floatValue: 36))
 andGroup.add(NumericFilter(attribute: "price", range: 1...10))
 
@@ -28,7 +28,7 @@ orGroup.add(FacetFilter(attribute: "color", value: "red"))
 filters.groups["orGroup"] = orGroup
 
 let searchParameters = SearchParameters {
-  Query("jimmie")
+  Query("t-shirt")
   Filters(filters.description)
 }
 
