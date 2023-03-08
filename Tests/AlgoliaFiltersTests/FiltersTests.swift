@@ -1,5 +1,5 @@
+@testable import AlgoliaFilters
 import Combine
-@testable import Filters
 import Foundation
 import XCTest
 

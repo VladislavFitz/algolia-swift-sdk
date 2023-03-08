@@ -11,14 +11,14 @@ let package = Package(
     .tvOS(.v13)
   ],
   products: [
-    .library(
-      name: "TestHelper",
-      targets: ["TestHelper"]
-    ),
-    .library(
-      name: "AlgoliaFoundation",
-      targets: ["AlgoliaFoundation"]
-    ),
+    //    .library(
+//      name: "TestHelper",
+//      targets: ["TestHelper"]
+//    ),
+//    .library(
+//      name: "AlgoliaFoundation",
+//      targets: ["AlgoliaFoundation"]
+//    ),
     .library(
       name: "AlgoliaSearchClient",
       targets: ["AlgoliaSearchClient"]
@@ -28,8 +28,8 @@ let package = Package(
       targets: ["AlgoliaInsightsClient"]
     ),
     .library(
-      name: "Filters",
-      targets: ["Filters"]
+      name: "AlgoliaFilters",
+      targets: ["AlgoliaFilters"]
     )
   ],
   dependencies: [
@@ -63,7 +63,7 @@ let package = Package(
       ]
     ),
     .target(
-      name: "Filters",
+      name: "AlgoliaFilters",
       dependencies: [
         .target(name: "AlgoliaFoundation"),
         .product(name: "Logging", package: "swift-log")
@@ -96,11 +96,11 @@ let package = Package(
       ]
     ),
     .testTarget(
-      name: "FiltersTests",
+      name: "AlgoliaFiltersTests",
       dependencies: [
         .target(name: "AlgoliaFoundation"),
         .product(name: "Logging", package: "swift-log"),
-        .target(name: "Filters")
+        .target(name: "AlgoliaFilters")
       ]
     )
   ]
