@@ -7,12 +7,12 @@ import AlgoliaFoundation
  */
 
 struct NumericFilter: Filter, Hashable, Equatable {
-  
+
   public enum ValueType: Hashable {
     case range(ClosedRange<Double>)
     case comparison(Operator, Double)
   }
-  
+
   public enum Operator: String, CustomStringConvertible {
     case lessThan = "<"
     case lessThanOrEqual = "<="
@@ -20,7 +20,7 @@ struct NumericFilter: Filter, Hashable, Equatable {
     case notEquals = "!="
     case greaterThanOrEqual = ">="
     case greaterThan = ">"
-    
+
     var inversion: Operator {
       switch self {
       case .equals:
@@ -37,35 +37,35 @@ struct NumericFilter: Filter, Hashable, Equatable {
         return .equals
       }
     }
-    
+
     public var description: String {
       return rawValue
     }
-    
+
   }
-  
+
   public let attribute: Attribute
   public let value: ValueType
   public var isNegated: Bool
-  
+
   init(attribute: Attribute, value: ValueType, isNegated: Bool) {
     self.attribute = attribute
     self.isNegated = isNegated
     self.value = value
   }
-  
+
   public init(attribute: Attribute, range: ClosedRange<Double>, isNegated: Bool = false) {
     self.init(attribute: attribute, value: .range(range), isNegated: isNegated)
   }
-  
+
   public init(attribute: Attribute, `operator`: Operator, value: Double, isNegated: Bool = false) {
     self.init(attribute: attribute, value: .comparison(`operator`, value), isNegated: isNegated)
   }
-  
+
 }
 
 extension NumericFilter.ValueType: CustomStringConvertible {
-  
+
   public var description: String {
     switch self {
     case .range(let range):
@@ -74,11 +74,11 @@ extension NumericFilter.ValueType: CustomStringConvertible {
       return "\(compOperator.description) \(value)"
     }
   }
-  
+
 }
 
 extension NumericFilter: CustomStringConvertible {
-  
+
   public var description: String {
     let expression: String
     switch value {
@@ -95,5 +95,5 @@ extension NumericFilter: CustomStringConvertible {
     let prefix = isNegated ? "NOT " : ""
     return prefix + expression
   }
-  
+
 }

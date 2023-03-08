@@ -100,8 +100,8 @@ let package = Package(
       dependencies: [
         .target(name: "AlgoliaFoundation"),
         .product(name: "Logging", package: "swift-log"),
-        .target(name: "Filters"),
+        .target(name: "Filters")
       ]
-    ),
+    )
   ]
 )
