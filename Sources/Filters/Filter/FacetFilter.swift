@@ -1,14 +1,14 @@
 import Foundation
 import AlgoliaFoundation
 
+//swiftlint:disable line_length
 /** Defines facet filter
- # See also:
- [Filter by string](https:www.algolia.com/doc/guides/managing-results/refine-results/filtering/how-to/filter-by-string/)
- [Filter by boolean](https:www.algolia.com/doc/guides/managing-results/refine-results/filtering/how-to/filter-by-boolean/)
- */
-
+- SeeAlso:
+  - [Filter by string](https://algolia.com/doc/guides/managing-results/refine-results/filtering/how-to/filter-by-string/)
+  - [Filter by boolean](https://algolia.com/doc/guides/managing-results/refine-results/filtering/how-to/filter-by-boolean/)
+*/
 public struct FacetFilter: Filter, Hashable, Equatable {
-
+//swiftlint:enable line_length
   public let attribute: Attribute
   public let value: ValueType
   public var isNegated: Bool
