@@ -1,4 +1,5 @@
 // swiftlint:disable cyclomatic_complexity
+import AlgoliaFoundation
 public enum RankingCriterion: Codable, Equatable {
   case asc(Attribute)
   case desc(Attribute)

@@ -1,3 +1,4 @@
+import AlgoliaFoundation
 import Foundation
 
 public enum SearchableAttribute: Codable, Equatable {
