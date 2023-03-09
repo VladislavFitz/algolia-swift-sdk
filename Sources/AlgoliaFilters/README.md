@@ -27,10 +27,10 @@ orGroup.add(FacetFilter(attribute: "color", value: "red"))
 
 filters.groups["orGroup"] = orGroup
 
-let searchParameters = SearchParameters {
-  Query("t-shirt")
-  Filters(filters.description)
-}
+var searchParameters = SearchParameters()
+searchParameters.query = "t-shirt"
+searchParameters.filters = filters.description
 
+let index = SearchClient(appID: "appID", apiKey: "apiKey").index(withName: "")
 let searchResponse = try await index.search(parameters: searchParameters)
 ```
