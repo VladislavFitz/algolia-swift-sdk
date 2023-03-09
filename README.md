@@ -32,7 +32,7 @@ If you're a framework author and use Swift API Client as a dependency, update yo
 ```swift
 let package = Package(
     dependencies: [
-        .package(url: "https://github.com/VladislavFitz/algolia-swift-sdk", from: "0.2.0")
+        .package(url: "https://github.com/VladislavFitz/algolia-swift-sdk", from: "0.3.0")
     ],
     // ...
 )
