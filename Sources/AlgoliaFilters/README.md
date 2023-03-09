@@ -1,4 +1,4 @@
-#  Filters
+#  Algolia Filters
 
 The Filters component provides a user-friendly interface for managing filters and ensures that the resulting filters are valid and can be used with the Algolia search engine. It builds a guaranteed valid string that matches the Algolia SQL-like filters syntax and can be used in the [filters](https://www.algolia.com/doc/api-reference/api-parameters/filters/) search parameter. 
 
