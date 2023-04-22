@@ -1,7 +1,7 @@
 import AlgoliaFoundation
 import Foundation
 
-public struct AroundPrecisionFromDistance: Codable, Equatable {
+public struct AroundPrecisionFromDistance: Codable, Hashable {
   public let from: Int
   public let value: Int
 

@@ -7,7 +7,7 @@ public protocol DeleteQueryParameter: Encodable, URLEncodable {
 
 @resultBuilder
 enum DeleteQueryParametersBuilder {
-  static func buildBlock() -> [SearchParameter] { [] }
+  static func buildBlock() -> [any SearchParameter] { [] }
 }
 
 extension DeleteQueryParametersBuilder {

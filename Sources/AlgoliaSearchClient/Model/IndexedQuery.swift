@@ -2,7 +2,7 @@ import AlgoliaFoundation
 import Foundation
 
 /// The composition of search parameters with an associated index name
-public struct IndexedQuery {
+public struct IndexedQuery: Equatable {
   /// The name of the index to search in.
   public let indexName: IndexName
 
@@ -11,7 +11,7 @@ public struct IndexedQuery {
 
   /// - parameter indexName: The name of the index to search in.
   /// - parameter searchParameters: The search parameters to filter results.
-  public init(indexName: IndexName, searchParameters: SearchParameters) {
+  public init(indexName: IndexName, searchParameters: SearchParameters = .init([])) {
     self.indexName = indexName
     self.searchParameters = searchParameters
   }

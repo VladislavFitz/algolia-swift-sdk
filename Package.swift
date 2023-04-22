@@ -22,7 +22,11 @@ let package = Package(
     .library(
       name: "AlgoliaFilters",
       targets: ["AlgoliaFilters"]
-    )
+    ),
+    .library(
+      name: "AlgoliaSearch",
+      targets: ["AlgoliaSearch"]
+    ),
   ],
   dependencies: [
     .package(url: "https://github.com/apple/swift-log.git", from: "1.4.0")
@@ -61,6 +65,13 @@ let package = Package(
         .product(name: "Logging", package: "swift-log")
       ]
     ),
+    .target(
+      name: "AlgoliaSearch",
+      dependencies: [
+        .target(name: "AlgoliaSearchClient"),
+        .product(name: "Logging", package: "swift-log")
+      ]
+    ),
     .testTarget(
       name: "AlgoliaFoundationTests",
       dependencies: [
@@ -93,6 +104,14 @@ let package = Package(
         .target(name: "AlgoliaFoundation"),
         .product(name: "Logging", package: "swift-log"),
         .target(name: "AlgoliaFilters")
+      ]
+    ),
+    .testTarget(
+      name: "AlgoliaSearchTests",
+      dependencies: [
+        .target(name: "AlgoliaFoundation"),
+        .product(name: "Logging", package: "swift-log"),
+        .target(name: "AlgoliaSearch")
       ]
     )
   ]

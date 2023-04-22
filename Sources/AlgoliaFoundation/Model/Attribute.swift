@@ -1,4 +1,3 @@
-import AlgoliaFoundation
 import Foundation
 
 public struct Attribute: StringWrapper {

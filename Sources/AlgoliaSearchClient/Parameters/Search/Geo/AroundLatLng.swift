@@ -19,7 +19,7 @@ public struct AroundLatLng: ValueRepresentable {
   }
 }
 
-extension AroundLatLng: SearchParameter {}
+extension AroundLatLng: SearchParameter, Hashable {}
 
 public extension SearchParameters {
   /**

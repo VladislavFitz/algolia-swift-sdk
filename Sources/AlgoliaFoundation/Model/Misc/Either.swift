@@ -39,6 +39,8 @@ public enum Either<A, B> {
 
 extension Either: Equatable where A: Equatable, B: Equatable {}
 
+extension Either: Hashable where A: Hashable, B: Hashable {}
+
 extension Either: Encodable where A: Encodable, B: Encodable {
   public func encode(to encoder: Encoder) throws {
     switch self {

@@ -1,7 +1,7 @@
 import AlgoliaFoundation
 import Foundation
 
-public struct Polygon: Equatable {
+public struct Polygon: Hashable {
   public let points: [Point]
 
   public init(points: [Point]) {

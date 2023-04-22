@@ -4,7 +4,7 @@ import Foundation
 /**
  A set of geo-coordinates latitude and longitude.
  */
-public struct Point: Equatable {
+public struct Point: Hashable {
   public let latitude: Double
   public let longitude: Double
 

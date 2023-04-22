@@ -4,7 +4,7 @@ import Foundation
  Search inside a rectangular area (in geo coordinates).
  The rectangle is defined by two diagonally opposite points (hereafter [point1] and [point2]).
  */
-public struct BoundingBox: Equatable {
+public struct BoundingBox: Hashable {
   public let point1: Point
   public let point2: Point
 

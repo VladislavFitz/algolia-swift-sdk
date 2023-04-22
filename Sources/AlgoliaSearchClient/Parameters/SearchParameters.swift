@@ -2,20 +2,39 @@ import AlgoliaFoundation
 import Foundation
 
 public struct SearchParameters {
-  internal var parameters: [String: SearchParameter]
+  
+  internal var parameters: [String: any SearchParameter]
 
-  public init(_ parameters: [SearchParameter]) {
+  public init(_ parameters: [any SearchParameter]) {
     self.parameters = .init(uniqueKeysWithValues: parameters.map { ($0.key, $0) })
   }
 
-  public init(_ parameters: SearchParameter...) {
+  public init(_ parameters: any SearchParameter...) {
     self.init(parameters)
   }
 
-  public init(@SearchParametersBuilder _ content: () -> [SearchParameter]) {
+  public init(@SearchParametersBuilder _ content: () -> [any SearchParameter]) {
     self = Self(content())
   }
 }
+
+extension SearchParameters: Equatable {
+  
+  public static func == (lhs: SearchParameters, rhs: SearchParameters) -> Bool {
+    for (key, lValue) in lhs.parameters {
+      if let rValue = rhs.parameters[key] {
+        if AnyHashable(lValue) != AnyHashable(rValue) {
+          return false
+        }
+      } else {
+        return false
+      }
+    }
+    return true
+  }
+  
+}
+
 
 extension SearchParameters: Encodable {
   public func encode(to encoder: Encoder) throws {

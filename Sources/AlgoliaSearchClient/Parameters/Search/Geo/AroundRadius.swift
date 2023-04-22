@@ -6,7 +6,7 @@ import Foundation
    enabled by aroundLatLngViaIP or aroundLatLng.
  - [Documentation](https://www.algolia.com/doc/api-reference/api-parameters/aroundRadius/?language=swift)
  */
-public struct AroundRadius: ValueRepresentable {
+public struct AroundRadius: ValueRepresentable, Hashable {
   static let key = "aroundRadius"
   public let key: String
   public let value: Value
@@ -18,7 +18,7 @@ public struct AroundRadius: ValueRepresentable {
 }
 
 public extension AroundRadius {
-  enum Value: Codable, Equatable, URLEncodable {
+  enum Value: Codable, Hashable, URLEncodable {
     /**
       Disables the radius logic, allowing all results to be returned, regardless of distance.
       Ranking is still based on proximity to the central axis point.

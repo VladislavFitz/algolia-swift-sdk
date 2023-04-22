@@ -2,14 +2,14 @@
 import AlgoliaFoundation
 import Foundation
 
-public struct FiltersStorage: Equatable {
+public struct FiltersStorage: Hashable {
   public var units: [Unit]
 
   public init(units: [Unit]) {
     self.units = units
   }
 
-  public enum Unit: Equatable {
+  public enum Unit: Hashable {
     case and([String])
     case or([String])
   }

@@ -11,7 +11,7 @@ public struct SearchResponse: Decodable {
   /**
    The number of hits matched by the query.
    */
-  var nbHits: Int?
+  public var nbHits: Int?
 
   /**
     Index of the current page (zero-based). See the Query.page search parameter.
@@ -24,6 +24,13 @@ public struct SearchResponse: Decodable {
    - Not returned if you use offset & length for pagination.
    */
   public var hitsPerPage: Int?
+  
+  /**
+   The number of returned pages. Calculation is based on the total number of hits (nbHits) divided by the number of
+   hits per page (hitsPerPage), rounded up to the nearest integer.
+  - Not returned if you use offset & length for pagination.
+  */
+  public var nbPages: Int?
 
   /**
     Returned only by the EndpointSearch.browse method.
