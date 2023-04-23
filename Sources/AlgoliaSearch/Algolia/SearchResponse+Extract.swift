@@ -7,22 +7,21 @@
 
 import Foundation
 import AlgoliaSearchClient
+import AlgoliaFoundation
 
-public extension SearchResponse {
+extension AlgoliaSearchClient.SearchResponse: SearchResponse {
   
   func fetchHits<T: Decodable>() throws -> [T] {
     let hitsData = try JSONEncoder().encode(hits)
     return try JSONDecoder().decode([T].self, from: hitsData)
   }
-  
-  var canLoadMore: Bool {
-    if let page, let nbPages {
-      if page == nbPages-1 {
-        return false
-      }
-    }
-    return true
+    
+  public func fetchPage() -> AlgoliaHitsPage {
+    AlgoliaHitsPage(page: page!,
+                    hits: try! fetchHits(),
+                    hasPrevious: page! > 0,
+                    hasNext: page! < nbPages!-1)
   }
   
+  
 }
-
