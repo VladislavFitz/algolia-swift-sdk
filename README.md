@@ -22,7 +22,9 @@ Adopts the latest Swift features and provides the best developer experience.
 
 - [Algolia Insights client](/Sources/AlgoliaInsightsClient) - API client for the [Insights requests](https://www.algolia.com/doc/api-client/methods/insights/) which lets you capture click, conversion, and view events to help you understand how your users interact with your search and discovery experience.
 
-- [Algolia Filters](Sources/AlgoliaFilters) - library that provides  building blocks for creating and combining filters for Algolia Search. It offers a convenient, strongly typed API for modifying and updating the state of filters. The library ensures that the resulting filter expression is always valid and can be used as a search parameter.
+- [Algolia Filters](Sources/AlgoliaFilters) - library that provides building blocks for creating and combining filters for Algolia Search. It offers a convenient, strongly typed API for modifying and updating the state of filters. The library ensures that the resulting filter expression is always valid and can be used as a search parameter.
+
+- [Algolia Search](Sources/AlgoliaSearch) - a powerful and easy-to-use tool designed to seamlessly integrate with the Algolia search engine in your Apple platform applications. It provides a set of classes and protocols that enable developers to build customized search experiences with minimal effort. The library includes an AlgoliaSearch class for performing search requests, customizable search request and response handling, pagination support, and SwiftUI components for displaying search results. With its focus on concurrency and performance optimizations, the Algolia Search library ensures that your applications deliver fast and efficient search experiences to your users.
 
 ## Install
 
@@ -39,8 +41,17 @@ If you're a framework author and use Swift API Client as a dependency, update yo
 ```swift
 let package = Package(
     dependencies: [
-        .package(url: "https://github.com/VladislavFitz/algolia-swift-sdk", from: "0.3.0")
+        .package(url: "https://github.com/VladislavFitz/algolia-swift-sdk", from: "0.4.0")
     ],
     // ...
 )
 ```
+
+## Contributing
+
+We welcome contributions to this library! Feel free to open an issue to report a bug or request a feature, or submit a pull request with your changes.
+
+
+## License
+
+This library is released under the [MIT License](LICENSE).

@@ -7,16 +7,39 @@
 
 import Foundation
 
+/// `Hits` is a generic class responsible for handling paginated data from a `PageSource`.
+/// It is designed to be used with SwiftUI and is an `ObservableObject` that can be bound to UI elements.
+///
+/// Usage:
+/// ```
+/// let source = CustomPageSource()
+/// let hits = Hits(source: source)
+/// ```
+///
+/// - Note: `Source` must conform to the `PageSource` protocol.
 public final class Hits<Source: PageSource>: ObservableObject {
   
+  /// An array of fetched items.
   @Published public var hits: [Source.Item]
+  
+  /// Indicates whether the data is being loaded.
   @Published public var isLoading: Bool
+  
+  /// Indicates whether there is a previous page of data.
   @Published public var hasPrevious: Bool
+  
+  /// Indicates whether there is a next page of data.
   @Published public var hasNext: Bool
   
+  /// The source object that conforms to the `PageSource` protocol.
   let source: Source
+  
+  /// A `PageStorage` object that stores the fetched pages.
   private let pageStorage: PageStorage<Source.ItemsPage>
   
+  /// Initializes a new instance of `Hits` with a given `source` object.
+  ///
+  /// - Parameter source: The source object that conforms to the `PageSource` protocol.
   public init(source: Source) {
     self.source = source
     self.pageStorage = PageStorage()
@@ -26,6 +49,7 @@ public final class Hits<Source: PageSource>: ObservableObject {
     self.hasNext = true
   }
   
+  /// Loads the next page of data.
   public func loadNext() {
     Task { @MainActor in
       let page: Source.ItemsPage
@@ -40,6 +64,7 @@ public final class Hits<Source: PageSource>: ObservableObject {
     }
   }
   
+  /// Loads the previous page of data.
   public func loadPrevious() {
     Task { @MainActor in
       if let minPage = await pageStorage.pages.first, minPage.hasPrevious {
@@ -51,6 +76,7 @@ public final class Hits<Source: PageSource>: ObservableObject {
     }
   }
   
+  /// Resets the stored data and pagination states.
   @MainActor
   internal func reset() async {
     await pageStorage.clear()
@@ -59,11 +85,15 @@ public final class Hits<Source: PageSource>: ObservableObject {
     hasNext = true
   }
 
-  
+  /// An enumeration of possible errors that can occur while working with `Hits`.
   public enum Error: LocalizedError {
+    /// Indicates an attempt to access a hit on an unaccessible page.
     case indexOutOfRange
+    
+    /// Indicates an error occurred during a search request.
     case requestError(Swift.Error)
     
+    /// A localized description of the error.
     public var errorDescription: String? {
       switch self {
       case .requestError(let error):
