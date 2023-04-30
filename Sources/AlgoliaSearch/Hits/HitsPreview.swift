@@ -19,7 +19,7 @@ class HitsPreview: PreviewProvider {
   
   static var previews: some View {
     NavigationView {
-      HitsList(Hits(source: source), hitView: { hit in
+      InfiniteList(InfiniteListViewModel(source: source), item: { hit in
         Text("Hit found")
       }, noResults: {
         Text("No results found")

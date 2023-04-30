@@ -1,5 +1,5 @@
 //
-//  HitsList.swift
+//  InfiniteList.swift
 //  
 //
 //  Created by Vladislav Fitc on 23.04.2023.
@@ -8,13 +8,13 @@
 import Foundation
 import SwiftUI
 
-/// `HitsList` is a SwiftUI generic view responsible for displaying a list of paginated data provided by the `Hits` class.
+/// `InfiniteList` is a SwiftUI generic view responsible for displaying a list of paginated data provided by the `InfiniteScrollViewModel` class.
 /// It provides an easy way to render hits as well as handling pagination and no results view.
 ///
 /// Usage:
 /// ```
-/// let hits = Hits(source: CustomPageSource())
-/// let hitsList = HitsList(hits, hitView: { hit in
+/// let infiniteList = InfiniteList(source: CustomPageSource())
+/// let infiniteList = InfiniteList(hits, hitView: { hit in
 ///   Text(hit.title)
 /// }, noResults: {
 ///   Text("No results found")
@@ -22,14 +22,14 @@ import SwiftUI
 /// ```
 ///
 /// - Note: This view is available from iOS 15.0 onwards.
-@available(iOS 15.0, *)
-public struct HitsList<HitView: View, NoResults: View, Source: PageSource>: View {
+@available(iOS 15.0, macOS 12.0, *)
+public struct InfiniteList<HitView: View, NoResults: View, Item, P: Page<Item>>: View {
   
-  /// An instance of `Hits` object.
-  @StateObject public var hits: Hits<Source>
+  /// An instance of `InfiniteScrollViewModel` object.
+  @StateObject public var viewModel: InfiniteListViewModel<P>
   
   /// A closure that returns a `HitView` for a given `Source.Item`.
-  let hit: (Source.Item) -> HitView
+  let itemView: (Item) -> HitView
   
   /// A closure that returns a `NoResults` view to display when there are no hits.
   let noResults: () -> NoResults
@@ -37,37 +37,37 @@ public struct HitsList<HitView: View, NoResults: View, Source: PageSource>: View
   /// Initializes a new instance of `HitsList` with the provided `hits`, `hitView` and `noResults` closures.
   ///
   /// - Parameters:
-  ///   - hits: An instance of `Hits` object.
+  ///   - hits: An instance of `InfiniteScrollViewModel` object.
   ///   - hitView: A closure that returns a `HitView` for a given `Source.Item`.
   ///   - noResults: A closure that returns a `NoResults` view to display when there are no hits.
-  public init(_ hits: Hits<Source>,
-              @ViewBuilder hitView: @escaping (Source.Item) -> HitView,
+  public init(_ hits: InfiniteListViewModel<P>,
+              @ViewBuilder item: @escaping (Item) -> HitView,
               @ViewBuilder noResults: @escaping () -> NoResults) {
-    _hits = StateObject(wrappedValue: hits)
-    hit = hitView
+    _viewModel = StateObject(wrappedValue: hits)
+    self.itemView = item
     self.noResults = noResults
   }
   
   public var body: some View {
-    if hits.hits.isEmpty && !hits.hasNext {
+    if viewModel.items.isEmpty && !viewModel.hasNext {
       noResults()
         .frame(maxHeight: .infinity)
     } else {
       ScrollView {
         LazyVStack {
-          if hits.hasPrevious {
+          if viewModel.hasPrevious {
             ProgressView()
               .task {
-                hits.loadPrevious()
+                viewModel.loadPrevious()
               }
           }
-          ForEach(0..<hits.hits.count, id: \.self) { index in
-            hit(hits.hits[index])
+          ForEach(0..<viewModel.items.count, id: \.self) { index in
+            itemView(viewModel.items[index])
           }
-          if hits.hasNext {
+          if viewModel.hasNext {
             ProgressView()
               .task {
-                hits.loadNext()
+                viewModel.loadNext()
               }
           }
         }

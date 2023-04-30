@@ -56,14 +56,14 @@ The library will automatically handle the search request and update the `hits` p
 
 ### Displaying search results
 
-To display the search results, you can use the provided `HitsList` SwiftUI component. Just pass your `Hits` instance and provide two view builders, one for each item in the search results and one for when there are no results:
+To display the search results, you can use the provided `InfiniteList` SwiftUI component. Just pass your `InifiniteListViewModel` instance and provide two view builders, one for each item in the search results and one for when there are no results:
 
 ```swift
-HitsList(algoliaSearch.hits,
-         hitView: { (item: CustomDecodableItem) in
-             Text(item.title)
-         },
-         noResults: {
-             Text("No results found.")
-         })
+InfiniteList(algoliaSearch.hits,
+             hitView: { (item: CustomDecodableItem) in
+              Text(item.title)
+             },
+             noResults: {
+              Text("No results found.")
+             })
 ```

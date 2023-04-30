@@ -1,5 +1,5 @@
 //
-//  HitsSource.swift
+//  PageSource.swift
 //  
 //
 //  Created by Vladislav Fitc on 07.04.2023.
@@ -25,32 +25,30 @@ import Foundation
 ///
 /// - Note: The `Item` and `ItemsPage` associated types represent the type of data contained in the pages
 ///         and the page type itself, respectively.
-public protocol PageSource {
+@available(iOS 13.0.0, *)
+public protocol PageSource<Page> {
     
   /// The associated data type for the items in the pages.
-  associatedtype Item
-  
-  /// The associated page type that conforms to the `Page` protocol.
-  associatedtype ItemsPage: Page<Item>
-  
+  associatedtype Page
+    
   /// Fetches the initial page of data.
   ///
   /// - Returns: The initial `ItemsPage` containing the data.
   /// - Throws: An error if the fetch operation fails.
-  func fetchInitialPage() async throws -> ItemsPage
+  func fetchInitialPage() async throws -> Page
     
   /// Fetches the page before a given page.
   ///
   /// - Parameter page: The `ItemsPage` before which to fetch the data.
   /// - Returns: The previous `ItemsPage` containing the data.
   /// - Throws: An error if the fetch operation fails.
-  func fetchPage(before page: ItemsPage) async throws -> ItemsPage
+  func fetchPage(before page: Page) async throws -> Page
   
   /// Fetches the page after a given page.
   ///
   /// - Parameter page: The `ItemsPage` after which to fetch the data.
   /// - Returns: The next `ItemsPage` containing the data.
   /// - Throws: An error if the fetch operation fails.
-  func fetchPage(after page: ItemsPage) async throws -> ItemsPage
+  func fetchPage(after page: Page) async throws -> Page
   
 }
