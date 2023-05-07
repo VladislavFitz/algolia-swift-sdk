@@ -1,7 +1,10 @@
 import Foundation
 
 /// Structure embedding the calculation of tagged substring in the input string
-public struct TaggedString {
+public final class TaggedString {
+  
+  public typealias MarkedRange = (range: Range<String.Index>, isTagged: Bool)
+  
   /// Input string
   public let input: String
 
@@ -14,20 +17,16 @@ public struct TaggedString {
   /// String comparison options for tags parsing
   public let options: String.CompareOptions
 
-  private lazy var storage: (String, [Range<String.Index>]) = TaggedString.computeRanges(for: input,
-                                                                                         preTag: preTag,
-                                                                                         postTag: postTag,
-                                                                                         options: options)
+  private lazy var storage: (String, [MarkedRange]) = TaggedString.computeRanges(for: input,
+                                                                                      preTag: preTag,
+                                                                                      postTag: postTag,
+                                                                                      options: options)
 
   /// Output string cleansed of the opening and closing tags
   public private(set) lazy var output: String = storage.0
 
-  /// List of ranges of tagged substrings in the output string
-  public private(set) lazy var taggedRanges: [Range<String.Index>] = storage.1
-
-  /// List of ranges of untagged substrings in the output string
-  public private(set) lazy var untaggedRanges: [Range<String.Index>] =
-    TaggedString.computeInvertedRanges(for: output, with: taggedRanges)
+  /// List of ranges for output marked with tagged/untagged flag
+  public private(set) lazy var taggedRanges: [MarkedRange] = storage.1
 
   /**
    - Parameters:
@@ -49,24 +48,15 @@ public struct TaggedString {
     self.options = options
   }
 
-  /// - Returns: The list of tagged substrings of the output string
-  public mutating func taggedSubstrings() -> [Substring] {
-    return taggedRanges.map { output[$0] }
-  }
-
-  /// - Returns: The list of untagged substrings of the output string
-  public mutating func untaggedSubstrings() -> [Substring] {
-    return untaggedRanges.map { output[$0] }
-  }
 
   private static func computeRanges(for string: String,
                                     preTag: String,
                                     postTag: String,
                                     options: String.CompareOptions) -> (output: String,
-                                                                        ranges: [Range<String.Index>]) {
+                                                                        markedRanges: [(range: Range<String.Index>, isTagged: Bool)]) {
     var output = string
     var preStack: [Range<String.Index>] = []
-    var rangesToHighlight = [Range<String.Index>]()
+    var taggedRanges = [Range<String.Index>]()
 
     enum Tag {
       case pre(Range<String.Index>), post(Range<String.Index>)
@@ -95,13 +85,20 @@ public struct TaggedString {
       case let .post(postRange):
         if let lastPre = preStack.last {
           preStack.removeLast()
-          rangesToHighlight.append(.init(uncheckedBounds: (lastPre.lowerBound, postRange.lowerBound)))
+          taggedRanges.append(.init(uncheckedBounds: (lastPre.lowerBound, postRange.lowerBound)))
         }
         output.removeSubrange(postRange)
       }
     }
-
-    return (output, mergeOverlapping(rangesToHighlight))
+    
+    taggedRanges = mergeOverlapping(taggedRanges)
+    let untaggedRanges = computeInvertedRanges(for: output, with: taggedRanges)
+    let sortedMarkedRanges = (
+      taggedRanges.map { (range: $0, isTagged: true) } +
+      untaggedRanges.map { (range: $0, isTagged: false) }
+    ).sorted(by: { $0.0.lowerBound < $1.0.lowerBound })
+    
+    return (output, sortedMarkedRanges)
   }
 
   private static func computeInvertedRanges(for string: String,
@@ -153,9 +150,25 @@ public struct TaggedString {
 }
 
 extension TaggedString: Hashable {
+  
+  public static func == (lhs: TaggedString, rhs: TaggedString) -> Bool {
+    lhs.input == rhs.input && lhs.preTag == rhs.preTag && lhs.postTag == rhs.postTag
+  }
+  
   public func hash(into hasher: inout Hasher) {
     input.hash(into: &hasher)
     preTag.hash(into: &hasher)
     postTag.hash(into: &hasher)
   }
+  
+}
+
+public extension TaggedString {
+  
+  static func algoliaHighlightedString(_ input: String, options: String.CompareOptions = []) -> Self {
+    TaggedString(string: input,
+                 preTag: "<em>",
+                 postTag: "</em>", options: options) as! Self
+  }
+  
 }
