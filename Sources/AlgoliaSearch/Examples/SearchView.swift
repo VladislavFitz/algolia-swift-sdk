@@ -10,12 +10,58 @@ import SwiftUI
 import AlgoliaSearchClient
 import AlgoliaFoundation
 
+struct QuerySuggestion: Decodable {
+  
+  let objectID: String
+  let query: String
+  let popularity: Int
+  
+}
+
+@available(iOS 15.0, *)
+public struct SuggestionsView: View {
+  
+  @StateObject var search = AlgoliaSearch<QuerySuggestion>(applicationID: "latency",
+                                                           apiKey: "927c3fe76d4b52c5a2912973f35a3077",
+                                                           indexName: "STAGING_native_ecom_demo_products_query_suggestions")
+  
+  @Environment(\.isSearching) var isSearching
+  @Environment(\.dismissSearch) private var dismissSearch
+  
+  var query: Binding<String>
+  var isDisplayingSuggestions: Binding<Bool>
+    
+  public var body: some View {
+    if isDisplayingSuggestions.wrappedValue && isSearching {
+      InfiniteList(search.hits, item: { suggestion in
+        Button(action: {
+          query.wrappedValue = suggestion.query
+        }, label: {
+          HStack {
+            Text(suggestion.query)
+          }
+        })
+        Divider()
+      }, noResults: {
+        Text("No results found")
+      })
+//      .onChange(of: query.wrappedValue) { newValue in
+//        search.query.wrappedValue = newValue
+//      }
+    }
+  }
+  
+}
+
 @available(iOS 15.0, *)
 public struct SearchView: View {
   
   @StateObject var search = AlgoliaSearch<InstantSearchHit>(applicationID: "latency",
                                                             apiKey: "1f6fd3a6fb973cb08419fe7d288fa4db",
                                                             indexName: "instant_search")
+  
+  @State var isDisplayingSuggestions: Bool = true
+  @State var searchQuery: String = ""
   
   var indices: [(name: IndexName, title: String)] = [
     (name: "instant_search", title: "Default"),
@@ -53,7 +99,22 @@ public struct SearchView: View {
       }, noResults: {
         Text("No results found")
       })
-      .searchable(text: search.query)
+      .searchable(text: $searchQuery,
+                  prompt: "Laptop, smartphone, tv",
+                  suggestions: {
+        SuggestionsView(query: $searchQuery,
+                        isDisplayingSuggestions: $isDisplayingSuggestions)
+      })
+      .onChange(of: searchQuery, perform: { searchQuery in
+        if searchQuery.isEmpty {
+          search.query.wrappedValue = ""
+//          isDisplayingSuggestions = true
+        }
+      })
+      .onSubmit(of: .search) {
+        isDisplayingSuggestions = false
+        search.query.wrappedValue = searchQuery
+      }
     }
     
   }
