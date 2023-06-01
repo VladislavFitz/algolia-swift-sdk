@@ -5,54 +5,49 @@
 //  Created by Vladislav Fitc on 01.06.2023.
 //
 
-import Foundation
-import SwiftUI
+import AlgoliaFoundation
 import Combine
 
-protocol SuggestionViewModel: ObservableObject {
-  
-  var suggestions: [QuerySuggestion] { get }
-  
-  func completeSuggestion(_ suggestion: String)
-  func submitSuggestion(_ suggestion: String)
-  
-}
-
-@available(iOS 14.0, *)
-final class SearchViewModel: SuggestionViewModel {
-  
-  @Published var search: AlgoliaSearch<InstantSearchHit>
-    
-  @Published var suggestionsSearch: AlgoliaSearch<QuerySuggestion>
+final class SearchViewModel: ObservableObject {
   
   @Published var searchQuery: String = "" {
     didSet {
       notifyQueryChanged()
     }
   }
-  
-  @Published var isDisplayingSuggestions: Bool
-  
+    
   @Published var suggestions: [QuerySuggestion]
+  
+  var hits: InfiniteListViewModel<AlgoliaHitsPage<InstantSearchHit>> {
+    search.hits
+  }
+  
+  private var search: AlgoliaSearch<InstantSearchHit>
+    
+  private var suggestionsSearch: AlgoliaSearch<QuerySuggestion>
         
   private var didSubmitSuggestion: Bool
   
-  var subscription: AnyCancellable?
+  private var subscriptions: [AnyCancellable]
   
   init() {
-    search = AlgoliaSearch<InstantSearchHit>(applicationID: "latency",
-                                             apiKey: "1f6fd3a6fb973cb08419fe7d288fa4db",
-                                             indexName: "instant_search")
+    let search = AlgoliaSearch<InstantSearchHit>(applicationID: "latency",
+                                                 apiKey: "1f6fd3a6fb973cb08419fe7d288fa4db",
+                                                 indexName: "instant_search")
     let suggestionsSearch = AlgoliaSearch<QuerySuggestion>(applicationID: "latency",
                                                            apiKey: "af044fb0788d6bb15f807e4420592bc5",
                                                            indexName: "query_suggestions")
+    self.search = search
     self.suggestionsSearch = suggestionsSearch
+    
     didSubmitSuggestion = false
-    isDisplayingSuggestions = true
     suggestions = []
-    subscription = suggestionsSearch.$latestResponse.sink { [weak self]  response in
+    subscriptions = []
+    
+    subscriptions.append(suggestionsSearch.$latestResponse.sink { [weak self]  response in
       self?.suggestions = (try? response?.fetchHits()) ?? []
-    }
+    })
+      
     Task {
       _ = try await suggestionsSearch.fetchInitialPage()
     }
@@ -83,7 +78,7 @@ final class SearchViewModel: SuggestionViewModel {
   }
   
   deinit {
-    subscription?.cancel()
+    subscriptions.forEach { $0.cancel() }
   }
   
 }

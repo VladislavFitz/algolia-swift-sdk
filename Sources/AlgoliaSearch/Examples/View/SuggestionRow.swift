@@ -5,7 +5,6 @@
 //  Created by Vladislav Fitc on 01.06.2023.
 //
 
-import Foundation
 import SwiftUI
 
 public struct SuggestionRow: View {

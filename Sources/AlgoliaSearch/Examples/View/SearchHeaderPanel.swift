@@ -9,38 +9,16 @@ import Foundation
 import AlgoliaFoundation
 import SwiftUI
 
-public final class SearchHeaderViewModel: ObservableObject {
-  
-  @ObservedObject var search: AlgoliaSearch<InstantSearchHit>
-  
-  var indices: [(name: IndexName, title: String)]
-  
-//  = [
-//    (name: "instant_search", title: "Default"),
-//    (name: "instant_search_price_asc", title: "Price ⏶"),
-//    (name: "instant_search_price_desc", title: "Price ⏷"),
-//  ]
-  
-  init(search: AlgoliaSearch<InstantSearchHit>, indices: [(name: IndexName, title: String)]) {
-    self.search = search
-    self.indices = indices
-  }
-  
-  func title(for indexName: IndexName) -> String {
-    indices.first(where: { $0.name == indexName })?.title ?? ""
-  }
-  
-}
-
 @available(iOS 14.0, *)
 public struct SearchHeaderPanel: View {
-  
-  @ObservedObject var viewModel: SearchHeaderViewModel
+    
+  let indices: [(name: IndexName, title: String)]
+  @Binding var indexName: IndexName
+  var resultsCount: Int
   
   public var body: some View {
     HStack{
-      let response = viewModel.search.latestResponse?.searchResponse
-      Text("Results: \(response?.nbHits ?? 0)")
+      Text("Results: \(resultsCount)")
       Spacer()
       indexSelectionMenu()
     }.padding(.horizontal)
@@ -48,15 +26,19 @@ public struct SearchHeaderPanel: View {
   
   @ViewBuilder func indexSelectionMenu() -> some View {
     Menu {
-      ForEach(viewModel.indices, id: \.name) { index in
+      ForEach(indices, id: \.name) { index in
         Button(index.title) {
-          viewModel.search.request.indexName = index.name
+          indexName = index.name
         }
       }
     } label: {
-      Label(viewModel.title(for: viewModel.search.request.indexName),
+      Label(title(for: indexName),
             systemImage: "arrow.up.arrow.down")
     }
+  }
+  
+  private func title(for indexName: IndexName) -> String {
+    indices.first(where: { $0.name == indexName })?.title ?? ""
   }
     
 }

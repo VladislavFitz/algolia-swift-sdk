@@ -5,10 +5,7 @@
 //  Created by Vladislav Fitc on 01.04.2023.
 //
 
-import Foundation
 import SwiftUI
-import AlgoliaSearchClient
-import AlgoliaFoundation
 
 @available(iOS 15.0, *)
 public struct SearchView: View {
@@ -18,18 +15,22 @@ public struct SearchView: View {
   public init() {}
   
   public var body: some View {
-    InfiniteList(viewModel.search.hits, item: { hit in
-      HitRow(hit: hit)
-        .padding()
-      Divider()
-    }, noResults: {
-      Text("No results found")
-    })
+    VStack {
+      InfiniteList(viewModel.hits, item: { hit in
+        HitRow(hit: hit)
+          .padding()
+        Divider()
+      }, noResults: {
+        Text("No results found")
+      })
+    }
     .searchable(text: $viewModel.searchQuery,
                 prompt: "Laptop, smartphone, tv",
                 suggestions: {
-      if viewModel.isDisplayingSuggestions {
-        SearchSuggestionsView(viewModel: viewModel)
+      ForEach(viewModel.suggestions, id: \.objectID) { suggestion in
+        SuggestionRow(suggestion: suggestion,
+                      onSubmission: viewModel.submitSuggestion,
+                      onCompletion: viewModel.completeSuggestion)
       }
     })
     .onSubmit(of: .search, viewModel.submitSearch)
