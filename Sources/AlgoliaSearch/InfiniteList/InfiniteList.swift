@@ -28,6 +28,9 @@ public struct InfiniteList<HitView: View, NoResults: View, Item, P: Page<Item>>:
   /// An instance of `InfiniteScrollViewModel` object.
   @StateObject public var viewModel: InfiniteListViewModel<P>
   
+  @State var shouldLoadNext: Bool
+  @State var shouldLoadPrevious: Bool
+  
   /// A closure that returns a `HitView` for a given `Source.Item`.
   let itemView: (Item) -> HitView
   
@@ -41,9 +44,13 @@ public struct InfiniteList<HitView: View, NoResults: View, Item, P: Page<Item>>:
   ///   - hitView: A closure that returns a `HitView` for a given `Source.Item`.
   ///   - noResults: A closure that returns a `NoResults` view to display when there are no hits.
   public init(_ hits: InfiniteListViewModel<P>,
+              shouldLoadNext: Bool = true,
+              shouldLoadPrevious: Bool = true,
               @ViewBuilder item: @escaping (Item) -> HitView,
               @ViewBuilder noResults: @escaping () -> NoResults) {
     _viewModel = StateObject(wrappedValue: hits)
+    self.shouldLoadNext = shouldLoadNext
+    self.shouldLoadPrevious = shouldLoadPrevious
     self.itemView = item
     self.noResults = noResults
   }
@@ -55,7 +62,7 @@ public struct InfiniteList<HitView: View, NoResults: View, Item, P: Page<Item>>:
     } else {
       ScrollView {
         LazyVStack {
-          if viewModel.hasPrevious {
+          if shouldLoadPrevious && viewModel.hasPrevious {
             ProgressView()
               .task {
                 viewModel.loadPrevious()
@@ -64,7 +71,7 @@ public struct InfiniteList<HitView: View, NoResults: View, Item, P: Page<Item>>:
           ForEach(0..<viewModel.items.count, id: \.self) { index in
             itemView(viewModel.items[index])
           }
-          if viewModel.hasNext {
+          if shouldLoadNext && viewModel.hasNext {
             ProgressView()
               .task {
                 viewModel.loadNext()

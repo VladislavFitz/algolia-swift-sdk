@@ -28,9 +28,6 @@ import AlgoliaSearchClient
 ///
 /// - Note: The `Hit` type parameter represents the type of the items in the search results and should conform to the `Decodable` protocol.
 public final class AlgoliaSearch<Hit: Decodable>: Search<AlgoliaSearchService<Hit>> {
-  
-  var indexName: Binding<IndexName>!
-  var query: Binding<String>!
 
   /// Initializes a new `AlgoliaSearch` object with the provided application ID, API key, and index name.
   ///
@@ -47,20 +44,6 @@ public final class AlgoliaSearch<Hit: Decodable>: Search<AlgoliaSearchService<Hi
     let request = AlgoliaSearchRequest<Hit>(indexName: indexName,
                                             searchParameters: SearchParameters([]))
     super.init(service: service, request: request)
-    self.indexName = Binding(
-      get: {
-        self.request.indexName
-      },
-      set: {
-        self.request.indexName = $0
-    })
-    self.query = Binding<String>(
-      get: {
-        self.request.searchParameters.query ?? ""
-      },
-      set: {
-        self.request.searchParameters.query = $0
-    })
   }
   
 }
