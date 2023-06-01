@@ -7,11 +7,21 @@
 
 import Foundation
 import SwiftUI
+import Combine
+
+protocol SuggestionViewModel: ObservableObject {
+  
+  var suggestions: [QuerySuggestion] { get }
+  
+  func completeSuggestion(_ suggestion: String)
+  func submitSuggestion(_ suggestion: String)
+  
+}
 
 @available(iOS 14.0, *)
-final class SearchViewModel: ObservableObject {
+final class SearchViewModel: SuggestionViewModel {
   
-  @ObservedObject var search: AlgoliaSearch<InstantSearchHit>
+  @Published var search: AlgoliaSearch<InstantSearchHit>
     
   @Published var suggestionsSearch: AlgoliaSearch<QuerySuggestion>
   
@@ -22,18 +32,30 @@ final class SearchViewModel: ObservableObject {
   }
   
   @Published var isDisplayingSuggestions: Bool
-      
+  
+  @Published var suggestions: [QuerySuggestion]
+        
   private var didSubmitSuggestion: Bool
+  
+  var subscription: AnyCancellable?
   
   init() {
     search = AlgoliaSearch<InstantSearchHit>(applicationID: "latency",
                                              apiKey: "1f6fd3a6fb973cb08419fe7d288fa4db",
                                              indexName: "instant_search")
-    suggestionsSearch = AlgoliaSearch<QuerySuggestion>(applicationID: "latency",
-                                                       apiKey: "af044fb0788d6bb15f807e4420592bc5",
-                                                       indexName: "query_suggestions")
-    isDisplayingSuggestions = false
+    let suggestionsSearch = AlgoliaSearch<QuerySuggestion>(applicationID: "latency",
+                                                           apiKey: "af044fb0788d6bb15f807e4420592bc5",
+                                                           indexName: "query_suggestions")
+    self.suggestionsSearch = suggestionsSearch
     didSubmitSuggestion = false
+    isDisplayingSuggestions = true
+    suggestions = []
+    subscription = suggestionsSearch.$latestResponse.sink { [weak self]  response in
+      self?.suggestions = (try? response?.fetchHits()) ?? []
+    }
+    Task {
+      _ = try await suggestionsSearch.fetchInitialPage()
+    }
   }
   
   func completeSuggestion(_ suggestion: String) {
@@ -44,16 +66,9 @@ final class SearchViewModel: ObservableObject {
     didSubmitSuggestion = true
     searchQuery = suggestion
   }
-  
-  func initializeSuggestions() {
-    Task {
-      _ = try await suggestionsSearch.fetchInitialPage()
-      isDisplayingSuggestions = true
-    }
-  }
-  
+    
   func submitSearch() {
-    isDisplayingSuggestions = false
+    suggestions = []
     search.request.searchParameters.query = searchQuery
   }
   
@@ -62,12 +77,13 @@ final class SearchViewModel: ObservableObject {
       didSubmitSuggestion = false
       submitSearch()
     } else {
-      isDisplayingSuggestions = true
       suggestionsSearch.request.searchParameters.query = searchQuery
-      if searchQuery.isEmpty {
-        search.request.searchParameters.query = ""
-      }
+      search.request.searchParameters.query = searchQuery
     }
+  }
+  
+  deinit {
+    subscription?.cancel()
   }
   
 }

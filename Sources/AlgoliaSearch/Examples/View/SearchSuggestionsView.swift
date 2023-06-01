@@ -9,31 +9,22 @@ import Foundation
 import SwiftUI
 
 @available(iOS 14.0, *)
-public struct SearchSuggestionsView: View {
+struct SearchSuggestionsView<ViewModel: SuggestionViewModel>: View {
   
-  @ObservedObject var search: AlgoliaSearch<QuerySuggestion>
+  @ObservedObject var viewModel: ViewModel
   var onSubmission: ((String) -> Void)?
   var onCompletion: ((String) -> Void)?
   
-  init(search: AlgoliaSearch<QuerySuggestion>,
-       onSubmission: ((String) -> Void)? = nil,
-       onCompletion: ((String) -> Void)? = nil) {
-    self.search = search
-    self.onSubmission = onSubmission
-    self.onCompletion = onCompletion
+  init(viewModel: ViewModel) {
+    self.viewModel = viewModel
   }
   
   public var body: some View {
-    let latestHits = search.fetchLatestHits()
-    if latestHits.isEmpty {
-      Text("No suggestions")
-    } else {
-      ForEach(latestHits, id: \.objectID) { suggestion in
+      ForEach(viewModel.suggestions, id: \.objectID) { suggestion in
         SuggestionRow(suggestion: suggestion,
-                      onSubmission: onSubmission,
-                      onCompletion: onCompletion)
+                      onSubmission: viewModel.submitSuggestion,
+                      onCompletion: viewModel.completeSuggestion)
       }
-    }
   }
   
 }

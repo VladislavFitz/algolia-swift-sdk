@@ -18,19 +18,18 @@ public struct SearchView: View {
   public init() {}
   
   public var body: some View {
-    VStack {
-      SearchResultsView(search: viewModel.search)
-    }
-    .onAppear {
-      viewModel.initializeSuggestions()
-    }
+    InfiniteList(viewModel.search.hits, item: { hit in
+      HitRow(hit: hit)
+        .padding()
+      Divider()
+    }, noResults: {
+      Text("No results found")
+    })
     .searchable(text: $viewModel.searchQuery,
                 prompt: "Laptop, smartphone, tv",
                 suggestions: {
       if viewModel.isDisplayingSuggestions {
-        SearchSuggestionsView(search: viewModel.suggestionsSearch,
-                              onSubmission: viewModel.submitSuggestion,
-                              onCompletion: viewModel.completeSuggestion)
+        SearchSuggestionsView(viewModel: viewModel)
       }
     })
     .onSubmit(of: .search, viewModel.submitSearch)
