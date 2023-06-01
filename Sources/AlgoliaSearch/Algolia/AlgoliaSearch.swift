@@ -46,4 +46,12 @@ public final class AlgoliaSearch<Hit: Decodable>: Search<AlgoliaSearchService<Hi
     super.init(service: service, request: request)
   }
   
+  func fetchLatestHits() -> [Hit] {
+    guard let latestResponse else {
+      return []
+    }
+    let hits = try? latestResponse.fetchHits() as [Hit]
+    return hits ?? []
+  }
+  
 }

@@ -7,6 +7,7 @@
 
 import Foundation
 import AlgoliaSearchClient
+import Logging
 
 public class AlgoliaSearchService<Hit: Decodable>: SearchService {
     
@@ -15,14 +16,20 @@ public class AlgoliaSearchService<Hit: Decodable>: SearchService {
   
   public let client: SearchClient
   
+  private var logger: Logger
+  
   public init(client: SearchClient) {
     self.client = client
+    self.logger = Logger(label: "algolia search service")
+    self.logger.logLevel = .trace
   }
   
   public func fetchResponse(for request: Request) async throws -> Response {
-    AlgoliaSearchResponse(searchResponse: try await client
+    logger.trace("request: index \(request.indexName), query: \"\(request.searchParameters.query ?? "")\" , page: \(request.searchParameters.page ?? 0), filters: \(request.searchParameters.filters ?? "")")
+    let response = try await client
       .index(withName: request.indexName)
-      .search(parameters: request.searchParameters))
+      .search(parameters: request.searchParameters)
+    return AlgoliaSearchResponse(searchResponse: response)
   }
     
 }
