@@ -1,5 +1,5 @@
 //
-//  Hits.swift
+//  PaginatedDataViewModel.swift
 //  
 //
 //  Created by Vladislav Fitc on 01.04.2023.
@@ -8,18 +8,18 @@
 import Foundation
 import Combine
 
-/// `InfiniteListViewModel` is a generic class responsible for handling paginated data from a `PageSource`.
+/// `PaginatedDataViewModel` is a generic class responsible for handling paginated data from a `PageSource`.
 /// It is designed to be used with SwiftUI and is an `ObservableObject` that can be bound to UI elements.
 ///
 /// Usage:
 /// ```
 /// let source = CustomPageSource()
-/// let hits = InfiniteListViewModel(source: source)
+/// let hits = PaginatedDataViewModel(source: source)
 /// ```
 ///
 /// - Note: `ItemsPage` must conform to the `Page` protocol.
 @available(iOS 13.0, macOS 10.15, *)
-public final class InfiniteListViewModel<ItemsPage: Page>: ObservableObject {
+public final class PaginatedDataViewModel<ItemsPage: Page>: ObservableObject {
   
   /// An array of fetched items.
   @Published public var items: [ItemsPage.Item]
@@ -39,7 +39,7 @@ public final class InfiniteListViewModel<ItemsPage: Page>: ObservableObject {
   /// A `PageStorage` object that stores the fetched pages.
   private let storage: ConcurrentList<ItemsPage>
   
-  /// Initializes a new instance of `InfiniteScrollViewModel` with a given `source` object.
+  /// Initializes a new instance of `PaginatedDataViewModel` with a given `source` object.
   ///
   /// - Parameter source: The source object that conforms to the `PageSource` protocol.
   public init<PS: PageSource<ItemsPage>>(source: PS) {
@@ -97,7 +97,7 @@ public final class InfiniteListViewModel<ItemsPage: Page>: ObservableObject {
     hasNext = true
   }
 
-  /// An enumeration of possible errors that can occur while working with `InfiniteScrollViewModel`.
+  /// An enumeration of possible errors that can occur while working with `PaginatedDataViewModel`.
   public enum Error: LocalizedError {
     /// Indicates an attempt to access a hit on an unaccessible page.
     case indexOutOfRange

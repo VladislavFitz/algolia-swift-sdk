@@ -2,10 +2,15 @@ import AlgoliaFoundation
 import Foundation
 
 public enum ObjectIDChecker {
+  
+  private struct ObjectIDContainer: Decodable {
+    let objectID: String
+  }
+  
   static func checkObjectID<T: Encodable>(_ object: T) throws {
     let data = try JSONEncoder().encode(object)
     do {
-      _ = try JSONDecoder().decode(Hit<JSON>.self, from: data)
+      _ = try JSONDecoder().decode(ObjectIDContainer.self, from: data)
     } catch _ {
       throw Error.missingObjectIDProperty
     }

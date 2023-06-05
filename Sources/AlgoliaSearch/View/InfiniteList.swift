@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-/// `InfiniteList` is a SwiftUI generic view responsible for displaying a list of paginated data provided by the `InfiniteScrollViewModel` class.
+/// `InfiniteList` is a SwiftUI generic view responsible for displaying a list of paginated data provided by the `PaginatedDataViewModel` class.
 /// It provides an easy way to render hits as well as handling pagination and no results view.
 ///
 /// Usage:
@@ -25,11 +25,8 @@ import SwiftUI
 @available(iOS 15.0, macOS 12.0, *)
 public struct InfiniteList<HitView: View, NoResults: View, Item, P: Page<Item>>: View {
   
-  /// An instance of `InfiniteScrollViewModel` object.
-  @StateObject public var viewModel: InfiniteListViewModel<P>
-  
-  @State var shouldLoadNext: Bool
-  @State var shouldLoadPrevious: Bool
+  /// An instance of `PaginatedDataViewModel` object.
+  @StateObject public var viewModel: PaginatedDataViewModel<P>
   
   /// A closure that returns a `HitView` for a given `Source.Item`.
   let itemView: (Item) -> HitView
@@ -40,17 +37,13 @@ public struct InfiniteList<HitView: View, NoResults: View, Item, P: Page<Item>>:
   /// Initializes a new instance of `HitsList` with the provided `hits`, `hitView` and `noResults` closures.
   ///
   /// - Parameters:
-  ///   - hits: An instance of `InfiniteScrollViewModel` object.
+  ///   - hits: An instance of `PaginatedDataViewModel` object.
   ///   - hitView: A closure that returns a `HitView` for a given `Source.Item`.
   ///   - noResults: A closure that returns a `NoResults` view to display when there are no hits.
-  public init(_ hits: InfiniteListViewModel<P>,
-              shouldLoadNext: Bool = true,
-              shouldLoadPrevious: Bool = true,
+  public init(_ hits: PaginatedDataViewModel<P>,
               @ViewBuilder item: @escaping (Item) -> HitView,
               @ViewBuilder noResults: @escaping () -> NoResults) {
     _viewModel = StateObject(wrappedValue: hits)
-    self.shouldLoadNext = shouldLoadNext
-    self.shouldLoadPrevious = shouldLoadPrevious
     self.itemView = item
     self.noResults = noResults
   }
@@ -62,7 +55,7 @@ public struct InfiniteList<HitView: View, NoResults: View, Item, P: Page<Item>>:
     } else {
       ScrollView {
         LazyVStack {
-          if shouldLoadPrevious && viewModel.hasPrevious {
+          if viewModel.hasPrevious {
             ProgressView()
               .task {
                 viewModel.loadPrevious()
@@ -71,7 +64,7 @@ public struct InfiniteList<HitView: View, NoResults: View, Item, P: Page<Item>>:
           ForEach(0..<viewModel.items.count, id: \.self) { index in
             itemView(viewModel.items[index])
           }
-          if shouldLoadNext && viewModel.hasNext {
+          if viewModel.hasNext {
             ProgressView()
               .task {
                 viewModel.loadNext()

@@ -6,11 +6,12 @@
 //
 
 import Foundation
+import AlgoliaFoundation
 
 struct InstantSearchHit: Decodable {
   let name: String
   let price: Float
   let description: String
   let image: URL
-  let _highlightResult: HighlightResultP
+  let _highlightResult: HighlightResult
 }

@@ -18,7 +18,7 @@ final class SearchViewModel: ObservableObject {
     
   @Published var suggestions: [QuerySuggestion]
   
-  var hits: InfiniteListViewModel<AlgoliaHitsPage<InstantSearchHit>> {
+  var hits: PaginatedDataViewModel<AlgoliaHitsPage<InstantSearchHit>> {
     search.hits
   }
   
@@ -31,11 +31,13 @@ final class SearchViewModel: ObservableObject {
   private var subscriptions: [AnyCancellable]
   
   init() {
-    let search = AlgoliaSearch<InstantSearchHit>(applicationID: "latency",
-                                                 apiKey: "1f6fd3a6fb973cb08419fe7d288fa4db",
+    let applicationID: ApplicationID = "latency"
+    let apiKey: APIKey = "1f6fd3a6fb973cb08419fe7d288fa4db"
+    let search = AlgoliaSearch<InstantSearchHit>(applicationID: applicationID,
+                                                 apiKey: apiKey,
                                                  indexName: "instant_search")
-    let suggestionsSearch = AlgoliaSearch<QuerySuggestion>(applicationID: "latency",
-                                                           apiKey: "af044fb0788d6bb15f807e4420592bc5",
+    let suggestionsSearch = AlgoliaSearch<QuerySuggestion>(applicationID: applicationID,
+                                                           apiKey: apiKey,
                                                            indexName: "query_suggestions")
     self.search = search
     self.suggestionsSearch = suggestionsSearch

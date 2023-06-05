@@ -13,7 +13,7 @@ import Logging
 /// `PageSource` protocol.
 ///
 /// The class is responsible for handling search requests and fetching search responses, as well as managing
-/// the `InfiniteListViewModel` object, which represents the paginated results.
+/// the `PaginatedDataViewModel` object, which represents the paginated results.
 ///
 /// Usage:
 /// ```
@@ -39,7 +39,7 @@ public class Search<Service: SearchService>: ObservableObject where Service.Requ
   }
   
   /// The `InfiniteListViewModel` object representing the paginated search results.
-  @Published public var hits: InfiniteListViewModel<Service.Request.HitsPage>!
+  @Published public var hits: PaginatedDataViewModel<Service.Request.HitsPage>!
   
   /// The latest search response fetched by the search service.
   @Published public var latestResponse: Service.Response?
@@ -65,7 +65,7 @@ public class Search<Service: SearchService>: ObservableObject where Service.Requ
     var logger = Logger(label: "Search")
     logger.logLevel = logLevel
     self.logger = logger
-    self.hits = InfiniteListViewModel(source: self)
+    self.hits = PaginatedDataViewModel(source: self)
   }
   
 }
