@@ -21,7 +21,7 @@ import AlgoliaFoundation
 /// ```
 ///
 /// - Note: The `Hit` type parameter represents the type of the items in the search results and should conform to the `Decodable` protocol.
-public struct AlgoliaSearchRequest<Hit: Decodable>: SearchRequest {
+public struct AlgoliaSearchRequest: SearchRequest {
   
   /// The name of the index to perform search requests on.
   public var indexName: IndexName
@@ -35,34 +35,10 @@ public struct AlgoliaSearchRequest<Hit: Decodable>: SearchRequest {
   ///   - indexName: The name of the index to perform search requests on.
   ///   - searchParameters: The search parameters for the Algolia search request.
   init(indexName: IndexName,
-       searchParameters: SearchParameters) {
+       searchParameters: SearchParameters = .init([])) {
     self.indexName = indexName
     self.searchParameters = searchParameters
     self.searchParameters.query = ""
   }
-  
-  public func isDifferent(to request: Self) -> Bool {
-    request.searchParameters.query != searchParameters.query ||
-    request.searchParameters.filters != searchParameters.filters ||
-    request.indexName != indexName
-  }
-  
-  public func forInitialPage() -> Self {
-    var request = self
-    request.searchParameters.page = 0
-    return request
-  }
-  
-  public func forPage(after page: AlgoliaHitsPage<Hit>) -> Self {
-    var request = self
-    request.searchParameters.page = page.page + 1
-    return request
-  }
-  
-  public func forPage(before page: AlgoliaHitsPage<Hit>) -> Self {
-    var request = self
-    request.searchParameters.page = page.page - 1
-    return request
-  }
-    
+      
 }

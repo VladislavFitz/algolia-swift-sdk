@@ -9,9 +9,9 @@ import Foundation
 import AlgoliaSearchClient
 import Logging
 
-public class AlgoliaSearchService<Hit: Decodable>: SearchService {
+public class AlgoliaSearchService<Hit: Decodable & Equatable>: SearchService {
     
-  public typealias Request = AlgoliaSearchRequest<Hit>
+  public typealias Request = AlgoliaSearchRequest
   public typealias Response = AlgoliaSearchResponse<Hit>
   
   public let client: SearchClient

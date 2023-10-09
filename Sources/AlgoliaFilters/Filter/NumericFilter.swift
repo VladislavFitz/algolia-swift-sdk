@@ -82,19 +82,6 @@ extension NumericFilter.ValueType: CustomStringConvertible {
 
 extension NumericFilter: CustomStringConvertible {
   public var description: String {
-    let expression: String
-    switch value {
-    case let .comparison(`operator`, value):
-      expression = """
-      "\(attribute)" \(`operator`.rawValue) \(value)
-      """
-
-    case let .range(range):
-      expression = """
-      "\(attribute)":\(range.lowerBound) TO \(range.upperBound)
-      """
-    }
-    let prefix = isNegated ? "NOT " : ""
-    return prefix + expression
+    RawFilterTransformer.transform(self)
   }
 }

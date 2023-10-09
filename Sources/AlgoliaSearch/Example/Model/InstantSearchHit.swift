@@ -8,7 +8,7 @@
 import Foundation
 import AlgoliaFoundation
 
-struct InstantSearchHit: Decodable {
+struct InstantSearchHit: Decodable & Equatable {
   let name: String
   let price: Float
   let description: String

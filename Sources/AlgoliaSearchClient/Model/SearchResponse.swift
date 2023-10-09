@@ -1,7 +1,7 @@
 import AlgoliaFoundation
 import Foundation
 
-public struct SearchResponse: Decodable {
+public struct SearchResponse: Decodable, Equatable {
   /**
    The hits returned by the search. Hits are ordered according to the ranking or sorting of the index being queried.
    Hits are made of the schemaless JSON objects that you stored in the index.
@@ -41,6 +41,11 @@ public struct SearchResponse: Decodable {
     Identifies the query uniquely. Can be used by Insights Event.
    */
   public var queryID: QueryID?
+  
+  /**
+    Facets to refine results
+   */
+  public var facets: [String: [String: Int]]
 }
 
 public extension SearchResponse {
@@ -65,6 +70,9 @@ extension SearchResponse: CustomStringConvertible {
       hitsPerPage: \(hitsPerPage?.description ?? "nil")
       hits {
       \(hits.map { "\($0.debugDescription)" }.joined(separator: "\n"))
+      }
+      facets {
+      \(facets)
       }
     }
     """

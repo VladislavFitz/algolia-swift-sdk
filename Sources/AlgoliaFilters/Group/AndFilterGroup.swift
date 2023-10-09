@@ -1,12 +1,21 @@
 import AlgoliaFoundation
 import Foundation
+import Combine
+import OSLog
 
 /// Conjunctive filter group сombines filters with the logical operator "and".
 /// Can contain filters of different types at the same time.
 public final class AndFilterGroup: FilterGroup {
+  
   @Published public private(set) var filters: [any Filter]
+  
+  @Published public var rawValue: String
 
-  public let separator: String = " AND "
+  public var filtersPublisher: Published<[Filter]>.Publisher { $filters }
+  public var rawValuePublisher: Published<String>.Publisher { $rawValue }
+
+  private let logger: Logger
+  private var cancellables: Set<AnyCancellable> = []
 
   public var isEmpty: Bool {
     return filters.isEmpty
@@ -14,6 +23,9 @@ public final class AndFilterGroup: FilterGroup {
 
   public init(filters: [any Filter] = []) {
     self.filters = filters
+    self.logger = Logger(subsystem: "Filters", category: "AndFilterGroup")
+    self.rawValue = RawFilterTransformer.transform(filters, separator: " OR ")
+    setupSubscriptions()
   }
 
   public func filters(withAttribute attribute: Attribute) -> [any Filter] {
@@ -38,11 +50,28 @@ public final class AndFilterGroup: FilterGroup {
   public func removeAll() {
     filters.removeAll()
   }
+  
+  private func setupSubscriptions() {
+    $filters
+      .map { filters in
+        RawFilterTransformer.transform(filters, separator: " AND ")
+      }
+      .assign(to: \.rawValue, on: self)
+      .store(in: &cancellables)
+    
+    $filters
+      .sink { [weak self] filters in
+        guard let self else { return }
+        self.logger.debug("\(filters)")
+      }
+      .store(in: &cancellables)
+  }
 }
 
 public extension AndFilterGroup {
   /// Textual representation of the group accepted by Algolia API
   var description: String {
-    return "( \(filters.map { $0.description }.sorted().joined(separator: " AND ")) )"
+    RawFilterTransformer.transform(self)
   }
 }
+

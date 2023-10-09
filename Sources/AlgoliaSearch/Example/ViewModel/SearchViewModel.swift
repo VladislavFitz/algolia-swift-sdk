@@ -8,6 +8,7 @@
 import AlgoliaFoundation
 import Combine
 
+@MainActor
 final class SearchViewModel: ObservableObject {
   
   @Published var searchQuery: String = "" {
@@ -28,7 +29,7 @@ final class SearchViewModel: ObservableObject {
         
   private var didSubmitSuggestion: Bool
   
-  private var subscriptions: [AnyCancellable]
+  private var subscriptions: Set<AnyCancellable>
   
   init() {
     let applicationID: ApplicationID = "latency"
@@ -46,9 +47,12 @@ final class SearchViewModel: ObservableObject {
     suggestions = []
     subscriptions = []
     
-    subscriptions.append(suggestionsSearch.$latestResponse.sink { [weak self]  response in
-      self?.suggestions = (try? response?.fetchHits()) ?? []
-    })
+    suggestionsSearch
+      .$latestResponse
+      .sink { [weak self]  response in
+        self?.suggestions = (try? response?.fetchHits()) ?? []
+      }
+      .store(in: &subscriptions)
       
     Task {
       _ = try await suggestionsSearch.fetchInitialPage()

@@ -8,7 +8,7 @@
 import Foundation
 
 /// `QuerySuggestion` is a structure representing a suggested query returned by the Algolia search API.
-public struct QuerySuggestion: Decodable {
+public struct QuerySuggestion: Decodable & Equatable {
   
   /// The unique identifier of the query suggestion assigned by Algolia.
   public let objectID: String

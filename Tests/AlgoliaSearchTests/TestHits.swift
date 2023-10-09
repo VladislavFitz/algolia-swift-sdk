@@ -8,7 +8,8 @@ final class HitsTests: XCTestCase {
   
   func testHits() async throws {
     let client = SearchClient(appID: "latency", apiKey: "1f6fd3a6fb973cb08419fe7d288fa4db")
-//    let source = AlgoliaHitsSource(client: client, query: .init(indexName: "bestbuy", searchParameters: SearchParameters()))
+//    let search = AlgoliaSearch(applicationID: "latency", apiKey: "1f6fd3a6fb973cb08419fe7d288fa4db", indexName: "bestbuy")
+//    search.
 //    let hits = Hits(source: source)
 //    let firstHit = try await hits.hit(atIndex: 0)
 //    print(firstHit)

@@ -26,10 +26,6 @@ extension TagFilter: ExpressibleByStringLiteral {
 
 extension TagFilter: CustomStringConvertible {
   public var description: String {
-    let expression = """
-    "\(attribute)":"\(value)"
-    """
-    let prefix = isNegated ? "NOT " : ""
-    return prefix + expression
+    RawFilterTransformer.transform(self)
   }
 }

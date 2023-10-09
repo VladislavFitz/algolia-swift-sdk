@@ -7,6 +7,8 @@ class FiltersTests: XCTestCase {
   var filtersSubscription: AnyCancellable?
   var andGroupSubscription: AnyCancellable?
   var orGroupSubscription: AnyCancellable?
+  
+  var cancellables: Set<AnyCancellable> = []
 
   func testAndFilterGroup() {
     let group = AndFilterGroup()
@@ -35,6 +37,7 @@ class FiltersTests: XCTestCase {
     """)
     group.removeAll()
     XCTAssertTrue(group.isEmpty)
+    XCTAssertEqual(group.description, "")
     wait(for: [exp], timeout: 1)
   }
 
@@ -42,9 +45,10 @@ class FiltersTests: XCTestCase {
     let group = OrFilterGroup<FacetFilter>()
     let exp = expectation(description: "filters observer")
     exp.expectedFulfillmentCount = 7
-    andGroupSubscription = group.$filters.sink { _ in
-      exp.fulfill()
-    }
+    group.$filters
+      .sink { _ in
+        exp.fulfill()
+      }.store(in: &cancellables)
     let priceFilter = FacetFilter(attribute: "price", value: 99.90)
     let availableFilter = FacetFilter(attribute: "isAvailable", value: true)
     let colorFilter = FacetFilter(attribute: "color", value: "red")
@@ -54,13 +58,16 @@ class FiltersTests: XCTestCase {
     XCTAssertEqual(group.description, """
     ( "color":"red" OR "isAvailable":"true" OR "price":"99.9" )
     """)
-    XCTAssertEqual(group.filters(withAttribute: "isAvailable"), [availableFilter])
-    XCTAssertEqual(group.filters(withAttribute: "price"), [priceFilter])
-    XCTAssertEqual(group.filters(withAttribute: "color"), [colorFilter])
+    XCTAssertEqual(group.filters(withAttribute: "isAvailable") as? [FacetFilter], [availableFilter])
+    XCTAssertEqual(group.filters(withAttribute: "price") as? [FacetFilter], [priceFilter])
+    XCTAssertEqual(group.filters(withAttribute: "color") as? [FacetFilter], [colorFilter])
     group.remove(availableFilter)
+    XCTAssertEqual(group.filters.count, 2)
     group.removeFilters(withAttribute: "price")
+    XCTAssertEqual(group.filters.count, 1)
     group.removeAll()
     XCTAssertTrue(group.isEmpty)
+    XCTAssertEqual(group.description, "")
     wait(for: [exp], timeout: 1)
   }
 
@@ -68,14 +75,17 @@ class FiltersTests: XCTestCase {
     let filters = Filters()
 
     let exp = expectation(description: "exp")
-    exp.expectedFulfillmentCount = 7
+    exp.expectedFulfillmentCount = 3
 
-    filtersSubscription = filters.$groups
+    filters
+      .$groups
       .sink { _ in
         exp.fulfill()
       }
+      .store(in: &cancellables)
 
-    filters.groups["myGroup"] = AndFilterGroup()
+    let andGroup = AndFilterGroup()
+    filters.add(group: andGroup, forName: "myGroup")
 
     let group = filters.groups["myGroup"]
 
@@ -83,27 +93,45 @@ class FiltersTests: XCTestCase {
       XCTFail("Unexpected not and group name")
       return
     }
-
+    
+    let andGroupExpectation = expectation(description: "and group")
+    andGroupExpectation.expectedFulfillmentCount = 3
+    
+    andGroup
+      .$filters
+      .dropFirst()
+      .sink { _ in
+        andGroupExpectation.fulfill()
+      }
+      .store(in: &cancellables)
+    
     andGroup.add("someTag" as TagFilter)
     andGroup.add(FacetFilter(attribute: "size", floatValue: 36))
     andGroup.add(NumericFilter(attribute: "price", range: 1 ... 10))
 
     let orGroup = OrFilterGroup<FacetFilter>()
+    filters.add(group: orGroup, forName: "anotherGroup")
 
-    orGroupSubscription = orGroup.$filters.sink { _ in
-      exp.fulfill()
-    }
+    let orGroupExpectation = expectation(description: "and group")
+    orGroupExpectation.expectedFulfillmentCount = 3
+    
+    orGroup
+      .$filters
+      .dropFirst()
+      .sink { _ in
+        orGroupExpectation.fulfill()
+      }
+      .store(in: &cancellables)
 
     orGroup.add(FacetFilter(attribute: "price", value: 99.90))
     orGroup.add(FacetFilter(attribute: "isAvailable", value: true))
     orGroup.add(FacetFilter(attribute: "color", value: "red"))
 
-    filters.groups["anotherGroup"] = orGroup
     // swiftlint:disable line_length
     XCTAssertEqual(filters.description, """
     ( "_tags":"someTag" AND "price":1.0 TO 10.0 AND "size":"36.0" ) AND ( "color":"red" OR "isAvailable":"true" OR "price":"99.9" )
     """)
     // swiftlint:enable line_length
-    wait(for: [exp], timeout: 1)
+    wait(for: [exp, andGroupExpectation, orGroupExpectation], timeout: 1)
   }
 }

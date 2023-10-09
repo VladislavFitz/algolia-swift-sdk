@@ -5,7 +5,7 @@ import PackageDescription
 let package = Package(
   name: "AlgoliaSDK",
   platforms: [
-    .iOS(.v13),
+    .iOS(.v14),
     .macOS(.v10_15),
     .watchOS(.v6),
     .tvOS(.v13)
@@ -29,7 +29,8 @@ let package = Package(
     ),
   ],
   dependencies: [
-    .package(url: "https://github.com/apple/swift-log.git", from: "1.4.0")
+    .package(url: "https://github.com/apple/swift-log.git", from: "1.4.0"),
+    .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "1.2.0"),
   ],
   targets: [
     .target(
@@ -69,7 +70,9 @@ let package = Package(
       name: "AlgoliaSearch",
       dependencies: [
         .target(name: "AlgoliaSearchClient"),
-        .product(name: "Logging", package: "swift-log")
+        .target(name: "AlgoliaFilters"),
+        .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+        .product(name: "Logging", package: "swift-log"),
       ]
     ),
     .testTarget(
@@ -110,6 +113,7 @@ let package = Package(
       name: "AlgoliaSearchTests",
       dependencies: [
         .target(name: "AlgoliaFoundation"),
+        .target(name: "AlgoliaFilters"),
         .product(name: "Logging", package: "swift-log"),
         .target(name: "AlgoliaSearch")
       ]

@@ -9,6 +9,8 @@ import Foundation
 import SwiftUI
 import AlgoliaFoundation
 import AlgoliaSearchClient
+import AlgoliaFilters
+import Combine
 
 /// `AlgoliaSearch` is a subclass of the `Search` class, specifically tailored to work with the Algolia search engine.
 /// It uses the `AlgoliaSearchService` to perform search requests.
@@ -27,7 +29,14 @@ import AlgoliaSearchClient
 /// ```
 ///
 /// - Note: The `Hit` type parameter represents the type of the items in the search results and should conform to the `Decodable` protocol.
-public final class AlgoliaSearch<Hit: Decodable>: Search<AlgoliaSearchService<Hit>> {
+@MainActor
+public final class AlgoliaSearch<Hit: Decodable & Equatable>: Search<AlgoliaSearchService<Hit>, AlgoliaPaginationRequestFactory<Hit>> {
+    
+  @Published public var query: String
+  @Published public var indexName: IndexName
+  @Published public var filters: AlgoliaFilters.Filters
+  
+  private var cancellables: Set<AnyCancellable> = []
 
   /// Initializes a new `AlgoliaSearch` object with the provided application ID, API key, and index name.
   ///
@@ -41,9 +50,36 @@ public final class AlgoliaSearch<Hit: Decodable>: Search<AlgoliaSearchService<Hi
     let client = SearchClient(appID: applicationID,
                               apiKey: apiKey)
     let service = AlgoliaSearchService<Hit>(client: client)
-    let request = AlgoliaSearchRequest<Hit>(indexName: indexName,
-                                            searchParameters: SearchParameters([]))
-    super.init(service: service, request: request)
+    let request = AlgoliaSearchRequest(indexName: indexName, searchParameters: .init([Facets(["*"])]))
+    let paginationRequestFactory = AlgoliaPaginationRequestFactory<Hit>()
+    self.query = ""
+    self.indexName = indexName
+    self.filters = Filters()
+    super.init(service: service,
+               request: request,
+               factory: paginationRequestFactory)
+    setupSubscriptions()
+  }
+  
+  private func setupSubscriptions() {
+    filters.$rawValue
+      .sink { [weak self] filters in
+        self?.request.searchParameters.filters = filters
+        self?.objectWillChange.send()
+      }
+      .store(in: &cancellables)
+    $query
+      .removeDuplicates()
+      .sink { [weak self] query in
+        self?.request.searchParameters.query = query
+      }
+      .store(in: &cancellables)
+    $indexName
+      .removeDuplicates()
+      .sink { [weak self] indexName in
+        self?.request.indexName = indexName
+      }
+      .store(in: &cancellables)
   }
   
   func fetchLatestHits() -> [Hit] {

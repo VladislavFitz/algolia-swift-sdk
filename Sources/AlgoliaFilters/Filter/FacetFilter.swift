@@ -63,12 +63,7 @@ extension FacetFilter: RawRepresentable {
 
 extension FacetFilter: CustomStringConvertible {
   public var description: String {
-    let scoreExpression = score.flatMap { "<score=\(String($0))>" } ?? ""
-    let expression = """
-    "\(attribute)":"\(value)\(scoreExpression)"
-    """
-    let prefix = isNegated ? "NOT " : ""
-    return prefix + expression
+    RawFilterTransformer.transform(self)
   }
 }
 

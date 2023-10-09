@@ -20,7 +20,7 @@ import AlgoliaFoundation
 /// ```
 ///
 /// - Note: The `Hit` type parameter represents the type of the items in the search results and should conform to the `Decodable` protocol.
-public class AlgoliaSearchResponse<Hit: Decodable>: SearchResponse {
+public struct AlgoliaSearchResponse<Hit: Decodable & Equatable>: SearchResponse, Equatable {
     
   /// The Algolia search response object.
   public let searchResponse: AlgoliaSearchClient.SearchResponse
@@ -37,7 +37,7 @@ public class AlgoliaSearchResponse<Hit: Decodable>: SearchResponse {
   ///
   /// - Returns: An array of `Decodable` objects representing the search results.
   /// - Throws: An error if the decoding process fails.
-  func fetchHits<T: Decodable>() throws -> [T] {
+  public func fetchHits<T: Decodable>() throws -> [T] {
     let hitsData = try JSONEncoder().encode(searchResponse.hits)
     return try JSONDecoder().decode([T].self, from: hitsData)
   }

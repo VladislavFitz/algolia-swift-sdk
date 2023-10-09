@@ -11,7 +11,7 @@ import AlgoliaSearchClient
 import AlgoliaFoundation
 import Logging
 
-struct ComposableAlgoliaSearch<Service: SearchService, Hit: Decodable & Equatable>: Reducer where Service.Request == AlgoliaSearchRequest<Hit>, Service.Response == AlgoliaSearchResponse<Hit> {
+struct ComposableAlgoliaSearch<Service: SearchService, Hit: Decodable & Equatable>: Reducer where Service.Request == AlgoliaSearchRequest, Service.Response == AlgoliaSearchResponse<Hit> {
   
   var service: Service
   let logger: Logger
