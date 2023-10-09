@@ -46,6 +46,24 @@ public struct SearchResponse: Decodable, Equatable {
     Facets to refine results
    */
   public var facets: [String: [String: Int]]
+  
+  public init(hits: [JSON] = [],
+              nbHits: Int? = nil,
+              page: Int? = nil,
+              hitsPerPage: Int? = nil,
+              nbPages: Int? = nil,
+              cursor: Cursor? = nil,
+              queryID: QueryID? = nil,
+              facets: [String : [String : Int]] = [:]) {
+    self.hits = hits
+    self.nbHits = nbHits
+    self.page = page
+    self.hitsPerPage = hitsPerPage
+    self.nbPages = nbPages
+    self.cursor = cursor
+    self.queryID = queryID
+    self.facets = facets
+  }
 }
 
 public extension SearchResponse {

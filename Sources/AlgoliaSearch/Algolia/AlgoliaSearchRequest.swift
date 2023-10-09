@@ -8,11 +8,10 @@
 import Foundation
 import AlgoliaSearchClient
 import AlgoliaFoundation
+import AlgoliaFilters
 
 /// `AlgoliaSearchRequest` is a concrete implementation of the `SearchRequest` protocol, specifically tailored for Algolia search engine.
 /// It represents a search request for Algolia with an index name and search parameters.
-///
-/// This struct requires the `Hit` type to conform to the `Decodable` protocol.
 ///
 /// Usage:
 /// ```
@@ -23,11 +22,17 @@ import AlgoliaFoundation
 /// - Note: The `Hit` type parameter represents the type of the items in the search results and should conform to the `Decodable` protocol.
 public struct AlgoliaSearchRequest: SearchRequest {
   
+  public static func == (lhs: AlgoliaSearchRequest, rhs: AlgoliaSearchRequest) -> Bool {
+    lhs.indexName == rhs.indexName && lhs.searchParameters == rhs.searchParameters
+  }
+  
   /// The name of the index to perform search requests on.
   public var indexName: IndexName
   
   /// The search parameters for the Algolia search request.
   public var searchParameters: SearchParameters
+    
+  public var filterGroups: [FilterGroup]
   
   /// Initializes a new `AlgoliaSearchRequest` object with the provided index name and search parameters.
   ///
@@ -35,10 +40,12 @@ public struct AlgoliaSearchRequest: SearchRequest {
   ///   - indexName: The name of the index to perform search requests on.
   ///   - searchParameters: The search parameters for the Algolia search request.
   init(indexName: IndexName,
-       searchParameters: SearchParameters = .init([])) {
+       searchParameters: SearchParameters = .init([]),
+       filterGroups: [FilterGroup]) {
     self.indexName = indexName
     self.searchParameters = searchParameters
     self.searchParameters.query = ""
+    self.filterGroups = filterGroups
   }
       
 }

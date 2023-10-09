@@ -50,7 +50,9 @@ public final class AlgoliaSearch<Hit: Decodable & Equatable>: Search<AlgoliaSear
     let client = SearchClient(appID: applicationID,
                               apiKey: apiKey)
     let service = AlgoliaSearchService<Hit>(client: client)
-    let request = AlgoliaSearchRequest(indexName: indexName, searchParameters: .init([Facets(["*"])]))
+    let request = AlgoliaSearchRequest(indexName: indexName,
+                                       searchParameters: .init([Facets(["*"])]),
+                                       filterGroups: [])
     let paginationRequestFactory = AlgoliaPaginationRequestFactory<Hit>()
     self.query = ""
     self.indexName = indexName
@@ -62,12 +64,17 @@ public final class AlgoliaSearch<Hit: Decodable & Equatable>: Search<AlgoliaSear
   }
   
   private func setupSubscriptions() {
-    filters.$rawValue
-      .sink { [weak self] filters in
-        self?.request.searchParameters.filters = filters
+    filters
+      .$groups
+      .removeDuplicates(by: { l, r in
+        l.values.map(\.rawValue) == r.values.map(\.rawValue)
+      })
+      .map(\.values)
+      .sink { [weak self]  groups in
+        self?.request.filterGroups = Array(groups)
         self?.objectWillChange.send()
-      }
-      .store(in: &cancellables)
+      }.store(in: &cancellables)
+    
     $query
       .removeDuplicates()
       .sink { [weak self] query in

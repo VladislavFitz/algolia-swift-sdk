@@ -81,7 +81,7 @@ struct RawFilterTransformer {
     }
   }
   
-  static func transform<S: Sequence>(_ groups: S, separator: String = " AND ") -> String where S.Element == FilterGroup {
+  static func transform<S: Sequence>(_ groups: S, separator: String = " AND ") -> String where S.Element == any FilterGroup {
     groups.filter { !$0.filters.isEmpty }.map(transformGroup).sorted().joined(separator: separator)
   }
   
