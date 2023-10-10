@@ -57,7 +57,7 @@ public final class Filters: ObservableObject {
       }
       .debounce(for: .milliseconds(100), scheduler: DispatchQueue.main)
       .assign(to: \.rawValue, on: self)
-      .store(in: &cancellables)  
+      .store(in: &cancellables)
     
     $rawValue
       .map(\.isEmpty)

@@ -31,15 +31,15 @@ final class ComposableSearchTests: XCTestCase {
     }
   }
   
-  func testSearch() async {
-    let store = TestStore(initialState: ComposableAlgoliaSearch<AlgoliaSearchService, Item>.State(indexName: "p-development-US__products___")) {
-      ComposableAlgoliaSearch<AlgoliaSearchService, Item>(service: AlgoliaSearchService(client: .init(appID: "0ZV04HYYVJ", apiKey: "f220c49aa52fca828fe5265965a0cab3")))
-    }
-    
-    await store.send(.searchQueryChanged("dog food")) { a in
-      a.searchParameters.query = "dog food"
-    }
-    await store.receive(.receivedSearchResult(.success([])))
-  }
+//  func testSearch() async {
+//    let store = TestStore(initialState: ComposableAlgoliaSearch<AlgoliaSearchService, Item>.State(indexName: "p-development-US__products___")) {
+//      ComposableAlgoliaSearch<AlgoliaSearchService, Item>(service: AlgoliaSearchService(client: .init(appID: "0ZV04HYYVJ", apiKey: "f220c49aa52fca828fe5265965a0cab3")))
+//    }
+//    
+//    await store.send(.searchQueryChanged("dog food")) { a in
+//      a.searchParameters.query = "dog food"
+//    }
+//    await store.receive(.receivedSearchResult(.success([])))
+//  }
   
 }

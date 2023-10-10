@@ -6,42 +6,42 @@ public protocol URLEncodable {
 
 public extension RawRepresentable where Self: URLEncodable, RawValue: URLEncodable {
   var urlEncodedString: String {
-    return rawValue.urlEncodedString
+    rawValue.urlEncodedString
   }
 }
 
 extension String: URLEncodable {
   public var urlEncodedString: String {
-    return self
+    self
   }
 }
 
 extension Bool: URLEncodable {
   public var urlEncodedString: String {
-    return String(self)
+    String(self)
   }
 }
 
 extension Int: URLEncodable {
   public var urlEncodedString: String {
-    return String(self)
+    String(self)
   }
 }
 
 extension UInt: URLEncodable {
   public var urlEncodedString: String {
-    return String(self)
+    String(self)
   }
 }
 
 extension Double: URLEncodable {
   public var urlEncodedString: String {
-    return String(self)
+    String(self)
   }
 }
 
 extension Array: URLEncodable where Element: URLEncodable {
   public var urlEncodedString: String {
-    return map(\.urlEncodedString).joined(separator: ",").wrappedInBrackets()
+    map(\.urlEncodedString).joined(separator: ",").wrappedInBrackets()
   }
 }

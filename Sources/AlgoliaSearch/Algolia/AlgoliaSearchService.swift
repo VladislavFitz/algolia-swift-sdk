@@ -25,11 +25,8 @@ public class AlgoliaSearchService<Hit: Decodable & Equatable>: SearchService {
   
   public func fetchResponse(for request: AlgoliaSearchRequest) async throws -> AlgoliaSearchResponse<Hit> {
     logger.trace("request: index \(request.indexName), query: \"\(request.searchParameters.query ?? "")\" , page: \(request.searchParameters.page ?? 0), filters: \(request.searchParameters.filters ?? "")")
-    
-    let queries: [IndexedQuery] = generateRequests(request)
-    
+    let queries = generateRequests(request)
     let responses = try await client.search(queries: queries.map {.first($0) })
-    
     let response = merge(responses.compactMap(\.first))
     return AlgoliaSearchResponse(searchResponse: response)
   }
@@ -51,12 +48,47 @@ public class AlgoliaSearchService<Hit: Decodable & Equatable>: SearchService {
   }
   
   private func generateRequests(_ request: AlgoliaSearchRequest) -> [IndexedQuery] {
-    let disjunctiveFacets = extractDisjunctiveAttributes(request.filterGroups)
-    return []
+    var parameters = request.searchParameters
+    parameters.filters = RawFilterTransformer.transform(request.filterGroups)
+    let initialRequest = IndexedQuery(indexName: request.indexName,
+                                      searchParameters: parameters)
+    
+    let disjunctiveRequests = extractDisjunctiveAttributes(request.filterGroups)
+      .map { facet in
+//        var request = request
+        var searchParameters = parameters
+        searchParameters.facets = [Attribute(rawValue: facet.rawValue.wrappedInQuotes())]
+        searchParameters.filters = removingFilters(for: facet, from: request.filterGroups)
+        searchParameters.attributesToRetrieve = []
+        searchParameters.attributesToHighlight = []
+        searchParameters.hitsPerPage = 0
+        searchParameters.analytics = false
+//        request.searchParameters = searchParameters
+        return IndexedQuery(indexName: request.indexName, searchParameters: request.searchParameters)
+      }
+    return [initialRequest] + disjunctiveRequests
+  }
+  
+  private func removingFilters(for attribute: Attribute, from groups: [FilterGroup]) -> String {
+    let groups = groups.map { group in
+      guard let orGroup = group as? OrFilterGroup<FacetFilter> else {
+        return group
+      }
+      return OrFilterGroup(filters: orGroup.typedFilters.filter { $0.attribute != attribute })
+    }
+    return RawFilterTransformer.transform(groups)
   }
   
   private func merge(_ responses: [AlgoliaSearchClient.SearchResponse]) -> AlgoliaSearchClient.SearchResponse {
-    .init()
+    guard var mainResponse = responses.first else {
+      fatalError("Empty list of responses to merge")
+    }
+    for response in responses.dropFirst() {
+      for (attribute, values) in response.facets {
+        mainResponse.facets[attribute] = values
+      }
+    }
+    return mainResponse
   }
     
 }

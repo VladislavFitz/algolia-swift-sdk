@@ -39,12 +39,11 @@ public struct AlgoliaSearchRequest: SearchRequest {
   /// - Parameters:
   ///   - indexName: The name of the index to perform search requests on.
   ///   - searchParameters: The search parameters for the Algolia search request.
-  init(indexName: IndexName,
-       searchParameters: SearchParameters = .init([]),
-       filterGroups: [FilterGroup]) {
+  public init(indexName: IndexName,
+              searchParameters: SearchParameters = .init([]),
+              filterGroups: [FilterGroup] = []) {
     self.indexName = indexName
     self.searchParameters = searchParameters
-    self.searchParameters.query = ""
     self.filterGroups = filterGroups
   }
       

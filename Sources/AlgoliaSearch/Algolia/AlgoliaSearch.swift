@@ -51,8 +51,7 @@ public final class AlgoliaSearch<Hit: Decodable & Equatable>: Search<AlgoliaSear
                               apiKey: apiKey)
     let service = AlgoliaSearchService<Hit>(client: client)
     let request = AlgoliaSearchRequest(indexName: indexName,
-                                       searchParameters: .init([Facets(["*"])]),
-                                       filterGroups: [])
+                                       searchParameters: .init([Facets([Attribute(rawValue: "*".wrappedInQuotes())])]))
     let paginationRequestFactory = AlgoliaPaginationRequestFactory<Hit>()
     self.query = ""
     self.indexName = indexName
@@ -64,17 +63,23 @@ public final class AlgoliaSearch<Hit: Decodable & Equatable>: Search<AlgoliaSear
   }
   
   private func setupSubscriptions() {
+//    filters
+//      .$groups
+//      .removeDuplicates(by: { l, r in
+//        l.values.map(\.rawValue) == r.values.map(\.rawValue)
+//      })
+//      .map(\.values)
+//      .sink { [weak self]  groups in
+//        self?.request.filterGroups = Array(groups)
+//        self?.objectWillChange.send()
+//      }.store(in: &cancellables)
     filters
-      .$groups
-      .removeDuplicates(by: { l, r in
-        l.values.map(\.rawValue) == r.values.map(\.rawValue)
-      })
-      .map(\.values)
-      .sink { [weak self]  groups in
-        self?.request.filterGroups = Array(groups)
-        self?.objectWillChange.send()
-      }.store(in: &cancellables)
-    
+      .$rawValue
+      .sink { [weak self]  _ in
+        guard let self else { return }
+        self.request.filterGroups = Array(self.filters.groups.values)
+      }
+      .store(in: &cancellables)
     $query
       .removeDuplicates()
       .sink { [weak self] query in

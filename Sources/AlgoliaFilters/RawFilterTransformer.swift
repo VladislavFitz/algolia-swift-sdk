@@ -1,8 +1,8 @@
 import Foundation
 
-struct RawFilterTransformer {
+public struct RawFilterTransformer {
   
-  static func transform(_ filter: FacetFilter) -> String {
+  public static func transform(_ filter: FacetFilter) -> String {
     let scoreExpression = filter.score.flatMap { "<score=\(String($0))>" } ?? ""
     let expression = """
     "\(filter.attribute)":"\(filter.value)\(scoreExpression)"
@@ -11,7 +11,7 @@ struct RawFilterTransformer {
     return prefix + expression
   }
   
-  static func transform(_ filter: NumericFilter) -> String {
+  public static func transform(_ filter: NumericFilter) -> String {
     let expression: String
     switch filter.value {
     case let .comparison(`operator`, value):
@@ -28,7 +28,7 @@ struct RawFilterTransformer {
     return prefix + expression
   }
   
-  static func transform(_ filter: TagFilter) -> String {
+  public static func transform(_ filter: TagFilter) -> String {
     let expression = """
     "\(filter.attribute)":"\(filter.value)"
     """
@@ -36,7 +36,7 @@ struct RawFilterTransformer {
     return prefix + expression
   }
   
-  static func transformFilter(_ filter: any Filter) -> String {
+  public static func transformFilter(_ filter: any Filter) -> String {
     switch filter {
     case let facet as FacetFilter:
       return transform(facet)
@@ -50,22 +50,22 @@ struct RawFilterTransformer {
     }
   }
   
-  static func transform(_ filters: [any Filter], separator: String) -> String {
+  public static func transform(_ filters: [any Filter], separator: String) -> String {
     if filters.isEmpty {
       return ""
     }
     return "( \(filters.map(transformFilter).sorted().joined(separator: separator)) )"
   }
   
-  static func transform(_ group: AndFilterGroup) -> String {
+  public static func transform(_ group: AndFilterGroup) -> String {
     transform(group.filters, separator: " AND ")
   }
   
-  static func transform<F: Filter>(_ group: OrFilterGroup<F>) -> String {
+  public static func transform<F: Filter>(_ group: OrFilterGroup<F>) -> String {
     transform(group.filters, separator: " OR ")
   }
   
-  static func transformGroup(_ group: any FilterGroup) -> String {
+  public static func transformGroup(_ group: any FilterGroup) -> String {
     switch group {
     case let andGroup as AndFilterGroup:
       return transform(andGroup)
@@ -81,11 +81,11 @@ struct RawFilterTransformer {
     }
   }
   
-  static func transform<S: Sequence>(_ groups: S, separator: String = " AND ") -> String where S.Element == any FilterGroup {
+  public static func transform<S: Sequence>(_ groups: S, separator: String = " AND ") -> String where S.Element == any FilterGroup {
     groups.filter { !$0.filters.isEmpty }.map(transformGroup).sorted().joined(separator: separator)
   }
   
-  static func transform(_ filters: Filters) -> String {
+  public static func transform(_ filters: Filters) -> String {
     transform(filters.groups.values, separator: " AND ")
   }
   
