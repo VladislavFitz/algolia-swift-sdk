@@ -18,7 +18,7 @@ public final class Filters: ObservableObject {
     self.groups = groups
     self.isEmpty = groups.values.map(\.isEmpty).allSatisfy { $0 == true }
     self.logger = Logger(subsystem: "Filters", category: "Filters")
-    self.rawValue = RawFilterTransformer.transform(groups.values, separator: " AND ")
+    self.rawValue = RawFilterTransformer.transform(groups.values, separator: .and)
     setupSubscriptions()
   }
     
@@ -28,6 +28,11 @@ public final class Filters: ObservableObject {
   }
   
   public func add<F: Filter>(group: OrFilterGroup<F>, forName name: String) {
+    groups[name] = group
+    setupSubscriptions()
+  }
+  
+  public func add(group: HierarchicalFilterGroup, forName name: String) {
     groups[name] = group
     setupSubscriptions()
   }

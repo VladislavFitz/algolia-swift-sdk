@@ -24,7 +24,7 @@ public final class AndFilterGroup: FilterGroup {
   public init(filters: [any Filter] = []) {
     self.filters = filters
     self.logger = Logger(subsystem: "Filters", category: "AndFilterGroup")
-    self.rawValue = RawFilterTransformer.transform(filters, separator: " OR ")
+    self.rawValue = RawFilterTransformer.transform(filters, separator: .and)
     setupSubscriptions()
   }
 
@@ -54,7 +54,7 @@ public final class AndFilterGroup: FilterGroup {
   private func setupSubscriptions() {
     $filters
       .map { filters in
-        RawFilterTransformer.transform(filters, separator: " AND ")
+        RawFilterTransformer.transform(filters, separator: .and)
       }
       .assign(to: \.rawValue, on: self)
       .store(in: &cancellables)

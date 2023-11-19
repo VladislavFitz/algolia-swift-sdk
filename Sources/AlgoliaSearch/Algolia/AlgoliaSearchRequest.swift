@@ -33,9 +33,7 @@ public struct AlgoliaSearchRequest: SearchRequest {
   public var searchParameters: SearchParameters
     
   public var filterGroups: [FilterGroup]
-  
-  public var hierarchicalInput: HierarchicalInput
-  
+
   /// Initializes a new `AlgoliaSearchRequest` object with the provided index name and search parameters.
   ///
   /// - Parameters:
@@ -43,12 +41,10 @@ public struct AlgoliaSearchRequest: SearchRequest {
   ///   - searchParameters: The search parameters for the Algolia search request.
   public init(indexName: IndexName,
               searchParameters: SearchParameters = .init([]),
-              filterGroups: [FilterGroup] = [],
-              hierarchicalInput: HierarchicalInput = .empty) {
+              filterGroups: [FilterGroup] = []) {
     self.indexName = indexName
     self.searchParameters = searchParameters
     self.filterGroups = filterGroups
-    self.hierarchicalInput = hierarchicalInput
   }
       
 }

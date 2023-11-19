@@ -57,9 +57,13 @@ public class AlgoliaSearchService<Hit: Decodable & Equatable>: SearchService {
       .map(indexed)
     queries.append(contentsOf: disjunctiveQueries)
     
-    if let appliedFilter = request.hierarchicalInput.filters.last {
-      let hierarchicalFilters: [FacetFilter?] = [.none] + request.hierarchicalInput.filters
-      let hierachicalQueries = zip(request.hierarchicalInput.attributes, hierarchicalFilters)
+
+    for hierarchicalGroup in request.filterGroups.compactMap({ $0 as? HierarchicalFilterGroup }) {
+      guard let appliedFilter = hierarchicalGroup.hierarchicalFilters.last else {
+        continue
+      }
+      let hierarchicalFilters: [FacetFilter?] = [.none] + hierarchicalGroup.hierarchicalFilters
+      let hierachicalQueries = zip(hierarchicalGroup.attributes, hierarchicalFilters)
         .map { (attribute, hierarchicalFilter) in
           var searchParameters = parameters
           searchParameters.onlyFacets()
@@ -70,7 +74,7 @@ public class AlgoliaSearchService<Hit: Decodable & Equatable>: SearchService {
         .map(indexed)
       queries.append(contentsOf: hierachicalQueries)
     }
-    
+
     return queries
   }
   

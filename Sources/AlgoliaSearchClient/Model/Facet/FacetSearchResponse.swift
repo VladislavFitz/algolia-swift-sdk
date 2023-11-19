@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import AlgoliaFoundation
 
 public struct FacetSearchResponse: Decodable {
   /// The list of Facet.

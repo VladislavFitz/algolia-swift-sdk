@@ -26,3 +26,26 @@ extension Facet: CustomStringConvertible {
     return "\(value) (\(count))"
   }
 }
+
+
+public extension Array<Facet> {
+
+  init(facetDictionary: [String: Int]) {
+    self = facetDictionary.map { value, count in
+      Facet(value: value, count: count)
+    }
+  }
+
+}
+
+public extension Dictionary<Attribute, [Facet]> {
+  
+  init(rawFacets: [String: [String: Int]]) {
+    let int = rawFacets.map { key, value in
+      (Attribute(rawValue: key), [Facet](facetDictionary: value))
+    }
+    self = Dictionary<Attribute, [Facet]>(uniqueKeysWithValues: int)
+  }
+  
+}
+

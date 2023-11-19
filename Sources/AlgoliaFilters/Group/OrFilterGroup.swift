@@ -30,7 +30,7 @@ public final class OrFilterGroup<GroupFilter: Filter>: FilterGroup {
   public init(filters: [GroupFilter] = []) {
     self.filters = filters
     self.typedFilters = filters
-    self.rawValue = RawFilterTransformer.transform(filters, separator: " OR ")
+    self.rawValue = RawFilterTransformer.transform(filters, separator: .or)
     self.logger = Logger(subsystem: "Filters", category: "OrFilterGroup")
     setupSubscriptions()
   }
@@ -38,7 +38,7 @@ public final class OrFilterGroup<GroupFilter: Filter>: FilterGroup {
   private func setupSubscriptions() {
     $filters
       .map { filters in
-        RawFilterTransformer.transform(filters, separator: " OR ")
+        RawFilterTransformer.transform(filters, separator: .or)
       }
       .assign(to: \.rawValue, on: self)
       .store(in: &cancellables)
