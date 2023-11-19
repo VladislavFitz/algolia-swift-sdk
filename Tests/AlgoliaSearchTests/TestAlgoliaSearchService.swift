@@ -49,4 +49,29 @@ final class TestAlgoliaSearchService: XCTestCase {
     }
   }
   
+  func testHierarchicalIntegrationTest() async throws {
+    let client = SearchClient(appID: "latency",
+                              apiKey: "1f6fd3a6fb973cb08419fe7d288fa4db")
+    let service = AlgoliaSearchService<InstantSearchItem>(client: client)
+    var parameters = SearchParameters()
+    parameters.query = ""
+    parameters.facets = [.all]
+    parameters.attributesToRetrieve = ["\"name\"", "\"brand\""]
+    parameters.attributesToHighlight = []
+    parameters.attributesToSnippet = []
+    let filterGroups = [
+      OrFilterGroup(filters: [FacetFilter(attribute: "brand", value: "Yamaha")])
+    ]
+    let request = AlgoliaSearchRequest(indexName: "instant_search",
+                                       searchParameters: parameters,
+                                       filterGroups: filterGroups)
+    let response = try await service.fetchResponse(for: request)
+    for (key, values) in response.searchResponse.facets {
+      print(key)
+      for value in values {
+        print("\t\(value)")
+      }
+    }
+  }
+  
 }

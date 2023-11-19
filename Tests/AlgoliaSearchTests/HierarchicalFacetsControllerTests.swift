@@ -54,7 +54,7 @@ final class TestHierarchicalFacetController: XCTestCase {
     let clothing_men_hats = "Clothing > Men > Hats"
     let clothing_men_shirt = "Clothing > Men > Shirt"
     
-    let controller = HierarchicalFacetController(attributes: hierarchicalAttributes,
+    let controller = HierarchicalViewModel(attributes: hierarchicalAttributes,
                                                  separator: " > ")
     
     controller.select(clothing)
