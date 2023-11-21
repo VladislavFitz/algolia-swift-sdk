@@ -26,8 +26,8 @@ public final class HierarchicalFilterGroup: FilterGroup {
   }
   
   public var visibleAttributes: [Attribute] {
-    //need to fetch the next level of hierarchical facets, so prefix the successor of current number of selections
-    let hierarchicalDepth = selections.count + 1
+    // need to fetch the next level of hierarchical facets, so prefix the successor of current number of hierarchical filters
+    let hierarchicalDepth = hierarchicalFilters.count + 1
     return Array(attributes.prefix(upTo: hierarchicalDepth))
   }
   
@@ -54,7 +54,6 @@ public final class HierarchicalFilterGroup: FilterGroup {
               separator: separator)
   }
 
-  
   public func apply(_ value: String) {
     let computedSelections = Self.selections(from: value, separator: separator)
     if computedSelections == selections {

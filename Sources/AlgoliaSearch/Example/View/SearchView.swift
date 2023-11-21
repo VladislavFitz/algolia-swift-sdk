@@ -29,8 +29,8 @@ public struct SearchView: View {
                 suggestions: {
       ForEach(viewModel.suggestions, id: \.objectID) { suggestion in
         SuggestionRow(suggestion: suggestion,
-                      onSubmission: viewModel.submitSuggestion,
-                      onCompletion: viewModel.completeSuggestion)
+                      onSubmission: { viewModel.submitSuggestion($0) },
+                      onCompletion: { viewModel.completeSuggestion($0) })
       }
     })
     .onSubmit(of: .search, viewModel.submitSearch)

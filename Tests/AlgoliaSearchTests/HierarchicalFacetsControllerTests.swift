@@ -54,46 +54,46 @@ final class TestHierarchicalFacetController: XCTestCase {
     let clothing_men_hats = "Clothing > Men > Hats"
     let clothing_men_shirt = "Clothing > Men > Shirt"
     
-    let controller = HierarchicalViewModel(attributes: hierarchicalAttributes,
-                                                 separator: " > ")
+    let viewModel = HierarchicalListViewModel(attributes: hierarchicalAttributes,
+                                              separator: " > ")
     
-    controller.select(clothing)
-    XCTAssertEqual(controller.selections, [clothing])
-    XCTAssertEqual(controller.filters, [
+    viewModel.select(clothing)
+    XCTAssertEqual(viewModel.selections, [clothing])
+    XCTAssertEqual(viewModel.filters, [
       FacetFilter(attribute: "hierarchicalCategories.lvl0", stringValue: clothing)
     ])
     
-    controller.select(clothing_men)
-    XCTAssertEqual(controller.selections, [clothing, clothing_men])
-    XCTAssertEqual(controller.filters, [
+    viewModel.select(clothing_men)
+    XCTAssertEqual(viewModel.selections, [clothing, clothing_men])
+    XCTAssertEqual(viewModel.filters, [
       FacetFilter(attribute: "hierarchicalCategories.lvl0", stringValue: clothing),
       FacetFilter(attribute: "hierarchicalCategories.lvl1", stringValue: clothing_men)
     ])
         
-    controller.select(clothing_men_shirt)
-    XCTAssertEqual(controller.selections, [clothing, clothing_men, clothing_men_shirt])
-    XCTAssertEqual(controller.filters, [
+    viewModel.select(clothing_men_shirt)
+    XCTAssertEqual(viewModel.selections, [clothing, clothing_men, clothing_men_shirt])
+    XCTAssertEqual(viewModel.filters, [
       FacetFilter(attribute: "hierarchicalCategories.lvl0", stringValue: clothing),
       FacetFilter(attribute: "hierarchicalCategories.lvl1", stringValue: clothing_men),
       FacetFilter(attribute: "hierarchicalCategories.lvl2", stringValue: clothing_men_shirt)
     ])
     
-    controller.select(clothing_men)
-    XCTAssertEqual(controller.selections, [clothing, clothing_men])
-    XCTAssertEqual(controller.filters, [
+    viewModel.select(clothing_men)
+    XCTAssertEqual(viewModel.selections, [clothing, clothing_men])
+    XCTAssertEqual(viewModel.filters, [
       FacetFilter(attribute: "hierarchicalCategories.lvl0", stringValue: clothing),
       FacetFilter(attribute: "hierarchicalCategories.lvl1", stringValue: clothing_men)
     ])
 
-    controller.select(clothing)
-    XCTAssertEqual(controller.selections, [clothing])
-    XCTAssertEqual(controller.filters, [
+    viewModel.select(clothing)
+    XCTAssertEqual(viewModel.selections, [clothing])
+    XCTAssertEqual(viewModel.filters, [
       FacetFilter(attribute: "hierarchicalCategories.lvl0", stringValue: clothing)
     ])
     
-    controller.select(clothing)
-    XCTAssertTrue(controller.selections.isEmpty)
-    XCTAssertTrue(controller.filters.isEmpty)
+    viewModel.select(clothing)
+    XCTAssertTrue(viewModel.selections.isEmpty)
+    XCTAssertTrue(viewModel.filters.isEmpty)
 
   }
   

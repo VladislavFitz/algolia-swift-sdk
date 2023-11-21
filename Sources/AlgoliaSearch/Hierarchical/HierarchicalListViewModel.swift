@@ -1,7 +1,7 @@
 import Foundation
 import Combine
 
-public final class HierarchicalViewModel<Value>: ObservableObject {
+public final class HierarchicalListViewModel<Value>: ObservableObject {
   
   @Published public var values: [HierarchicalNode<Value>]
   
