@@ -1,19 +1,18 @@
 import Foundation
 import Combine
-import AlgoliaFoundation
 
-public final class HierarchicalViewModel: ObservableObject {
+public final class HierarchicalViewModel<Value>: ObservableObject {
   
-  @Published public var values: [HierarchicalNode<Facet>]
+  @Published public var values: [HierarchicalNode<Value>]
   
-  public var didToggle: PassthroughSubject<Facet, Never>
+  public var didToggle: PassthroughSubject<Value, Never>
     
-  public init(values: [HierarchicalNode<Facet>] = []) {
+  public init(values: [HierarchicalNode<Value>] = []) {
     self.values = values
     self.didToggle = .init()
   }
     
-  public func toggle(_ facet: Facet) {
+  public func toggle(_ facet: Value) {
     didToggle.send(facet)
   }
         
