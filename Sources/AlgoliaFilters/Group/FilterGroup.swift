@@ -1,6 +1,6 @@
 import AlgoliaFoundation
-import Foundation
 import Combine
+import Foundation
 
 public protocol FilterGroup: CustomStringConvertible {
   /// List of filters in the group
@@ -19,6 +19,6 @@ public protocol FilterGroup: CustomStringConvertible {
   /// Remove all filters with the specified attribute from the group
   func removeFilters(withAttribute attribute: Attribute)
 
-/// Remove all filters from the group
+  /// Remove all filters from the group
   func removeAll()
 }

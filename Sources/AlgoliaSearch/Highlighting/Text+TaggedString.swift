@@ -1,13 +1,13 @@
 //
 //  Text+HighlightResult.swift
-//  
+//
 //
 //  Created by Vladislav Fitc on 07.05.2023.
 //
 
+import AlgoliaSearchClient
 import Foundation
 import SwiftUI
-import AlgoliaSearchClient
 
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 public extension SwiftUI.Text {
@@ -23,9 +23,8 @@ public extension SwiftUI.Text {
     let output = taggedString.output
     let ranges = taggedString.taggedRanges
     self = ranges
-      .map { (range, isTagged) in (String(output[range]), isTagged) }
-      .map { (substring, isTagged) in isTagged ? tagged(substring) : untagged(substring) }
+      .map { range, isTagged in (String(output[range]), isTagged) }
+      .map { substring, isTagged in isTagged ? tagged(substring) : untagged(substring) }
       .reduce(Text(""), +)
   }
-
 }

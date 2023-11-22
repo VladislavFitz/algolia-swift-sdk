@@ -27,23 +27,19 @@ extension Facet: CustomStringConvertible {
   }
 }
 
-public extension Array<Facet> {
-
+public extension [Facet] {
   init(facetDictionary: [String: Int]) {
     self = facetDictionary.map { value, count in
       Facet(value: value, count: count)
     }
   }
-
 }
 
-public extension Dictionary<Attribute, [Facet]> {
-
+public extension [Attribute: [Facet]] {
   init(rawFacets: [String: [String: Int]]) {
     let int = rawFacets.map { key, value in
       (Attribute(rawValue: key), [Facet](facetDictionary: value))
     }
     self = [Attribute: [Facet]](uniqueKeysWithValues: int)
   }
-
 }

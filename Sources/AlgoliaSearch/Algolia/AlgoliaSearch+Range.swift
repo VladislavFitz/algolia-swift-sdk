@@ -1,14 +1,13 @@
-import Foundation
-import AlgoliaFoundation
 import AlgoliaFilters
+import AlgoliaFoundation
+import Foundation
 
 public extension AlgoliaSearch {
-
   func rangeViewModel(attribute: Attribute) -> RangeFilterViewModel {
     if let viewModel = rangeViewModels[attribute] {
       return viewModel
     }
-    let viewModel = RangeFilterViewModel(bounds: 0...5000, value: 0...5000)
+    let viewModel = RangeFilterViewModel(bounds: 0 ... 5000, value: 0 ... 5000)
     let group = AndFilterGroup()
     filters.add(group: group, forName: attribute.rawValue)
     viewModel
@@ -24,5 +23,4 @@ public extension AlgoliaSearch {
     rangeViewModels[attribute] = viewModel
     return viewModel
   }
-
 }

@@ -1,9 +1,8 @@
-import AlgoliaFoundation
 import AlgoliaFilters
+import AlgoliaFoundation
 import Foundation
 
 public extension AlgoliaSearch {
-
   func refinementList(attribute: Attribute,
                       selectionMode: SelectionMode,
                       sort: ((Facet, Facet) -> Bool)? = .none) -> RefinementListViewModel<Facet> {
@@ -52,5 +51,4 @@ public extension AlgoliaSearch {
     refinementListViewModels[attribute] = viewModel
     return viewModel
   }
-
 }

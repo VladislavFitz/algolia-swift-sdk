@@ -1,6 +1,6 @@
 //
 //  HighlightResult.swift
-//  
+//
 //
 //  Created by Vladislav Fitc on 07.05.2023.
 //
@@ -9,7 +9,6 @@ import Foundation
 
 /// `HighlightResult` is a structure that holds the highlighted parts of a query result.
 public struct HighlightResult: Decodable & Equatable {
-
   /// The JSON content containing the highlighted parts of a query result.
   let content: JSON
 
@@ -42,5 +41,4 @@ public struct HighlightResult: Decodable & Equatable {
     }
     return currentContent?["value"]?.string
   }
-
 }

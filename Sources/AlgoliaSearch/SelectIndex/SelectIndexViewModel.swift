@@ -1,8 +1,7 @@
-import Foundation
 import AlgoliaFoundation
+import Foundation
 
 public final class SelectIndexViewModel: ObservableObject {
-
   @Published public var selectedIndexName: IndexName
 
   public let indexNames: [IndexName]
@@ -17,5 +16,4 @@ public final class SelectIndexViewModel: ObservableObject {
   public func isSelected(_ indexName: IndexName) -> Bool {
     selectedIndexName == indexName
   }
-
 }

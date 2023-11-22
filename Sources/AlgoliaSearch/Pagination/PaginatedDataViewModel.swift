@@ -1,12 +1,12 @@
 //
 //  PaginatedDataViewModel.swift
-//  
+//
 //
 //  Created by Vladislav Fitc on 01.04.2023.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 /// `PaginatedDataViewModel` is a generic class responsible for handling paginated data from a `PageSource`.
 /// It is designed to be used with SwiftUI and is an `ObservableObject` that can be bound to UI elements.
@@ -20,7 +20,6 @@ import Combine
 /// - Note: `ItemsPage` must conform to the `Page` protocol.
 @available(iOS 13.0, macOS 10.15, *)
 public final class PaginatedDataViewModel<ItemsPage: Page>: ObservableObject {
-
   /// An array of fetched items.
   @Published public var items: [ItemsPage.Item]
 
@@ -44,11 +43,11 @@ public final class PaginatedDataViewModel<ItemsPage: Page>: ObservableObject {
   /// - Parameter source: The source object that conforms to the `PageSource` protocol.
   public init<PS: PageSource<ItemsPage>>(source: PS) {
     self.source = source
-    self.storage = ConcurrentList()
-    self.isLoading = false
-    self.items = []
-    self.hasPrevious = false
-    self.hasNext = true
+    storage = ConcurrentList()
+    isLoading = false
+    items = []
+    hasPrevious = false
+    hasNext = true
   }
 
   /// Loads the next page of data.
@@ -108,12 +107,11 @@ public final class PaginatedDataViewModel<ItemsPage: Page>: ObservableObject {
     /// A localized description of the error.
     public var errorDescription: String? {
       switch self {
-      case .requestError(let error):
+      case let .requestError(error):
         return "Error occured during search request: \(error)"
       case .indexOutOfRange:
         return "Attempt to access the item on unaccessible page"
       }
     }
   }
-
 }

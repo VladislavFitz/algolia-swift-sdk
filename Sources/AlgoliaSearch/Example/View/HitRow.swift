@@ -1,6 +1,6 @@
 //
 //  HitRow.swift
-//  
+//
 //
 //  Created by Vladislav Fitc on 07.05.2023.
 //
@@ -10,7 +10,6 @@ import SwiftUI
 
 @available(iOS 15.0, *)
 public struct HitRow: View {
-
   let hit: InstantSearchHit
 
   public var body: some View {
@@ -34,11 +33,9 @@ public struct HitRow: View {
         HStack {
           Text(String(format: "$%.2f", hit.price))
           Spacer()
-
         }
       }
       Spacer()
     }
   }
-
 }

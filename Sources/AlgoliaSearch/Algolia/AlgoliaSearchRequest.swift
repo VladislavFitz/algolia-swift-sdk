@@ -1,14 +1,14 @@
 //
 //  AlgoliaSearchRequest.swift
-//  
+//
 //
 //  Created by Vladislav Fitc on 22.04.2023.
 //
 
-import Foundation
-import AlgoliaSearchClient
-import AlgoliaFoundation
 import AlgoliaFilters
+import AlgoliaFoundation
+import AlgoliaSearchClient
+import Foundation
 
 /// `AlgoliaSearchRequest` is a concrete implementation of the `SearchRequest` protocol, specifically tailored for Algolia search engine.
 /// It represents a search request for Algolia with an index name and search parameters.
@@ -21,7 +21,6 @@ import AlgoliaFilters
 ///
 /// - Note: The `Hit` type parameter represents the type of the items in the search results and should conform to the `Decodable` protocol.
 public struct AlgoliaSearchRequest: SearchRequest {
-
   public static func == (lhs: AlgoliaSearchRequest, rhs: AlgoliaSearchRequest) -> Bool {
     lhs.indexName == rhs.indexName && lhs.searchParameters == rhs.searchParameters
   }
@@ -46,5 +45,4 @@ public struct AlgoliaSearchRequest: SearchRequest {
     self.searchParameters = searchParameters
     self.filterGroups = filterGroups
   }
-
 }

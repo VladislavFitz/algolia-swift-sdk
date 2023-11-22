@@ -5,8 +5,7 @@ public enum FilterSeparator: String {
   case or = " OR "
 }
 
-public struct RawFilterTransformer {
-
+public enum RawFilterTransformer {
   private static let negationPrefix = "NOT "
 
   public static func transform(_ filter: FacetFilter) -> String {
@@ -101,5 +100,4 @@ public struct RawFilterTransformer {
   public static func transform(_ filters: Filters) -> String {
     transform(filters.groups.values, separator: .and)
   }
-
 }

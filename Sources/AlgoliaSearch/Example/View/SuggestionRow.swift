@@ -1,15 +1,14 @@
 //
 //  SuggestionRow.swift
-//  
+//
 //
 //  Created by Vladislav Fitc on 01.06.2023.
 //
 
-import SwiftUI
 import AlgoliaFoundation
+import SwiftUI
 
 public struct SuggestionRow: View {
-
   let suggestion: QuerySuggestion
 
   var onSubmission: ((String) -> Void)?
@@ -28,19 +27,19 @@ public struct SuggestionRow: View {
       Button(action: {
         onSubmission?(suggestion.query)
       }, label: {
-          HStack {
-            Image(systemName: "magnifyingglass")
-              .padding(.leading, 3)
-            if let highlightedName = suggestion._highlightResult["query"] {
-              Text(taggedString: highlightedName,
-                   tagged: { Text($0).fontWeight(.regular) },
-                   untagged: { Text($0).fontWeight(.semibold) })
+        HStack {
+          Image(systemName: "magnifyingglass")
+            .padding(.leading, 3)
+          if let highlightedName = suggestion._highlightResult["query"] {
+            Text(taggedString: highlightedName,
+                 tagged: { Text($0).fontWeight(.regular) },
+                 untagged: { Text($0).fontWeight(.semibold) })
               .frame(maxWidth: .infinity, alignment: .leading)
-            } else {
-              Text(suggestion.query)
-            }
+          } else {
+            Text(suggestion.query)
           }
-          .foregroundColor(.black)
+        }
+        .foregroundColor(.black)
       })
       .buttonStyle(.borderless)
       Spacer()
@@ -53,11 +52,9 @@ public struct SuggestionRow: View {
       .buttonStyle(.borderless)
     }
   }
-
 }
 
 class SuggestionRow_Preview: PreviewProvider {
-
   static var previews: some View {
     List {
       SuggestionRow(suggestion: QuerySuggestion(objectID: "object",
@@ -72,8 +69,6 @@ class SuggestionRow_Preview: PreviewProvider {
                                                 query: "Apple",
                                                 popularity: 0,
                                                 _highlightResult: HighlightResult(content: ["query": ["value": "<em>App</em>le"]])))
-
     }
   }
-
 }

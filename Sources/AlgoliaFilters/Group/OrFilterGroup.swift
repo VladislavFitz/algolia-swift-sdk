@@ -1,12 +1,11 @@
 import AlgoliaFoundation
-import Foundation
 import Combine
+import Foundation
 import OSLog
 
 /// Disjunctive filter group сombines filters with the logical operator "or".
 /// Can contain filters of the same type only (facet, numeric or tag).
 public final class OrFilterGroup<GroupFilter: Filter>: FilterGroup {
-
   @Published public private(set) var filters: [any Filter]
 
   @Published public var rawValue: String
@@ -29,9 +28,9 @@ public final class OrFilterGroup<GroupFilter: Filter>: FilterGroup {
 
   public init(filters: [GroupFilter] = []) {
     self.filters = filters
-    self.typedFilters = filters
-    self.rawValue = RawFilterTransformer.transform(filters, separator: .or)
-    self.logger = Logger(subsystem: "Filters", category: "OrFilterGroup")
+    typedFilters = filters
+    rawValue = RawFilterTransformer.transform(filters, separator: .or)
+    logger = Logger(subsystem: "Filters", category: "OrFilterGroup")
     setupSubscriptions()
   }
 

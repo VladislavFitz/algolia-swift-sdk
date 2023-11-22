@@ -1,6 +1,6 @@
 //
 //  SearchRequest.swift
-//  
+//
 //
 //  Created by Vladislav Fitc on 23.04.2023.
 //

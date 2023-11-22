@@ -1,6 +1,6 @@
 //
 //  QuerySuggestion.swift
-//  
+//
 //
 //  Created by Vladislav Fitc on 01.06.2023.
 //
@@ -9,7 +9,6 @@ import Foundation
 
 /// `QuerySuggestion` is a structure representing a suggested query returned by the Algolia search API.
 public struct QuerySuggestion: Decodable & Equatable {
-
   /// The unique identifier of the query suggestion assigned by Algolia.
   public let objectID: String
 
@@ -34,5 +33,4 @@ public struct QuerySuggestion: Decodable & Equatable {
     self.popularity = popularity
     self._highlightResult = _highlightResult
   }
-
 }

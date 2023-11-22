@@ -1,6 +1,6 @@
 //
 //  InfiniteList.swift
-//  
+//
 //
 //  Created by Vladislav Fitc on 23.04.2023.
 //
@@ -24,7 +24,6 @@ import SwiftUI
 /// - Note: This view is available from iOS 15.0 onwards.
 @available(iOS 15.0, macOS 12.0, *)
 public struct InfiniteList<HitView: View, NoResults: View, Item, P: Page<Item>>: View {
-
   /// An instance of `PaginatedDataViewModel` object.
   @StateObject public var viewModel: PaginatedDataViewModel<P>
 
@@ -44,7 +43,7 @@ public struct InfiniteList<HitView: View, NoResults: View, Item, P: Page<Item>>:
               @ViewBuilder item: @escaping (Item) -> HitView,
               @ViewBuilder noResults: @escaping () -> NoResults) {
     _viewModel = StateObject(wrappedValue: hits)
-    self.itemView = item
+    itemView = item
     self.noResults = noResults
   }
 
@@ -61,7 +60,7 @@ public struct InfiniteList<HitView: View, NoResults: View, Item, P: Page<Item>>:
                 viewModel.loadPrevious()
               }
           }
-          ForEach(0..<viewModel.items.count, id: \.self) { index in
+          ForEach(0 ..< viewModel.items.count, id: \.self) { index in
             itemView(viewModel.items[index])
           }
           if viewModel.hasNext {
@@ -74,5 +73,4 @@ public struct InfiniteList<HitView: View, NoResults: View, Item, P: Page<Item>>:
       }
     }
   }
-
 }

@@ -1,13 +1,13 @@
 //
 //  SearchResponse+Extract.swift
-//  
+//
 //
 //  Created by Vladislav Fitc on 23.04.2023.
 //
 
-import Foundation
-import AlgoliaSearchClient
 import AlgoliaFoundation
+import AlgoliaSearchClient
+import Foundation
 
 /// `AlgoliaSearchResponse` is a concrete implementation of the `SearchResponse` protocol, specifically tailored for Algolia search engine.
 /// It represents a search response from Algolia and allows fetching a page of search results.
@@ -21,7 +21,6 @@ import AlgoliaFoundation
 ///
 /// - Note: The `Hit` type parameter represents the type of the items in the search results and should conform to the `Decodable` protocol.
 public struct AlgoliaSearchResponse<Hit: Decodable & Equatable>: SearchResponse, Equatable {
-
   /// The Algolia search response object.
   public let searchResponse: AlgoliaSearchClient.SearchResponse
 
@@ -48,6 +47,6 @@ public struct AlgoliaSearchResponse<Hit: Decodable & Equatable>: SearchResponse,
     AlgoliaHitsPage(page: searchResponse.page!,
                     hits: try! fetchHits(),
                     hasPrevious: searchResponse.page! > 0,
-                    hasNext: searchResponse.page! < searchResponse.nbPages!-1)
+                    hasNext: searchResponse.page! < searchResponse.nbPages! - 1)
   }
 }

@@ -1,6 +1,6 @@
 //
 //  Page.swift
-//  
+//
 //
 //  Created by Vladislav Fitc on 23.04.2023.
 //
@@ -23,7 +23,6 @@ import Foundation
 ///
 /// - Note: The `Item` associated type represents the type of data contained in the page.
 public protocol Page<Item>: Comparable {
-
   /// The associated data type for the items in the page.
   associatedtype Item
 
@@ -35,5 +34,4 @@ public protocol Page<Item>: Comparable {
 
   /// An array of items contained in the page.
   var items: [Item] { get }
-
 }

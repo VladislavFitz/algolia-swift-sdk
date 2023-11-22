@@ -1,32 +1,31 @@
 //
 //  AlgoliaSearchService.swift
-//  
+//
 //
 //  Created by Vladislav Fitc on 23.04.2023.
 //
 
-import Foundation
+import AlgoliaFilters
 import AlgoliaFoundation
 import AlgoliaSearchClient
+import Foundation
 import Logging
-import AlgoliaFilters
 
 public class AlgoliaSearchService<Hit: Decodable & Equatable>: SearchService {
-
   public let client: SearchClient
 
   private var logger: Logger
 
   public init(client: SearchClient) {
     self.client = client
-    self.logger = Logger(label: "algolia search service")
-    self.logger.logLevel = .trace
+    logger = Logger(label: "algolia search service")
+    logger.logLevel = .trace
   }
 
   public func fetchResponse(for request: AlgoliaSearchRequest) async throws -> AlgoliaSearchResponse<Hit> {
     logger.trace("request: index \(request.indexName), query: \"\(request.searchParameters.query ?? "")\" , page: \(request.searchParameters.page ?? 0), filters: \(request.searchParameters.filters ?? "")")
     let queries = generateRequests(request)
-    let responses = try await client.search(queries: queries.map {.first($0) })
+    let responses = try await client.search(queries: queries.map { .first($0) })
     let response = merge(responses.compactMap(\.first))
     return AlgoliaSearchResponse(searchResponse: response)
   }
@@ -63,7 +62,7 @@ public class AlgoliaSearchService<Hit: Decodable & Equatable>: SearchService {
       }
       let hierarchicalFilters: [FacetFilter?] = [.none] + hierarchicalGroup.hierarchicalFilters
       let hierachicalQueries = zip(hierarchicalGroup.attributes, hierarchicalFilters)
-        .map { (attribute, hierarchicalFilter) in
+        .map { attribute, hierarchicalFilter in
           var searchParameters = parameters
           searchParameters.onlyFacets()
           searchParameters.facets = [attribute]
@@ -88,11 +87,9 @@ public class AlgoliaSearchService<Hit: Decodable & Equatable>: SearchService {
     }
     return mainResponse
   }
-
 }
 
-fileprivate extension Array<FilterGroup> {
-
+private extension [FilterGroup] {
   func extractDisjunctiveAttributes() -> Set<Attribute> {
     let attributesList = flatMap { group in
       switch group {
@@ -132,11 +129,9 @@ fileprivate extension Array<FilterGroup> {
     }
     return RawFilterTransformer.transform(groups)
   }
-
 }
 
-fileprivate extension SearchParameters {
-
+private extension SearchParameters {
   /// Setup search parameters to fetch only facets information to reduce payload size
   mutating func onlyFacets() {
     attributesToRetrieve = []
@@ -144,5 +139,4 @@ fileprivate extension SearchParameters {
     hitsPerPage = 0
     analytics = false
   }
-
 }

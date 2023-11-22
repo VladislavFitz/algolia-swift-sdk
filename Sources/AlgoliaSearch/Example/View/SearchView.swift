@@ -1,6 +1,6 @@
 //
 //  SearchExample.swift
-//  
+//
 //
 //  Created by Vladislav Fitc on 01.04.2023.
 //
@@ -9,7 +9,6 @@ import SwiftUI
 
 @available(iOS 15.0, *)
 public struct SearchView: View {
-
   @StateObject var viewModel = SearchViewModel()
 
   public init() {}
@@ -27,24 +26,21 @@ public struct SearchView: View {
     .searchable(text: $viewModel.searchQuery,
                 prompt: "Laptop, smartphone, tv",
                 suggestions: {
-      ForEach(viewModel.suggestions, id: \.objectID) { suggestion in
-        SuggestionRow(suggestion: suggestion,
-                      onSubmission: { viewModel.submitSuggestion($0) },
-                      onCompletion: { viewModel.completeSuggestion($0) })
-      }
-    })
+                  ForEach(viewModel.suggestions, id: \.objectID) { suggestion in
+                    SuggestionRow(suggestion: suggestion,
+                                  onSubmission: { viewModel.submitSuggestion($0) },
+                                  onCompletion: { viewModel.completeSuggestion($0) })
+                  }
+                })
     .onSubmit(of: .search, viewModel.submitSearch)
   }
-
 }
 
 @available(iOS 15.0, *)
 class SearchPreview: PreviewProvider {
-
   static var previews: some View {
     NavigationView {
       SearchView()
     }
   }
-
 }

@@ -1,10 +1,9 @@
 import AlgoliaFoundation
-import Foundation
 import Combine
+import Foundation
 import OSLog
 
 public final class HierarchicalFilterGroup: FilterGroup {
-
   @Published public private(set) var filters: [any Filter]
 
   public var filtersPublisher: Published<[Filter]>.Publisher { $filters }
@@ -38,11 +37,11 @@ public final class HierarchicalFilterGroup: FilterGroup {
               separator: String = " > ") {
     self.attributes = attributes
     self.separator = separator
-    self.hierarchicalFilters = []
-    self.filters = []
-    self.rawValue = ""
-    self.logger = Logger(subsystem: "Filters",
-                         category: "HierarchicalFilterGroup")
+    hierarchicalFilters = []
+    filters = []
+    rawValue = ""
+    logger = Logger(subsystem: "Filters",
+                    category: "HierarchicalFilterGroup")
     setupSubscriptions()
   }
 
@@ -68,7 +67,7 @@ public final class HierarchicalFilterGroup: FilterGroup {
       .map { filters in
         [filters.last].compactMap { $0 }
       }
-      .sink { [weak self] filters  in
+      .sink { [weak self] filters in
         self?.filters = filters
       }
       .store(in: &cancellables)
@@ -103,11 +102,9 @@ public final class HierarchicalFilterGroup: FilterGroup {
   public var description: String {
     RawFilterTransformer.transform(self)
   }
-
 }
 
 private extension HierarchicalFilterGroup {
-
   static func makeFilters(attributes: [Attribute], values: [String]) -> [FacetFilter] {
     zip(attributes, values)
       .map {
@@ -124,5 +121,4 @@ private extension HierarchicalFilterGroup {
         return paths + [newPath]
       }
   }
-
 }

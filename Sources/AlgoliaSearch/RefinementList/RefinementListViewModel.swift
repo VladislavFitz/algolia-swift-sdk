@@ -1,7 +1,6 @@
 import Foundation
 
-final public class RefinementListViewModel<Value: Hashable>: ObservableObject {
-
+public final class RefinementListViewModel<Value: Hashable>: ObservableObject {
   let selectionMode: SelectionMode
 
   @Published
@@ -47,5 +46,4 @@ final public class RefinementListViewModel<Value: Hashable>: ObservableObject {
       selectedValues.remove(value)
     }
   }
-
 }

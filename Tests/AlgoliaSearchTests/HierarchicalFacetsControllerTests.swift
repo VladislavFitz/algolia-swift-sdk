@@ -5,16 +5,15 @@
 //  Created by Vladislav Fitc on 10.10.2023.
 //
 
-import Foundation
-import AlgoliaFoundation
-import AlgoliaSearchClient
-import AlgoliaSearch
 import AlgoliaFilters
+import AlgoliaFoundation
+import AlgoliaSearch
+import AlgoliaSearchClient
+import Foundation
 import XCTest
 
 @MainActor
 final class TestHierarchicalFacetController: XCTestCase {
-
 //  func testDisjunctiveFacetingIntegrationTest() async throws {
 //    let client = SearchClient(appID: "latency",
 //                              apiKey: "1f6fd3a6fb973cb08419fe7d288fa4db")
@@ -41,7 +40,7 @@ final class TestHierarchicalFacetController: XCTestCase {
 //  }
 
   func testController() {
-    let hierarchicalAttributes: [Attribute] = (0...2)
+    let hierarchicalAttributes: [Attribute] = (0 ... 2)
       .map { "hierarchicalCategories.lvl\($0)" }
 
     let clothing = "Clothing"
@@ -94,7 +93,5 @@ final class TestHierarchicalFacetController: XCTestCase {
     viewModel.select(clothing)
     XCTAssertTrue(viewModel.selections.isEmpty)
     XCTAssertTrue(viewModel.filters.isEmpty)
-
   }
-
 }

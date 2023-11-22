@@ -1,17 +1,16 @@
 //
 //  SearchHeaderPanel.swift
-//  
+//
 //
 //  Created by Vladislav Fitc on 01.06.2023.
 //
 
-import Foundation
 import AlgoliaFoundation
+import Foundation
 import SwiftUI
 
 @available(iOS 14.0, *)
 public struct SearchHeaderPanel: View {
-
   let indices: [(name: IndexName, title: String)]
   @Binding var indexName: IndexName
   var resultsCount: Int
@@ -40,5 +39,4 @@ public struct SearchHeaderPanel: View {
   private func title(for indexName: IndexName) -> String {
     indices.first(where: { $0.name == indexName })?.title ?? ""
   }
-
 }

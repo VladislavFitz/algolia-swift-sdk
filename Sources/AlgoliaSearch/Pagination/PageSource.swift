@@ -1,6 +1,6 @@
 //
 //  PageSource.swift
-//  
+//
 //
 //  Created by Vladislav Fitc on 07.04.2023.
 //
@@ -27,7 +27,6 @@ import Foundation
 ///         and the page type itself, respectively.
 @available(iOS 13.0.0, *)
 public protocol PageSource<Page> {
-
   /// The associated data type for the items in the pages.
   associatedtype Page
 
@@ -50,5 +49,4 @@ public protocol PageSource<Page> {
   /// - Returns: The next `ItemsPage` containing the data.
   /// - Throws: An error if the fetch operation fails.
   func fetchPage(after page: Page) async throws -> Page
-
 }

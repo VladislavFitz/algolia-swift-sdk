@@ -1,12 +1,11 @@
 import AlgoliaFoundation
-import Foundation
 import Combine
+import Foundation
 import OSLog
 
 /// Conjunctive filter group сombines filters with the logical operator "and".
 /// Can contain filters of different types at the same time.
 public final class AndFilterGroup: FilterGroup {
-
   @Published public private(set) var filters: [any Filter]
 
   @Published public var rawValue: String
@@ -23,8 +22,8 @@ public final class AndFilterGroup: FilterGroup {
 
   public init(filters: [any Filter] = []) {
     self.filters = filters
-    self.logger = Logger(subsystem: "Filters", category: "AndFilterGroup")
-    self.rawValue = RawFilterTransformer.transform(filters, separator: .and)
+    logger = Logger(subsystem: "Filters", category: "AndFilterGroup")
+    rawValue = RawFilterTransformer.transform(filters, separator: .and)
     setupSubscriptions()
   }
 

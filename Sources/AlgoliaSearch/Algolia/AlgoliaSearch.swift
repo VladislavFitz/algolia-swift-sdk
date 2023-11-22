@@ -1,16 +1,16 @@
 //
 //  AlgoliaSearch.swift
-//  
+//
 //
 //  Created by Vladislav Fitc on 23.04.2023.
 //
 
-import Foundation
-import SwiftUI
+import AlgoliaFilters
 import AlgoliaFoundation
 import AlgoliaSearchClient
-import AlgoliaFilters
 import Combine
+import Foundation
+import SwiftUI
 
 /// `AlgoliaSearch` is a subclass of the `Search` class, specifically tailored to work with the Algolia search engine.
 /// It uses the `AlgoliaSearchService` to perform search requests.
@@ -31,7 +31,6 @@ import Combine
 /// - Note: The `Hit` type parameter represents the type of the items in the search results and should conform to the `Decodable` protocol.
 @MainActor
 public final class AlgoliaSearch<Hit: Decodable & Equatable>: Search<AlgoliaSearchService<Hit>, AlgoliaPaginationRequestFactory<Hit>> {
-
   @Published public var query: String
   @Published public var indexName: IndexName
   @Published public var filters: AlgoliaFilters.Filters
@@ -58,9 +57,9 @@ public final class AlgoliaSearch<Hit: Decodable & Equatable>: Search<AlgoliaSear
     let request = AlgoliaSearchRequest(indexName: indexName,
                                        searchParameters: .init([Facets([Attribute(rawValue: "*".wrappedInQuotes())])]))
     let paginationRequestFactory = AlgoliaPaginationRequestFactory<Hit>()
-    self.query = ""
+    query = ""
     self.indexName = indexName
-    self.filters = Filters()
+    filters = Filters()
     super.init(service: service,
                request: request,
                factory: paginationRequestFactory)
@@ -70,7 +69,7 @@ public final class AlgoliaSearch<Hit: Decodable & Equatable>: Search<AlgoliaSear
   private func setupSubscriptions() {
     filters
       .$rawValue
-      .sink { [weak self]  _ in
+      .sink { [weak self] _ in
         guard let self else { return }
         self.request.filterGroups = Array(self.filters.groups.values)
       }
@@ -96,5 +95,4 @@ public final class AlgoliaSearch<Hit: Decodable & Equatable>: Search<AlgoliaSear
     let hits = try? latestResponse.fetchHits() as [Hit]
     return hits ?? []
   }
-
 }

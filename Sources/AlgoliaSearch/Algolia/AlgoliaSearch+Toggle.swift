@@ -1,9 +1,8 @@
-import AlgoliaFoundation
 import AlgoliaFilters
+import AlgoliaFoundation
 import Foundation
 
 public extension AlgoliaSearch {
-
   func toggleViewModel(attribute: Attribute) -> ToggleViewModel {
     if let viewModel = toggleViewModels[attribute] {
       return viewModel
@@ -26,5 +25,4 @@ public extension AlgoliaSearch {
     toggleViewModels[attribute] = viewModel
     return viewModel
   }
-
 }

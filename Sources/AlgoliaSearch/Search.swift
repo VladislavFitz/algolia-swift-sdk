@@ -1,12 +1,12 @@
 //
 //  Search.swift
-//  
+//
 //
 //  Created by Vladislav Fitc on 01.04.2023.
 //
 
-import Foundation
 import Combine
+import Foundation
 import Logging
 
 /// `Search` is a generic class that manages search operations using a search service conforming to the
@@ -26,7 +26,6 @@ import Logging
 /// - Note: The `Service` type parameter represents the type of the search service to be used,
 ///         which conforms to the `SearchService` protocol.
 public class Search<Service: SearchService, RF: PaginationRequestFactory>: ObservableObject where RF.Request == Service.Request, RF.HitsPage == Service.Response.HitsPage {
-
   /// The current search request. When updated, it will reset and reload the hits if the request is different.
   @Published public var request: Service.Request
 
@@ -58,18 +57,18 @@ public class Search<Service: SearchService, RF: PaginationRequestFactory>: Obser
               logLevel: Logger.Level = .warning) {
     self.service = service
     self.request = request
-    self.requestFactory = factory
-    self.latestResponse = .none
+    requestFactory = factory
+    latestResponse = .none
     var logger = Logger(label: "Search")
     logger.logLevel = logLevel
     self.logger = logger
-    self.cancellables = []
-    self.hits = PaginatedDataViewModel(source: self)
+    cancellables = []
+    hits = PaginatedDataViewModel(source: self)
     setupSubscriptions()
   }
 
   private func setupSubscriptions() {
-    $request.sink { [weak self]  request in
+    $request.sink { [weak self] request in
       guard let self else { return }
       Task {
         await self.hits.reset()
@@ -79,12 +78,11 @@ public class Search<Service: SearchService, RF: PaginationRequestFactory>: Obser
       }
     }.store(in: &cancellables)
   }
-
 }
 
 // MARK: - PageSource Conformance
-extension Search: PageSource {
 
+extension Search: PageSource {
   /// The associated data type for the items in the pages.
   public typealias Item = Service.Response.HitsPage.Item
 
@@ -114,5 +112,4 @@ extension Search: PageSource {
     latestResponse = response
     return response.fetchPage()
   }
-
 }

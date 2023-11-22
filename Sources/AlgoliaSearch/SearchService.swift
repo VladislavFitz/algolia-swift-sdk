@@ -1,6 +1,6 @@
 //
 //  SearchService.swift
-//  
+//
 //
 //  Created by Vladislav Fitc on 23.04.2023.
 //
@@ -25,7 +25,6 @@ import Foundation
 /// - Note: The `Request` and `Response` associated types represent the search request and response types,
 ///         respectively, which conform to the `SearchRequest` and `SearchResponse` protocols.
 public protocol SearchService {
-
   /// The associated search request type that conforms to the `SearchRequest` protocol.
   associatedtype Request: SearchRequest
 

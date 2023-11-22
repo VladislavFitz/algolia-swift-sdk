@@ -1,6 +1,6 @@
 //
 //  SearchViewModel.swift
-//  
+//
 //
 //  Created by Vladislav Fitc on 01.06.2023.
 //
@@ -10,7 +10,6 @@ import Combine
 
 @MainActor
 final class SearchViewModel: ObservableObject {
-
   @Published var searchQuery: String = "" {
     didSet {
       notifyQueryChanged()
@@ -49,7 +48,7 @@ final class SearchViewModel: ObservableObject {
 
     suggestionsSearch
       .$latestResponse
-      .sink { [weak self]  response in
+      .sink { [weak self] response in
         self?.suggestions = (try? response?.fetchHits()) ?? []
       }
       .store(in: &subscriptions)
@@ -86,5 +85,4 @@ final class SearchViewModel: ObservableObject {
   deinit {
     subscriptions.forEach { $0.cancel() }
   }
-
 }

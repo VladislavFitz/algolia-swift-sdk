@@ -1,6 +1,6 @@
 //
 //  ConcurrentList.swift
-//  
+//
 //
 //  Created by Vladislav Fitc on 23.04.2023.
 //
@@ -21,7 +21,6 @@ import Foundation
 /// - Note: The `Page` type parameter represents the type of the pages to be stored.
 @available(iOS 13.0.0, *)
 actor ConcurrentList<Item> {
-
   /// An array containing the stored items.
   var items: [Item] = []
 
@@ -43,5 +42,4 @@ actor ConcurrentList<Item> {
   func clear() {
     items.removeAll()
   }
-
 }

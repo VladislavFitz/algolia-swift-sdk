@@ -1,15 +1,14 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Vladislav Fitc on 22.11.2023.
 //
 
-import Foundation
 import AlgoliaFoundation
+import Foundation
 
 public extension AlgoliaSearch {
-
   func sortViewModel(indexNames: [IndexName],
                      selectedIndexName: IndexName) -> SelectIndexViewModel {
     let viewModel = SelectIndexViewModel(indexNames: indexNames,
@@ -20,5 +19,4 @@ public extension AlgoliaSearch {
       .store(in: &cancellables)
     return viewModel
   }
-
 }

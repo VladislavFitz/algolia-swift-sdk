@@ -1,13 +1,11 @@
-import Foundation
-import AlgoliaFoundation
 import AlgoliaFilters
+import AlgoliaFoundation
+import Foundation
 
 public extension AlgoliaSearch {
-
   func hierarchicalListViewModel(attributesPrefix: String,
                                  attributesRange: ClosedRange<Int>,
                                  separator: String = " > ") -> HierarchicalListViewModel<Facet> {
-
     if let viewModel = hierarchicalListViewModels[attributesPrefix] {
       return viewModel
     }
@@ -56,5 +54,4 @@ public extension AlgoliaSearch {
     hierarchicalListViewModels[attributesPrefix] = viewModel
     return viewModel
   }
-
 }

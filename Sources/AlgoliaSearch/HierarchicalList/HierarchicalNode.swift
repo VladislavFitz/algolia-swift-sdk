@@ -1,7 +1,6 @@
 import Foundation
 
 public struct HierarchicalNode<Value> {
-
   public let value: Value
   public let isSelected: Bool
   public let indentationLevel: Int
@@ -13,7 +12,6 @@ public struct HierarchicalNode<Value> {
     self.isSelected = isSelected
     self.indentationLevel = indentationLevel
   }
-
 }
 
 extension HierarchicalNode: Equatable where Value: Equatable {}

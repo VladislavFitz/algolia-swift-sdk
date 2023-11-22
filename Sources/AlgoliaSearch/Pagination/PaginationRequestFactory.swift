@@ -8,7 +8,6 @@
 import Foundation
 
 public protocol PaginationRequestFactory {
-
   associatedtype Request: SearchRequest
 
   /// The associated page type that conforms to the `Page` protocol.
@@ -30,5 +29,4 @@ public protocol PaginationRequestFactory {
   /// - Parameter page: The `HitsPage` before which to fetch the data.
   /// - Returns: A new `SearchRequest` for the page before the specified page.
   func forPage(from request: Request, before page: HitsPage) -> Request
-
 }

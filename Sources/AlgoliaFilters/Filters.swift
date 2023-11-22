@@ -1,7 +1,7 @@
 import AlgoliaFoundation
-import OSLog
-import Foundation
 import Combine
+import Foundation
+import OSLog
 
 public final class Filters: ObservableObject {
   /// Map of filter groups per string identifier
@@ -16,9 +16,9 @@ public final class Filters: ObservableObject {
 
   public init(groups: [String: any FilterGroup] = [:]) {
     self.groups = groups
-    self.isEmpty = groups.values.map(\.isEmpty).allSatisfy { $0 == true }
-    self.logger = Logger(subsystem: "Filters", category: "Filters")
-    self.rawValue = RawFilterTransformer.transform(groups.values, separator: .and)
+    isEmpty = groups.values.map(\.isEmpty).allSatisfy { $0 == true }
+    logger = Logger(subsystem: "Filters", category: "Filters")
+    rawValue = RawFilterTransformer.transform(groups.values, separator: .and)
     setupSubscriptions()
   }
 
@@ -69,7 +69,6 @@ public final class Filters: ObservableObject {
       .assign(to: \.isEmpty, on: self)
       .store(in: &cancellables)
   }
-
 }
 
 extension Filters: CustomStringConvertible {

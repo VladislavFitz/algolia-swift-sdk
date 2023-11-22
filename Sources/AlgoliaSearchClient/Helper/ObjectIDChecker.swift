@@ -2,7 +2,6 @@ import AlgoliaFoundation
 import Foundation
 
 public enum ObjectIDChecker {
-
   private struct ObjectIDContainer: Decodable {
     let objectID: String
   }

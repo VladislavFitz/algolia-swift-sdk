@@ -1,12 +1,11 @@
-import Foundation
 import AlgoliaSearchClient
+import Foundation
 import UIKit
 
 extension NSAttributedString {
-
   convenience init?(taggedString: String,
                     taggedAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.systemBlue],
-                    untaggedAttributes: [NSAttributedString.Key: Any]  = [:]) {
+                    untaggedAttributes: [NSAttributedString.Key: Any] = [:]) {
     let taggedString = TaggedString.algoliaHighlightedString(taggedString)
     let output = taggedString.output
     let ranges = taggedString.taggedRanges
@@ -17,5 +16,4 @@ extension NSAttributedString {
     }
     self.init(attributedString: attributedString)
   }
-
 }

@@ -1,7 +1,6 @@
 import Foundation
 
-final public class RangeFilterViewModel: ObservableObject {
-
+public final class RangeFilterViewModel: ObservableObject {
   @Published public var bounds: ClosedRange<Int>
   @Published public var value: ClosedRange<Int>
 
@@ -10,5 +9,4 @@ final public class RangeFilterViewModel: ObservableObject {
     self.bounds = bounds
     self.value = value
   }
-
 }

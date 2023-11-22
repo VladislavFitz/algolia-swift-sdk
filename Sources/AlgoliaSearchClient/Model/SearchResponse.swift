@@ -26,10 +26,10 @@ public struct SearchResponse: Decodable, Equatable {
   public var hitsPerPage: Int?
 
   /**
-   The number of returned pages. Calculation is based on the total number of hits (nbHits) divided by the number of
-   hits per page (hitsPerPage), rounded up to the nearest integer.
-  - Not returned if you use offset & length for pagination.
-  */
+    The number of returned pages. Calculation is based on the total number of hits (nbHits) divided by the number of
+    hits per page (hitsPerPage), rounded up to the nearest integer.
+   - Not returned if you use offset & length for pagination.
+   */
   public var nbPages: Int?
 
   /**
