@@ -99,42 +99,42 @@ public extension JSON {
 }
 
 public extension JSON {
-  
+
   var string: String? {
     if case .string(let string) = self {
       return string
     }
     return nil
   }
-  
+
   var number: Double? {
     if case .number(let double) = self {
       return double
     }
     return nil
   }
-  
+
   var bool: Bool? {
     if case .bool(let bool) = self {
       return bool
     }
     return nil
   }
-  
+
   var dictionary: [String: JSON]? {
     if case .dictionary(let dictionary) = self {
       return dictionary
     }
     return nil
   }
-  
+
   var array: [JSON]? {
     if case .array(let array) = self {
       return array
     }
     return nil
   }
-  
+
 }
 
 extension JSON: Codable {

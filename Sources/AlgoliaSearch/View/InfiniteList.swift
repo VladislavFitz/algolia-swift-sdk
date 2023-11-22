@@ -24,16 +24,16 @@ import SwiftUI
 /// - Note: This view is available from iOS 15.0 onwards.
 @available(iOS 15.0, macOS 12.0, *)
 public struct InfiniteList<HitView: View, NoResults: View, Item, P: Page<Item>>: View {
-  
+
   /// An instance of `PaginatedDataViewModel` object.
   @StateObject public var viewModel: PaginatedDataViewModel<P>
-  
+
   /// A closure that returns a `HitView` for a given `Source.Item`.
   let itemView: (Item) -> HitView
-  
+
   /// A closure that returns a `NoResults` view to display when there are no hits.
   let noResults: () -> NoResults
-  
+
   /// Initializes a new instance of `HitsList` with the provided `hits`, `hitView` and `noResults` closures.
   ///
   /// - Parameters:
@@ -47,7 +47,7 @@ public struct InfiniteList<HitView: View, NoResults: View, Item, P: Page<Item>>:
     self.itemView = item
     self.noResults = noResults
   }
-  
+
   public var body: some View {
     if viewModel.items.isEmpty && !viewModel.hasNext {
       noResults()
@@ -74,5 +74,5 @@ public struct InfiniteList<HitView: View, NoResults: View, Item, P: Page<Item>>:
       }
     }
   }
-  
+
 }

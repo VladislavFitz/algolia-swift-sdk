@@ -7,7 +7,7 @@ class FiltersTests: XCTestCase {
   var filtersSubscription: AnyCancellable?
   var andGroupSubscription: AnyCancellable?
   var orGroupSubscription: AnyCancellable?
-  
+
   var cancellables: Set<AnyCancellable> = []
 
   func testAndFilterGroup() {
@@ -93,10 +93,10 @@ class FiltersTests: XCTestCase {
       XCTFail("Unexpected not and group name")
       return
     }
-    
+
     let andGroupExpectation = expectation(description: "and group")
     andGroupExpectation.expectedFulfillmentCount = 3
-    
+
     andGroup
       .$filters
       .dropFirst()
@@ -104,7 +104,7 @@ class FiltersTests: XCTestCase {
         andGroupExpectation.fulfill()
       }
       .store(in: &cancellables)
-    
+
     andGroup.add("someTag" as TagFilter)
     andGroup.add(FacetFilter(attribute: "size", floatValue: 36))
     andGroup.add(NumericFilter(attribute: "price", range: 1 ... 10))
@@ -114,7 +114,7 @@ class FiltersTests: XCTestCase {
 
     let orGroupExpectation = expectation(description: "and group")
     orGroupExpectation.expectedFulfillmentCount = 3
-    
+
     orGroup
       .$filters
       .dropFirst()

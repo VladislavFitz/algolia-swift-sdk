@@ -6,12 +6,12 @@ import Combine
 public final class Filters: ObservableObject {
   /// Map of filter groups per string identifier
   @Published public private(set) var groups: [String: any FilterGroup]
-  
+
   @Published public var isEmpty: Bool
   @Published public var rawValue: String
-  
+
   private let logger: Logger
-  
+
   private var cancellables: Set<AnyCancellable> = []
 
   public init(groups: [String: any FilterGroup] = [:]) {
@@ -21,28 +21,28 @@ public final class Filters: ObservableObject {
     self.rawValue = RawFilterTransformer.transform(groups.values, separator: .and)
     setupSubscriptions()
   }
-    
+
   public func add(group: AndFilterGroup, forName name: String) {
     groups[name] = group
     setupSubscriptions()
   }
-  
+
   public func add<F: Filter>(group: OrFilterGroup<F>, forName name: String) {
     groups[name] = group
     setupSubscriptions()
   }
-  
+
   public func add(group: HierarchicalFilterGroup, forName name: String) {
     groups[name] = group
     setupSubscriptions()
   }
-  
+
   public func removeAll() {
     groups.values.forEach { group in
       group.removeAll()
     }
   }
-  
+
   private func setupSubscriptions() {
     cancellables.forEach { $0.cancel() }
     let initialPublisher: AnyPublisher<[String], Never> = Just([]).eraseToAnyPublisher()
@@ -63,13 +63,13 @@ public final class Filters: ObservableObject {
       .debounce(for: .milliseconds(100), scheduler: DispatchQueue.main)
       .assign(to: \.rawValue, on: self)
       .store(in: &cancellables)
-    
+
     $rawValue
       .map(\.isEmpty)
       .assign(to: \.isEmpty, on: self)
       .store(in: &cancellables)
   }
-  
+
 }
 
 extension Filters: CustomStringConvertible {

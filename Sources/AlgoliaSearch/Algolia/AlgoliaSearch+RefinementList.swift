@@ -3,7 +3,7 @@ import AlgoliaFilters
 import Foundation
 
 public extension AlgoliaSearch {
-  
+
   func refinementList(attribute: Attribute,
                       selectionMode: SelectionMode,
                       sort: ((Facet, Facet) -> Bool)? = .none) -> RefinementListViewModel<Facet> {
@@ -12,9 +12,9 @@ public extension AlgoliaSearch {
     }
     let viewModel = RefinementListViewModel<Facet>(selectionMode: selectionMode,
                                                    sort: sort)
-    
+
     let updateSelectedFacets: (Set<Facet>) -> Void
-    
+
     switch selectionMode {
     case .multiple(isDisjunctive: true):
       let group = OrFilterGroup<FacetFilter>()
@@ -35,7 +35,7 @@ public extension AlgoliaSearch {
           .forEach(group.add)
       }
     }
-    
+
     $latestResponse
       .receive(on: DispatchQueue.main)
       .sink { [weak viewModel] response in
@@ -44,7 +44,7 @@ public extension AlgoliaSearch {
         }
       }
       .store(in: &cancellables)
-    
+
     viewModel
       .$selectedValues
       .sink(receiveValue: updateSelectedFacets)
@@ -52,5 +52,5 @@ public extension AlgoliaSearch {
     refinementListViewModels[attribute] = viewModel
     return viewModel
   }
-  
+
 }

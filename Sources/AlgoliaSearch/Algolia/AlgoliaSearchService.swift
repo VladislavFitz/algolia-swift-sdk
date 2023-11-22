@@ -14,15 +14,15 @@ import AlgoliaFilters
 public class AlgoliaSearchService<Hit: Decodable & Equatable>: SearchService {
 
   public let client: SearchClient
-  
+
   private var logger: Logger
-  
+
   public init(client: SearchClient) {
     self.client = client
     self.logger = Logger(label: "algolia search service")
     self.logger.logLevel = .trace
   }
-  
+
   public func fetchResponse(for request: AlgoliaSearchRequest) async throws -> AlgoliaSearchResponse<Hit> {
     logger.trace("request: index \(request.indexName), query: \"\(request.searchParameters.query ?? "")\" , page: \(request.searchParameters.page ?? 0), filters: \(request.searchParameters.filters ?? "")")
     let queries = generateRequests(request)
@@ -30,20 +30,20 @@ public class AlgoliaSearchService<Hit: Decodable & Equatable>: SearchService {
     let response = merge(responses.compactMap(\.first))
     return AlgoliaSearchResponse(searchResponse: response)
   }
-    
+
   private func generateRequests(_ request: AlgoliaSearchRequest) -> [IndexedQuery] {
     var parameters = request.searchParameters
     parameters.filters = RawFilterTransformer.transform(request.filterGroups)
-    
+
     func indexed(_ parameters: SearchParameters) -> IndexedQuery {
       IndexedQuery(indexName: request.indexName,
                    searchParameters: parameters)
     }
-    
+
     var queries: [IndexedQuery] = []
-    
+
     queries.append(indexed(parameters))
-    
+
     let disjunctiveQueries = request
       .filterGroups
       .extractDisjunctiveAttributes()
@@ -56,7 +56,6 @@ public class AlgoliaSearchService<Hit: Decodable & Equatable>: SearchService {
       }
       .map(indexed)
     queries.append(contentsOf: disjunctiveQueries)
-    
 
     for hierarchicalGroup in request.filterGroups.compactMap({ $0 as? HierarchicalFilterGroup }) {
       guard let appliedFilter = hierarchicalGroup.hierarchicalFilters.last else {
@@ -77,7 +76,7 @@ public class AlgoliaSearchService<Hit: Decodable & Equatable>: SearchService {
 
     return queries
   }
-  
+
   private func merge(_ responses: [AlgoliaSearchClient.SearchResponse]) -> AlgoliaSearchClient.SearchResponse {
     guard var mainResponse = responses.first else {
       fatalError("Empty list of responses to merge")
@@ -89,11 +88,11 @@ public class AlgoliaSearchService<Hit: Decodable & Equatable>: SearchService {
     }
     return mainResponse
   }
-    
+
 }
 
 fileprivate extension Array<FilterGroup> {
-  
+
   func extractDisjunctiveAttributes() -> Set<Attribute> {
     let attributesList = flatMap { group in
       switch group {
@@ -109,7 +108,7 @@ fileprivate extension Array<FilterGroup> {
     }
     return Set(attributesList)
   }
-  
+
   func removingFilters(for attribute: Attribute) -> String {
     let groups = map { group in
       guard let orGroup = group as? OrFilterGroup<FacetFilter> else {
@@ -119,7 +118,7 @@ fileprivate extension Array<FilterGroup> {
     }
     return RawFilterTransformer.transform(groups)
   }
-  
+
   func removing(_ filter: FacetFilter, appending hierarchicalFilter: FacetFilter?) -> String {
     var groups = map { group in
       guard let andGroup = group as? AndFilterGroup else {
@@ -134,11 +133,10 @@ fileprivate extension Array<FilterGroup> {
     return RawFilterTransformer.transform(groups)
   }
 
-  
 }
 
 fileprivate extension SearchParameters {
-  
+
   /// Setup search parameters to fetch only facets information to reduce payload size
   mutating func onlyFacets() {
     attributesToRetrieve = []
@@ -146,5 +144,5 @@ fileprivate extension SearchParameters {
     hitsPerPage = 0
     analytics = false
   }
-  
+
 }

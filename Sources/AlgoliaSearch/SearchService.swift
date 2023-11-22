@@ -25,13 +25,13 @@ import Foundation
 /// - Note: The `Request` and `Response` associated types represent the search request and response types,
 ///         respectively, which conform to the `SearchRequest` and `SearchResponse` protocols.
 public protocol SearchService {
-  
+
   /// The associated search request type that conforms to the `SearchRequest` protocol.
   associatedtype Request: SearchRequest
-  
+
   /// The associated search response type that conforms to the `SearchResponse` protocol.
   associatedtype Response: SearchResponse
-  
+
   /// Fetches a search response for a given search request.
   ///
   /// - Parameter request: The `SearchRequest` for which to fetch the response.

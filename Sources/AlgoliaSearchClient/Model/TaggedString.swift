@@ -2,9 +2,9 @@ import Foundation
 
 /// Structure embedding the calculation of tagged substring in the input string
 public final class TaggedString {
-  
+
   public typealias MarkedRange = (range: Range<String.Index>, isTagged: Bool)
-  
+
   /// Input string
   public let input: String
 
@@ -48,7 +48,6 @@ public final class TaggedString {
     self.options = options
   }
 
-
   private static func computeRanges(for string: String,
                                     preTag: String,
                                     postTag: String,
@@ -90,14 +89,14 @@ public final class TaggedString {
         output.removeSubrange(postRange)
       }
     }
-    
+
     taggedRanges = mergeOverlapping(taggedRanges)
     let untaggedRanges = computeInvertedRanges(for: output, with: taggedRanges)
     let sortedMarkedRanges = (
       taggedRanges.map { (range: $0, isTagged: true) } +
       untaggedRanges.map { (range: $0, isTagged: false) }
     ).sorted(by: { $0.0.lowerBound < $1.0.lowerBound })
-    
+
     return (output, sortedMarkedRanges)
   }
 
@@ -150,25 +149,25 @@ public final class TaggedString {
 }
 
 extension TaggedString: Hashable {
-  
+
   public static func == (lhs: TaggedString, rhs: TaggedString) -> Bool {
     lhs.input == rhs.input && lhs.preTag == rhs.preTag && lhs.postTag == rhs.postTag
   }
-  
+
   public func hash(into hasher: inout Hasher) {
     input.hash(into: &hasher)
     preTag.hash(into: &hasher)
     postTag.hash(into: &hasher)
   }
-  
+
 }
 
 public extension TaggedString {
-  
+
   static func algoliaHighlightedString(_ input: String, options: String.CompareOptions = []) -> Self {
     TaggedString(string: input,
                  preTag: "<em>",
                  postTag: "</em>", options: options) as! Self
   }
-  
+
 }

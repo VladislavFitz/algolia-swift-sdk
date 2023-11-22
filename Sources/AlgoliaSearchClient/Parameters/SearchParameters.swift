@@ -2,7 +2,7 @@ import AlgoliaFoundation
 import Foundation
 
 public struct SearchParameters {
-  
+
   internal var parameters: [String: any SearchParameter]
 
   public init(_ parameters: [any SearchParameter]) {
@@ -19,7 +19,7 @@ public struct SearchParameters {
 }
 
 extension SearchParameters: Equatable {
-  
+
   public static func == (lhs: SearchParameters, rhs: SearchParameters) -> Bool {
     for (key, lValue) in lhs.parameters {
       if let rValue = rhs.parameters[key] {
@@ -32,9 +32,8 @@ extension SearchParameters: Equatable {
     }
     return true
   }
-  
-}
 
+}
 
 extension SearchParameters: Encodable {
   public func encode(to encoder: Encoder) throws {

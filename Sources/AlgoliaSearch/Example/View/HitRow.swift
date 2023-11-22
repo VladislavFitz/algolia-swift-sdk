@@ -10,9 +10,9 @@ import SwiftUI
 
 @available(iOS 15.0, *)
 public struct HitRow: View {
-  
+
   let hit: InstantSearchHit
-  
+
   public var body: some View {
     HStack {
       AsyncImage(url: hit.image, content: { image in
@@ -40,5 +40,5 @@ public struct HitRow: View {
       Spacer()
     }
   }
-  
+
 }

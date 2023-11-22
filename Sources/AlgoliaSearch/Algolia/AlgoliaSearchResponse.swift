@@ -21,18 +21,17 @@ import AlgoliaFoundation
 ///
 /// - Note: The `Hit` type parameter represents the type of the items in the search results and should conform to the `Decodable` protocol.
 public struct AlgoliaSearchResponse<Hit: Decodable & Equatable>: SearchResponse, Equatable {
-    
+
   /// The Algolia search response object.
   public let searchResponse: AlgoliaSearchClient.SearchResponse
-  
-  
+
   /// Initializes a new `AlgoliaSearchResponse` object with the provided Algolia search response object.
   ///
   /// - Parameter searchResponse: The Algolia search response object.
   public init(searchResponse: AlgoliaSearchClient.SearchResponse) {
     self.searchResponse = searchResponse
   }
-  
+
   /// Fetches the hits from the Algolia search response and decodes them into an array of `Decodable` objects.
   ///
   /// - Returns: An array of `Decodable` objects representing the search results.
@@ -41,7 +40,7 @@ public struct AlgoliaSearchResponse<Hit: Decodable & Equatable>: SearchResponse,
     let hitsData = try JSONEncoder().encode(searchResponse.hits)
     return try JSONDecoder().decode([T].self, from: hitsData)
   }
-    
+
   /// Fetches a page of search results from the Algolia search response.
   ///
   /// - Returns: An `AlgoliaHitsPage` object containing the search results and pagination information.

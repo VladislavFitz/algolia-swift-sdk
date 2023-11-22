@@ -26,26 +26,26 @@ import Logging
 /// - Note: The `Service` type parameter represents the type of the search service to be used,
 ///         which conforms to the `SearchService` protocol.
 public class Search<Service: SearchService, RF: PaginationRequestFactory>: ObservableObject where RF.Request == Service.Request, RF.HitsPage == Service.Response.HitsPage {
-  
+
   /// The current search request. When updated, it will reset and reload the hits if the request is different.
   @Published public var request: Service.Request
-  
+
   /// The `InfiniteListViewModel` object representing the paginated search results.
   @Published public var hits: PaginatedDataViewModel<Service.Response.HitsPage>!
-  
+
   /// The latest search response fetched by the search service.
   @Published public var latestResponse: Service.Response?
-    
+
   /// A `Logger` object for logging purposes.
   public var logger: Logger
-  
+
   /// The search service conforming to the `SearchService` protocol.
   private let service: Service
-  
+
   private let requestFactory: RF
-  
+
   private var cancellables: Set<AnyCancellable>
-    
+
   /// Initializes a new `Search` object with the provided search service, initial request, and log level.
   ///
   /// - Parameters:
@@ -67,7 +67,7 @@ public class Search<Service: SearchService, RF: PaginationRequestFactory>: Obser
     self.hits = PaginatedDataViewModel(source: self)
     setupSubscriptions()
   }
-    
+
   private func setupSubscriptions() {
     $request.sink { [weak self]  request in
       guard let self else { return }
@@ -84,13 +84,13 @@ public class Search<Service: SearchService, RF: PaginationRequestFactory>: Obser
 
 // MARK: - PageSource Conformance
 extension Search: PageSource {
-  
+
   /// The associated data type for the items in the pages.
   public typealias Item = Service.Response.HitsPage.Item
-  
+
   /// The associated page type that conforms to the `Page` protocol.
   public typealias Page = Service.Response.HitsPage
-  
+
   @MainActor
   public func fetchInitialPage() async throws -> Page {
     request = requestFactory.forInitialPage(from: request)
@@ -98,7 +98,7 @@ extension Search: PageSource {
     latestResponse = response
     return response.fetchPage()
   }
-  
+
   @MainActor
   public func fetchPage(before page: Page) async throws -> Page {
     request = requestFactory.forPage(from: request, before: page)
@@ -106,7 +106,7 @@ extension Search: PageSource {
     latestResponse = response
     return response.fetchPage()
   }
-  
+
   @MainActor
   public func fetchPage(after page: Page) async throws -> Page {
     request = requestFactory.forPage(from: request, after: page)
@@ -114,5 +114,5 @@ extension Search: PageSource {
     latestResponse = response
     return response.fetchPage()
   }
-  
+
 }

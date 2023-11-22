@@ -5,7 +5,7 @@ import TestHelper
 import XCTest
 
 final class HitsTests: XCTestCase {
-  
+
   func testHits() async throws {
     let client = SearchClient(appID: "latency", apiKey: "1f6fd3a6fb973cb08419fe7d288fa4db")
 //    let search = AlgoliaSearch(applicationID: "latency", apiKey: "1f6fd3a6fb973cb08419fe7d288fa4db", indexName: "bestbuy")
@@ -20,5 +20,5 @@ final class HitsTests: XCTestCase {
 //    let lastHit = try await hits.hit(atIndex: 999)
 //    print(lastHit)
   }
-  
+
 }

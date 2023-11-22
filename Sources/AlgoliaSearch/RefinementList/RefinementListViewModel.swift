@@ -1,17 +1,17 @@
 import Foundation
 
 final public class RefinementListViewModel<Value: Hashable>: ObservableObject {
-  
+
   let selectionMode: SelectionMode
-  
+
   @Published
   public private(set) var values: [Value]
-  
+
   @Published
   private(set) var selectedValues: Set<Value>
-  
+
   private let sort: ((Value, Value) -> Bool)?
-  
+
   public init(values: [Value] = [],
               selectedValues: Set<Value> = [],
               selectionMode: SelectionMode = .multiple,
@@ -21,7 +21,7 @@ final public class RefinementListViewModel<Value: Hashable>: ObservableObject {
     self.selectionMode = selectionMode
     self.sort = sort
   }
-  
+
   func setValues(_ values: [Value]) {
     if let sort {
       self.values = values.sorted(by: sort)
@@ -29,11 +29,11 @@ final public class RefinementListViewModel<Value: Hashable>: ObservableObject {
       self.values = values
     }
   }
-  
+
   public func isSelected(_ value: Value) -> Bool {
     selectedValues.contains(value)
   }
-  
+
   public func toggle(value: Value) {
     switch (selectionMode, selectedValues.contains(value)) {
     case (.single, false):
@@ -47,5 +47,5 @@ final public class RefinementListViewModel<Value: Hashable>: ObservableObject {
       selectedValues.remove(value)
     }
   }
-  
+
 }

@@ -21,17 +21,17 @@ import AlgoliaFilters
 ///
 /// - Note: The `Hit` type parameter represents the type of the items in the search results and should conform to the `Decodable` protocol.
 public struct AlgoliaSearchRequest: SearchRequest {
-  
+
   public static func == (lhs: AlgoliaSearchRequest, rhs: AlgoliaSearchRequest) -> Bool {
     lhs.indexName == rhs.indexName && lhs.searchParameters == rhs.searchParameters
   }
-  
+
   /// The name of the index to perform search requests on.
   public var indexName: IndexName
-  
+
   /// The search parameters for the Algolia search request.
   public var searchParameters: SearchParameters
-    
+
   public var filterGroups: [FilterGroup]
 
   /// Initializes a new `AlgoliaSearchRequest` object with the provided index name and search parameters.
@@ -46,5 +46,5 @@ public struct AlgoliaSearchRequest: SearchRequest {
     self.searchParameters = searchParameters
     self.filterGroups = filterGroups
   }
-      
+
 }

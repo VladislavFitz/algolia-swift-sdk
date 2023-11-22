@@ -6,9 +6,9 @@ public enum FilterSeparator: String {
 }
 
 public struct RawFilterTransformer {
-  
+
   private static let negationPrefix = "NOT "
-  
+
   public static func transform(_ filter: FacetFilter) -> String {
     let scoreExpression = filter.score.flatMap { "<score=\(String($0))>" } ?? ""
     let expression = """
@@ -17,7 +17,7 @@ public struct RawFilterTransformer {
     let prefix = filter.isNegated ? negationPrefix : ""
     return prefix + expression
   }
-  
+
   public static func transform(_ filter: NumericFilter) -> String {
     let expression: String
     switch filter.value {
@@ -34,7 +34,7 @@ public struct RawFilterTransformer {
     let prefix = filter.isNegated ? negationPrefix : ""
     return prefix + expression
   }
-  
+
   public static func transform(_ filter: TagFilter) -> String {
     let expression = """
     "\(filter.attribute)":"\(filter.value)"
@@ -42,7 +42,7 @@ public struct RawFilterTransformer {
     let prefix = filter.isNegated ? negationPrefix : ""
     return prefix + expression
   }
-  
+
   public static func transformFilter(_ filter: any Filter) -> String {
     switch filter {
     case let facet as FacetFilter:
@@ -56,26 +56,26 @@ public struct RawFilterTransformer {
       return ""
     }
   }
-  
+
   public static func transform(_ filters: [any Filter], separator: FilterSeparator) -> String {
     if filters.isEmpty {
       return ""
     }
     return "( \(filters.map(transformFilter).sorted().joined(separator: separator.rawValue)) )"
   }
-  
+
   public static func transform(_ group: AndFilterGroup) -> String {
     transform(group.filters, separator: .and)
   }
-  
+
   public static func transform<F: Filter>(_ group: OrFilterGroup<F>) -> String {
     transform(group.filters, separator: .or)
   }
-  
+
   public static func transform(_ group: HierarchicalFilterGroup) -> String {
     transform(group.filters, separator: .and)
   }
-  
+
   public static func transformGroup(_ group: any FilterGroup) -> String {
     switch group {
     case let andGroup as AndFilterGroup:
@@ -93,13 +93,13 @@ public struct RawFilterTransformer {
       return ""
     }
   }
-  
+
   public static func transform<S: Sequence>(_ groups: S, separator: FilterSeparator = .and) -> String where S.Element == any FilterGroup {
     groups.filter { !$0.filters.isEmpty }.map(transformGroup).sorted().joined(separator: separator.rawValue)
   }
-  
+
   public static func transform(_ filters: Filters) -> String {
     transform(filters.groups.values, separator: .and)
   }
-  
+
 }

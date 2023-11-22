@@ -3,7 +3,7 @@ import AlgoliaSearchClient
 import UIKit
 
 extension NSAttributedString {
-  
+
   convenience init?(taggedString: String,
                     taggedAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.systemBlue],
                     untaggedAttributes: [NSAttributedString.Key: Any]  = [:]) {
@@ -17,5 +17,5 @@ extension NSAttributedString {
     }
     self.init(attributedString: attributedString)
   }
-  
+
 }

@@ -3,7 +3,7 @@ import AlgoliaFoundation
 import AlgoliaFilters
 
 public extension AlgoliaSearch {
-  
+
   func rangeViewModel(attribute: Attribute) -> RangeFilterViewModel {
     if let viewModel = rangeViewModels[attribute] {
       return viewModel
@@ -24,5 +24,5 @@ public extension AlgoliaSearch {
     rangeViewModels[attribute] = viewModel
     return viewModel
   }
-  
+
 }

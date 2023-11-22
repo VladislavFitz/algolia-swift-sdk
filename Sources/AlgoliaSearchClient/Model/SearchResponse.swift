@@ -24,7 +24,7 @@ public struct SearchResponse: Decodable, Equatable {
    - Not returned if you use offset & length for pagination.
    */
   public var hitsPerPage: Int?
-  
+
   /**
    The number of returned pages. Calculation is based on the total number of hits (nbHits) divided by the number of
    hits per page (hitsPerPage), rounded up to the nearest integer.
@@ -41,12 +41,12 @@ public struct SearchResponse: Decodable, Equatable {
     Identifies the query uniquely. Can be used by Insights Event.
    */
   public var queryID: QueryID?
-  
+
   /**
     Facets to refine results
    */
   public var facets: [String: [String: Int]]
-  
+
   public init(hits: [JSON] = [],
               nbHits: Int? = nil,
               page: Int? = nil,
@@ -54,7 +54,7 @@ public struct SearchResponse: Decodable, Equatable {
               nbPages: Int? = nil,
               cursor: Cursor? = nil,
               queryID: QueryID? = nil,
-              facets: [String : [String : Int]] = [:]) {
+              facets: [String: [String: Int]] = [:]) {
     self.hits = hits
     self.nbHits = nbHits
     self.page = page

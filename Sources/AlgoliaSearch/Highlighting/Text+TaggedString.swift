@@ -27,5 +27,5 @@ public extension SwiftUI.Text {
       .map { (substring, isTagged) in isTagged ? tagged(substring) : untagged(substring) }
       .reduce(Text(""), +)
   }
-  
+
 }

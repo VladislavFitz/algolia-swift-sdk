@@ -2,11 +2,11 @@ import AlgoliaFoundation
 import Foundation
 
 public enum ObjectIDChecker {
-  
+
   private struct ObjectIDContainer: Decodable {
     let objectID: String
   }
-  
+
   static func checkObjectID<T: Encodable>(_ object: T) throws {
     let data = try JSONEncoder().encode(object)
     do {

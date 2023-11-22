@@ -6,9 +6,9 @@ import OSLog
 /// Conjunctive filter group сombines filters with the logical operator "and".
 /// Can contain filters of different types at the same time.
 public final class AndFilterGroup: FilterGroup {
-  
+
   @Published public private(set) var filters: [any Filter]
-  
+
   @Published public var rawValue: String
 
   public var filtersPublisher: Published<[Filter]>.Publisher { $filters }
@@ -50,7 +50,7 @@ public final class AndFilterGroup: FilterGroup {
   public func removeAll() {
     filters.removeAll()
   }
-  
+
   private func setupSubscriptions() {
     $filters
       .map { filters in
@@ -58,7 +58,7 @@ public final class AndFilterGroup: FilterGroup {
       }
       .assign(to: \.rawValue, on: self)
       .store(in: &cancellables)
-    
+
     $filters
       .sink { [weak self] filters in
         guard let self else { return }
@@ -74,4 +74,3 @@ public extension AndFilterGroup {
     RawFilterTransformer.transform(self)
   }
 }
-

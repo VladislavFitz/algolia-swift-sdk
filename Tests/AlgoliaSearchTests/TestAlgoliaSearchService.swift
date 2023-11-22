@@ -12,7 +12,6 @@ import AlgoliaSearch
 import AlgoliaFilters
 import XCTest
 
-
 struct InstantSearchItem: Decodable, Equatable {
   let name: String
 }
@@ -23,9 +22,9 @@ extension Attribute {
 
 @MainActor
 final class TestAlgoliaSearchService: XCTestCase {
-  
+
   func testDisjunctiveFacetingIntegrationTest() async throws {
-    let client = SearchClient(appID: "latency", 
+    let client = SearchClient(appID: "latency",
                               apiKey: "1f6fd3a6fb973cb08419fe7d288fa4db")
     let service = AlgoliaSearchService<InstantSearchItem>(client: client)
     var parameters = SearchParameters()
@@ -48,7 +47,7 @@ final class TestAlgoliaSearchService: XCTestCase {
       }
     }
   }
-  
+
   func testHierarchicalIntegrationTest() async throws {
     let client = SearchClient(appID: "latency",
                               apiKey: "1f6fd3a6fb973cb08419fe7d288fa4db")
@@ -73,5 +72,5 @@ final class TestAlgoliaSearchService: XCTestCase {
       }
     }
   }
-  
+
 }

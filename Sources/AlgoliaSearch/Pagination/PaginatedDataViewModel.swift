@@ -20,25 +20,25 @@ import Combine
 /// - Note: `ItemsPage` must conform to the `Page` protocol.
 @available(iOS 13.0, macOS 10.15, *)
 public final class PaginatedDataViewModel<ItemsPage: Page>: ObservableObject {
-  
+
   /// An array of fetched items.
   @Published public var items: [ItemsPage.Item]
-  
+
   /// Indicates whether the data is being loaded.
   @Published public var isLoading: Bool
-  
+
   /// Indicates whether there is a previous page of data.
   @Published public var hasPrevious: Bool
-  
+
   /// Indicates whether there is a next page of data.
   @Published public var hasNext: Bool
-  
+
   /// The source object that conforms to the `PageSource` protocol.
   let source: any PageSource<ItemsPage>
-  
+
   /// A `PageStorage` object that stores the fetched pages.
   private let storage: ConcurrentList<ItemsPage>
-  
+
   /// Initializes a new instance of `PaginatedDataViewModel` with a given `source` object.
   ///
   /// - Parameter source: The source object that conforms to the `PageSource` protocol.
@@ -50,7 +50,7 @@ public final class PaginatedDataViewModel<ItemsPage: Page>: ObservableObject {
     self.hasPrevious = false
     self.hasNext = true
   }
-  
+
   /// Loads the next page of data.
   public func loadNext() {
     Task {
@@ -63,7 +63,7 @@ public final class PaginatedDataViewModel<ItemsPage: Page>: ObservableObject {
       await append(page)
     }
   }
-  
+
   /// Loads the previous page of data.
   public func loadPrevious() {
     Task {
@@ -73,21 +73,21 @@ public final class PaginatedDataViewModel<ItemsPage: Page>: ObservableObject {
       }
     }
   }
-  
+
   @MainActor
   private func append(_ page: ItemsPage) async {
     await storage.append(page)
     items = await storage.items.flatMap(\.items)
     hasNext = page.hasNext
   }
-  
+
   @MainActor
   private func prepend(_ page: ItemsPage) async {
     await storage.prepend(page)
     items = await storage.items.flatMap(\.items)
     hasPrevious = page.hasPrevious
   }
-  
+
   /// Resets the stored data and pagination states.
   @MainActor
   public func reset() async {
@@ -101,10 +101,10 @@ public final class PaginatedDataViewModel<ItemsPage: Page>: ObservableObject {
   public enum Error: LocalizedError {
     /// Indicates an attempt to access a hit on an unaccessible page.
     case indexOutOfRange
-    
+
     /// Indicates an error occurred during a search request.
     case requestError(Swift.Error)
-    
+
     /// A localized description of the error.
     public var errorDescription: String? {
       switch self {
@@ -115,5 +115,5 @@ public final class PaginatedDataViewModel<ItemsPage: Page>: ObservableObject {
       }
     }
   }
-  
+
 }

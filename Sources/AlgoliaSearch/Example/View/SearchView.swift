@@ -9,11 +9,11 @@ import SwiftUI
 
 @available(iOS 15.0, *)
 public struct SearchView: View {
-  
+
   @StateObject var viewModel = SearchViewModel()
-  
+
   public init() {}
-  
+
   public var body: some View {
     VStack {
       InfiniteList(viewModel.hits, item: { hit in
@@ -35,16 +35,16 @@ public struct SearchView: View {
     })
     .onSubmit(of: .search, viewModel.submitSearch)
   }
-  
+
 }
 
 @available(iOS 15.0, *)
 class SearchPreview: PreviewProvider {
-  
+
   static var previews: some View {
     NavigationView {
       SearchView()
     }
   }
-  
+
 }

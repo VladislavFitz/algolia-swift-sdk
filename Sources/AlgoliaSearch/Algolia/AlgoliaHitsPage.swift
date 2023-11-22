@@ -27,16 +27,16 @@ public struct AlgoliaHitsPage<Item: Decodable>: Page {
 
   /// The current page number (zero-based).
   public let page: Int
-  
+
   /// The list of items in the current page.
   public let items: [Item]
-  
+
   /// A Boolean value indicating if there is a previous page in the search results.
   public let hasPrevious: Bool
-  
+
   /// A Boolean value indicating if there is a next page in the search results.
   public let hasNext: Bool
-  
+
   /// Initializes a new `AlgoliaHitsPage` object with the provided page number, items, and navigation flags.
   ///
   /// - Parameters:
@@ -53,7 +53,7 @@ public struct AlgoliaHitsPage<Item: Decodable>: Page {
     self.hasPrevious = hasPrevious
     self.hasNext = hasNext
   }
-  
+
   /// Determines if the left-hand side page is less than the right-hand side page.
   ///
   /// - Parameters:
@@ -63,7 +63,7 @@ public struct AlgoliaHitsPage<Item: Decodable>: Page {
   public static func < (lhs: AlgoliaHitsPage, rhs: AlgoliaHitsPage) -> Bool {
     lhs.page < rhs.page
   }
-  
+
   /// Determines if the left-hand side page is equal to the right-hand side page.
   ///
   /// - Parameters:
@@ -73,6 +73,5 @@ public struct AlgoliaHitsPage<Item: Decodable>: Page {
   public static func == (lhs: AlgoliaHitsPage, rhs: AlgoliaHitsPage) -> Bool {
     lhs.page == rhs.page
   }
-  
-}
 
+}

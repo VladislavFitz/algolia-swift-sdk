@@ -6,10 +6,10 @@ public protocol FilterGroup: CustomStringConvertible {
   /// List of filters in the group
   var filters: [any Filter] { get }
   var filtersPublisher: Published<[any Filter]>.Publisher { get }
-  
+
   var rawValue: String { get }
   var rawValuePublisher: Published<String>.Publisher { get }
-  
+
   /// Whether the group is empty
   var isEmpty: Bool { get }
 

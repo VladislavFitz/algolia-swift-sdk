@@ -6,20 +6,20 @@ import OSLog
 /// Disjunctive filter group сombines filters with the logical operator "or".
 /// Can contain filters of the same type only (facet, numeric or tag).
 public final class OrFilterGroup<GroupFilter: Filter>: FilterGroup {
-  
+
   @Published public private(set) var filters: [any Filter]
-  
+
   @Published public var rawValue: String
 
   public var filtersPublisher: Published<[Filter]>.Publisher { $filters }
   public var rawValuePublisher: Published<String>.Publisher { $rawValue }
-  
+
   public var typedFilters: [GroupFilter] {
     didSet {
       filters = typedFilters
     }
   }
-    
+
   private let logger: Logger
   private var cancellables: Set<AnyCancellable> = []
 
@@ -34,7 +34,7 @@ public final class OrFilterGroup<GroupFilter: Filter>: FilterGroup {
     self.logger = Logger(subsystem: "Filters", category: "OrFilterGroup")
     setupSubscriptions()
   }
-  
+
   private func setupSubscriptions() {
     $filters
       .map { filters in
@@ -42,7 +42,7 @@ public final class OrFilterGroup<GroupFilter: Filter>: FilterGroup {
       }
       .assign(to: \.rawValue, on: self)
       .store(in: &cancellables)
-    
+
     $filters
       .sink(receiveValue: { [weak self] filters in
         guard let self else { return }

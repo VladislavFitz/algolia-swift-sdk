@@ -9,12 +9,12 @@ import SwiftUI
 import AlgoliaFoundation
 
 public struct SuggestionRow: View {
-  
+
   let suggestion: QuerySuggestion
-  
+
   var onSubmission: ((String) -> Void)?
   var onCompletion: ((String) -> Void)?
-  
+
   init(suggestion: QuerySuggestion,
        onSubmission: ((String) -> Void)? = nil,
        onCompletion: ((String) -> Void)? = nil) {
@@ -22,7 +22,7 @@ public struct SuggestionRow: View {
     self.onSubmission = onSubmission
     self.onCompletion = onCompletion
   }
-  
+
   public var body: some View {
     HStack {
       Button(action: {
@@ -53,12 +53,11 @@ public struct SuggestionRow: View {
       .buttonStyle(.borderless)
     }
   }
-  
+
 }
 
-
 class SuggestionRow_Preview: PreviewProvider {
-  
+
   static var previews: some View {
     List {
       SuggestionRow(suggestion: QuerySuggestion(objectID: "object",
@@ -76,5 +75,5 @@ class SuggestionRow_Preview: PreviewProvider {
 
     }
   }
-  
+
 }

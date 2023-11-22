@@ -11,19 +11,19 @@ import SwiftUI
 
 @available(iOS 14.0, *)
 public struct SearchHeaderPanel: View {
-    
+
   let indices: [(name: IndexName, title: String)]
   @Binding var indexName: IndexName
   var resultsCount: Int
-  
+
   public var body: some View {
-    HStack{
+    HStack {
       Text("Results: \(resultsCount)")
       Spacer()
       indexSelectionMenu()
     }.padding(.horizontal)
   }
-  
+
   @ViewBuilder func indexSelectionMenu() -> some View {
     Menu {
       ForEach(indices, id: \.name) { index in
@@ -36,9 +36,9 @@ public struct SearchHeaderPanel: View {
             systemImage: "arrow.up.arrow.down")
     }
   }
-  
+
   private func title(for indexName: IndexName) -> String {
     indices.first(where: { $0.name == indexName })?.title ?? ""
   }
-    
+
 }

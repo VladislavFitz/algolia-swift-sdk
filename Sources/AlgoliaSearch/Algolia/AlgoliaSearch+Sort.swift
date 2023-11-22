@@ -9,7 +9,7 @@ import Foundation
 import AlgoliaFoundation
 
 public extension AlgoliaSearch {
-  
+
   func sortViewModel(indexNames: [IndexName],
                      selectedIndexName: IndexName) -> SelectIndexViewModel {
     let viewModel = SelectIndexViewModel(indexNames: indexNames,
@@ -20,5 +20,5 @@ public extension AlgoliaSearch {
       .store(in: &cancellables)
     return viewModel
   }
-  
+
 }

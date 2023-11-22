@@ -31,11 +31,11 @@ import Combine
 /// - Note: The `Hit` type parameter represents the type of the items in the search results and should conform to the `Decodable` protocol.
 @MainActor
 public final class AlgoliaSearch<Hit: Decodable & Equatable>: Search<AlgoliaSearchService<Hit>, AlgoliaPaginationRequestFactory<Hit>> {
-    
+
   @Published public var query: String
   @Published public var indexName: IndexName
   @Published public var filters: AlgoliaFilters.Filters
-  
+
   var toggleViewModels: [Attribute: ToggleViewModel] = [:]
   var refinementListViewModels: [Attribute: RefinementListViewModel<Facet>] = [:]
   var rangeViewModels: [Attribute: RangeFilterViewModel] = [:]
@@ -66,7 +66,7 @@ public final class AlgoliaSearch<Hit: Decodable & Equatable>: Search<AlgoliaSear
                factory: paginationRequestFactory)
     setupSubscriptions()
   }
-  
+
   private func setupSubscriptions() {
     filters
       .$rawValue
@@ -88,7 +88,7 @@ public final class AlgoliaSearch<Hit: Decodable & Equatable>: Search<AlgoliaSear
       }
       .store(in: &cancellables)
   }
-  
+
   func fetchLatestHits() -> [Hit] {
     guard let latestResponse else {
       return []
@@ -96,5 +96,5 @@ public final class AlgoliaSearch<Hit: Decodable & Equatable>: Search<AlgoliaSear
     let hits = try? latestResponse.fetchHits() as [Hit]
     return hits ?? []
   }
-  
+
 }

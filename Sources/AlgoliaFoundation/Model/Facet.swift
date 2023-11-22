@@ -27,7 +27,6 @@ extension Facet: CustomStringConvertible {
   }
 }
 
-
 public extension Array<Facet> {
 
   init(facetDictionary: [String: Int]) {
@@ -39,13 +38,12 @@ public extension Array<Facet> {
 }
 
 public extension Dictionary<Attribute, [Facet]> {
-  
+
   init(rawFacets: [String: [String: Int]]) {
     let int = rawFacets.map { key, value in
       (Attribute(rawValue: key), [Facet](facetDictionary: value))
     }
-    self = Dictionary<Attribute, [Facet]>(uniqueKeysWithValues: int)
+    self = [Attribute: [Facet]](uniqueKeysWithValues: int)
   }
-  
-}
 
+}

@@ -3,22 +3,22 @@ import AlgoliaFoundation
 import AlgoliaFilters
 
 public extension AlgoliaSearch {
-  
+
   func hierarchicalListViewModel(attributesPrefix: String,
                                  attributesRange: ClosedRange<Int>,
                                  separator: String = " > ") -> HierarchicalListViewModel<Facet> {
-    
+
     if let viewModel = hierarchicalListViewModels[attributesPrefix] {
       return viewModel
     }
-    
+
     let filterGroup = HierarchicalFilterGroup(attributesPrefix: attributesPrefix,
                                               attributesRange: attributesRange,
                                               separator: separator)
     filters.add(group: filterGroup,
                 forName: attributesPrefix)
     let viewModel = HierarchicalListViewModel<Facet>()
-    
+
     viewModel
       .didToggle
       .receive(on: DispatchQueue.main)
@@ -27,7 +27,7 @@ public extension AlgoliaSearch {
         filterGroup?.apply(facetValue)
       }
       .store(in: &cancellables)
-    
+
     $latestResponse
       .receive(on: DispatchQueue.main)
       .map { response in
@@ -56,5 +56,5 @@ public extension AlgoliaSearch {
     hierarchicalListViewModels[attributesPrefix] = viewModel
     return viewModel
   }
-  
+
 }
