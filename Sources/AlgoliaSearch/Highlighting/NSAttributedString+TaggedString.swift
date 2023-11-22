@@ -1,10 +1,3 @@
-//
-//  NSAttributedString.swift
-//  
-//
-//  Created by Vladislav Fitc on 07.05.2023.
-//
-
 import Foundation
 import AlgoliaSearchClient
 import UIKit

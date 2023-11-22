@@ -36,7 +36,12 @@ public final class AlgoliaSearch<Hit: Decodable & Equatable>: Search<AlgoliaSear
   @Published public var indexName: IndexName
   @Published public var filters: AlgoliaFilters.Filters
   
-  private var cancellables: Set<AnyCancellable> = []
+  var toggleViewModels: [Attribute: ToggleViewModel] = [:]
+  var refinementListViewModels: [Attribute: RefinementListViewModel<Facet>] = [:]
+  var rangeViewModels: [Attribute: RangeFilterViewModel] = [:]
+  var hierarchicalListViewModels: [String: HierarchicalListViewModel<Facet>] = [:]
+
+  var cancellables: Set<AnyCancellable> = []
 
   /// Initializes a new `AlgoliaSearch` object with the provided application ID, API key, and index name.
   ///
@@ -63,16 +68,6 @@ public final class AlgoliaSearch<Hit: Decodable & Equatable>: Search<AlgoliaSear
   }
   
   private func setupSubscriptions() {
-//    filters
-//      .$groups
-//      .removeDuplicates(by: { l, r in
-//        l.values.map(\.rawValue) == r.values.map(\.rawValue)
-//      })
-//      .map(\.values)
-//      .sink { [weak self]  groups in
-//        self?.request.filterGroups = Array(groups)
-//        self?.objectWillChange.send()
-//      }.store(in: &cancellables)
     filters
       .$rawValue
       .sink { [weak self]  _ in
