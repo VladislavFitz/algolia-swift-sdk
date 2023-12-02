@@ -41,12 +41,13 @@ public extension AlgoliaSearch {
           .compactMap { facets[$0] }
           .enumerated()
           .flatMap { index, values in
-            values.map { HierarchicalNode(value: $0,
-                                          isSelected: filterGroup.selections.contains($0.value),
-                                          indentationLevel: index) }
+            values.map {
+              let node = Indented<Facet>(value: $0, indentationLevel: index)
+              return Selectable(node, isSelected: filterGroup.selections.contains($0.value))
+            }
           }
           .sorted(by: { a, b in
-            a.value.value < b.value.value
+            a.value.value.value < b.value.value.value
           })
       }
       .assign(to: \.values, on: viewModel)
