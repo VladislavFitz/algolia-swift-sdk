@@ -1,6 +1,7 @@
 import Foundation
 
 public final class RefinementListViewModel<Value: Hashable>: ObservableObject {
+  
   let selectionMode: SelectionMode
 
   @Published
@@ -9,12 +10,12 @@ public final class RefinementListViewModel<Value: Hashable>: ObservableObject {
   @Published
   private(set) var selectedValues: Set<Value>
 
-  private let sort: ((Value, Value) -> Bool)?
+  private let sort: ((Selectable<Value>, Selectable<Value>) -> Bool)?
 
   public init(values: [Value] = [],
               selectedValues: Set<Value> = [],
               selectionMode: SelectionMode = .multiple,
-              sort: ((Value, Value) -> Bool)? = .none) {
+              sort: ((Selectable<Value>, Selectable<Value>) -> Bool)? = .none) {
     self.values = values
     self.selectedValues = selectedValues
     self.selectionMode = selectionMode
@@ -23,7 +24,10 @@ public final class RefinementListViewModel<Value: Hashable>: ObservableObject {
 
   func setValues(_ values: [Value]) {
     if let sort {
-      self.values = values.sorted(by: sort)
+      self.values = values
+        .map { Selectable($0, isSelected: selectedValues.contains($0)) }
+        .sorted(by: sort)
+        .map(\.value)
     } else {
       self.values = values
     }

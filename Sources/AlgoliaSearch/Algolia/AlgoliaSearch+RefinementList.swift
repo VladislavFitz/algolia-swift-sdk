@@ -5,7 +5,7 @@ import Foundation
 public extension AlgoliaSearch {
   func refinementList(attribute: Attribute,
                       selectionMode: SelectionMode,
-                      sort: ((Facet, Facet) -> Bool)? = .none) -> RefinementListViewModel<Facet> {
+                      sort: ((Selectable<Facet>, Selectable<Facet>) -> Bool)? = .none) -> RefinementListViewModel<Facet> {
     if let viewModel = refinementListViewModels[attribute] {
       return viewModel
     }
