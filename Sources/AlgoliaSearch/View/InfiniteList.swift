@@ -48,10 +48,18 @@ public struct InfiniteList<HitView: View, NoResults: View, Item, P: Page<Item>>:
   }
 
   public var body: some View {
-    if viewModel.items.isEmpty && !viewModel.hasNext {
+    switch (viewModel.items.isEmpty, viewModel.hasNext) {
+    case (true, false):
       noResults()
         .frame(maxHeight: .infinity)
-    } else {
+      
+    case (true, true):
+      ProgressView()
+        .task {
+          viewModel.loadNext()
+        }
+        .frame(maxHeight: .infinity)
+    case (false, _):
       ScrollView {
         LazyVStack {
           if viewModel.hasPrevious {

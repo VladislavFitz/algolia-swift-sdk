@@ -23,15 +23,6 @@ public class AlgoliaSearchService<Hit: Decodable & Equatable>: SearchService {
   }
 
   public func fetchResponse(for request: AlgoliaSearchRequest) async throws -> AlgoliaSearchResponse<Hit> {
-    let components = [
-      (title: "index", value: request.indexName.rawValue),
-      (title: "query", value: request.searchParameters.query.flatMap { "\"\($0)\"" }),
-      (title: "page", value: request.searchParameters.page.flatMap(String.init)),
-      (title: "filters", value: request.searchParameters.filters),
-    ]
-      .filter({ $0.1 != nil })
-      .map { "\($0.0): \($0.1!)" }
-    logger.trace("request: \(components.joined(separator: ", "))")
     let queries = generateRequests(request)
     let responses = try await client.search(queries: queries.map { .first($0) })
     let response = merge(responses.compactMap(\.first))
@@ -40,8 +31,22 @@ public class AlgoliaSearchService<Hit: Decodable & Equatable>: SearchService {
 
   private func generateRequests(_ request: AlgoliaSearchRequest) -> [IndexedQuery] {
     var parameters = request.searchParameters
-    parameters.filters = RawFilterTransformer.transform(request.filterGroups)
+    let filters = RawFilterTransformer.transform(request.filterGroups)
+    if !filters.isEmpty {
+      parameters.filters = filters
+    }
 
+    let components = [
+      (title: "index", value: request.indexName.rawValue),
+      (title: "query", value: parameters.query.flatMap { "\"\($0)\"" }),
+      (title: "page", value: parameters.page.flatMap(String.init)),
+      (title: "filters", value: parameters.filters),
+    ]
+      .filter({ $0.1 != nil })
+      .map { "\($0.0): \($0.1!)" }
+    logger.trace("fetch: \(components.joined(separator: ", "))")
+
+    
     func indexed(_ parameters: SearchParameters) -> IndexedQuery {
       IndexedQuery(indexName: request.indexName,
                    searchParameters: parameters)

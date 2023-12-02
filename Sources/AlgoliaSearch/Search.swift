@@ -64,20 +64,8 @@ public class Search<Service: SearchService, RF: PaginationRequestFactory>: Obser
     self.logger = logger
     cancellables = []
     hits = PaginatedDataViewModel(source: self)
-    setupSubscriptions()
   }
 
-  private func setupSubscriptions() {
-    $request.sink { [weak self] request in
-      guard let self else { return }
-      Task {
-        await self.hits.reset()
-        let request = self.requestFactory.forInitialPage(from: request)
-        let response = try await self.service.fetchResponse(for: request)
-        self.latestResponse = response
-      }
-    }.store(in: &cancellables)
-  }
 }
 
 // MARK: - PageSource Conformance

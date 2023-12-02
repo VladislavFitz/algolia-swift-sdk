@@ -72,18 +72,29 @@ public final class AlgoliaSearch<Hit: Decodable & Equatable>: Search<AlgoliaSear
       .sink { [weak self] _ in
         guard let self else { return }
         self.request.filterGroups = Array(self.filters.groups.values)
+        Task {
+          await self.hits.reset()
+        }
       }
       .store(in: &cancellables)
     $query
       .removeDuplicates()
       .sink { [weak self] query in
-        self?.request.searchParameters.query = query
+        guard let self else { return }
+        self.request.searchParameters.query = query
+        Task {
+          await self.hits.reset()
+        }
       }
       .store(in: &cancellables)
     $indexName
       .removeDuplicates()
       .sink { [weak self] indexName in
-        self?.request.indexName = indexName
+        guard let self else { return }
+        self.request.indexName = indexName
+        Task {
+          await self.hits.reset()
+        }
       }
       .store(in: &cancellables)
   }
