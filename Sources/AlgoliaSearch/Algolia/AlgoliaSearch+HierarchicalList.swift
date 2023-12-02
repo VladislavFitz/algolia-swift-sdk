@@ -42,8 +42,8 @@ public extension AlgoliaSearch {
           .enumerated()
           .flatMap { index, values in
             values.map {
-              let node = Indented<Facet>(value: $0, indentationLevel: index)
-              return Selectable(node, isSelected: filterGroup.selections.contains($0.value))
+              return Indented<Facet>(value: $0, indentationLevel: index)
+                .isSelected(filterGroup.selections.contains($0.value))
             }
           }
           .sorted(by: { a, b in
