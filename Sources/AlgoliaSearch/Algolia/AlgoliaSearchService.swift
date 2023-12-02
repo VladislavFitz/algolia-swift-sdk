@@ -23,7 +23,15 @@ public class AlgoliaSearchService<Hit: Decodable & Equatable>: SearchService {
   }
 
   public func fetchResponse(for request: AlgoliaSearchRequest) async throws -> AlgoliaSearchResponse<Hit> {
-    logger.trace("request: index \(request.indexName), query: \"\(request.searchParameters.query ?? "")\" , page: \(request.searchParameters.page ?? 0), filters: \(request.searchParameters.filters ?? "")")
+    let components = [
+      (title: "index", value: request.indexName.rawValue),
+      (title: "query", value: request.searchParameters.query.flatMap { "\"\($0)\"" }),
+      (title: "page", value: request.searchParameters.page.flatMap(String.init)),
+      (title: "filters", value: request.searchParameters.filters),
+    ]
+      .filter({ $0.1 != nil })
+      .map { "\($0.0): \($0.1!)" }
+    logger.trace("request: \(components.joined(separator: ", "))")
     let queries = generateRequests(request)
     let responses = try await client.search(queries: queries.map { .first($0) })
     let response = merge(responses.compactMap(\.first))
@@ -42,10 +50,12 @@ public class AlgoliaSearchService<Hit: Decodable & Equatable>: SearchService {
     var queries: [IndexedQuery] = []
 
     queries.append(indexed(parameters))
-
-    let disjunctiveQueries = request
+    
+    let disjunctiveAttributes = request
       .filterGroups
       .extractDisjunctiveAttributes()
+
+    let disjunctiveQueries = disjunctiveAttributes
       .map { facet in
         var searchParameters = parameters
         searchParameters.onlyFacets()
@@ -55,6 +65,7 @@ public class AlgoliaSearchService<Hit: Decodable & Equatable>: SearchService {
       }
       .map(indexed)
     queries.append(contentsOf: disjunctiveQueries)
+    logger.debug("created \(queries.count) disjunctive queries")
 
     for hierarchicalGroup in request.filterGroups.compactMap({ $0 as? HierarchicalFilterGroup }) {
       guard let appliedFilter = hierarchicalGroup.hierarchicalFilters.last else {
@@ -71,22 +82,36 @@ public class AlgoliaSearchService<Hit: Decodable & Equatable>: SearchService {
         }
         .map(indexed)
       queries.append(contentsOf: hierachicalQueries)
+      logger.debug("created \(hierachicalQueries.count) hierarchical queries")
     }
 
     return queries
   }
 
   private func merge(_ responses: [AlgoliaSearchClient.SearchResponse]) -> AlgoliaSearchClient.SearchResponse {
+    logger.debug("process responses")
     guard var mainResponse = responses.first else {
       fatalError("Empty list of responses to merge")
     }
     for response in responses.dropFirst() {
+      logger.debug("received response: \(formattedFacets(response.facets))")
       for (attribute, values) in response.facets {
         mainResponse.facets[attribute] = values
       }
     }
     return mainResponse
   }
+}
+
+func formattedFacets(_ facets: [String: [String: Int]]) -> String {
+  var output = ""
+  for (attribute, values) in facets.sorted(by: { $0.key < $1.key }) {
+    output.append("\(attribute):\n")
+    for value in values {
+      output.append("\t\(value.key) (\(value.value))\n")
+    }
+  }
+  return output
 }
 
 private extension [FilterGroup] {
